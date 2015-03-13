@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('cityzen', ['ionic', 'cityzen.auth']);
+var app = angular.module('cityzen', ['ionic', 'cityzen.auth', 'cityzen.ctrls']);
 
 app.run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -37,35 +37,46 @@ app.run(function (AuthService, $rootScope, $state) {
 
 app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
-            .state('map', {
-                url: '/map',
-                controller: 'MapCtrl',
-                templateUrl: 'templates/map.html'
+            .state('app', {
+                url: '/app',
+                abstract: true,
+                templateUrl: 'templates/menu.html'
             })
-            .state('list', {
+            .state('app.map', {
+                url: '/map',
+                views: {
+                    'menuContent': {
+                        controller: 'MapCtrl',
+                        templateUrl: "templates/map.html"
+                    }
+                }
+            })
+            .state('app.list', {
                 url: '/list',
-                controller: 'ListCtrl',
-                templateUrl: 'templates/list.html'
+                views: {
+                    'menuContent': {
+                        controller: 'ListCtrl',
+                        templateUrl: "templates/list.html"
+                    }
+                }
+            })
+            .state('details', {
+                url: '/details',
+                controller: 'DetailsCtrl',
+                templateUrl: 'templates/details.html'
+            })
+            .state('new', {
+                url: '/new',
+                controller: 'NewCtrl',
+                templateUrl: "templates/new.html"
             })
             .state('login', {
                 url: '/login',
                 controller: 'LoginCtrl',
                 templateUrl: 'templates/login.html'
             });
-    $urlRouterProvider.otherwise(function($injector) {
-        var next_state = 'map';
-        $injector.get('$state').go(next_state);        
+    $urlRouterProvider.otherwise(function ($injector) {
+        var next_state = 'app.map';
+        $injector.get('$state').go(next_state);
     });
-});
-
-app.controller('ListCtrl', function ($scope, $state) {
-    $scope.goToMap = function() {
-        $state.go('map');
-    };
-});
-
-app.controller('MapCtrl', function ($scope, $state) {
-    $scope.goToList = function() {
-        $state.go('list');
-    };
 });
