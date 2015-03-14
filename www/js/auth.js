@@ -3,21 +3,20 @@ var app = angular.module('cityzen.auth', ['angular-storage']);
 app.service('AuthService', function (store) {
 
     var service = {
-        currentUserId: store.get('currentUserId'),
+        currentUserId: store.get('user') ? store.get('user').id : null,
         setUser: function (user) {
-            service.currentUserId = user.userId;
-            store.set('currentUserId', service.currentUserId);
+            service.currentUserId = user.id;
+            store.set('user', user);
         },
         unsetUser: function () {
             service.currentUserId = null;
-            store.remove('currentUserId');
+            store.remove('user');
         }
     };
-
     return service;
 });
 
-app.controller('LoginCtrl', function (AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state) {
+app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state) {
 
     // The $ionicView.beforeEnter event happens every time the screen is displayed.
     $scope.$on('$ionicView.beforeEnter', function () {
@@ -41,13 +40,15 @@ app.controller('LoginCtrl', function (AuthService, $http, $ionicHistory, $ionicL
         // Make the request to retrieve or create the user.
         $http({
             method: 'POST',
-            url: 'http://localhost:8100/api-proxy/users/logister',
+            url: apiUrl + '/users/logister',
             data: $scope.user
-        }).success(function (user) {
-            console.log(user);
+        }).success(function (id) {
+            $scope.user.id = id.userId;
+            console.log($scope.user);
 
             // If successful, give the user to the authentication service.
-            AuthService.setUser(user);
+            AuthService.setUser($scope.user);
+            console.log(AuthService.currentUserId);
 
             // Hide the loading message.
             $ionicLoading.hide();

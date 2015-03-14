@@ -1,5 +1,14 @@
 <ion-view view-title="Nouveau problème">
-    <ion-content>
-        <h1>New Issue Form</h1>
+    <ion-nav-bar class="bar bar-new">
+        <div class="buttons-left">
+            <button class="button back-button"></button>
+        </div>
+        <h1 class="title-left title">Nouveau problème</h1>
+        <div class="buttons">
+            <button class="button button-icon ion-close button-cancel" ng-controller="MyNavCtrl" ng-click="myGoBack()"></button>
+            <button class="button button-icon ion-checkmark button-validate"></button>
+        </div>
+    </ion-nav-bar>
+    <ion-content class="new-view">
     </ion-content>
 </ion-view>

@@ -1,16 +1,15 @@
-<ion-view>
-    <header class="transparent bar">
-        <button class="button button-clear button-dark" ng-controller="MyNavCtrl" ng-click="myGoBack()">
+<ion-view view-title="Détails de problème">
+    <ion-header-bar class="bar-energized">
+        <button class="button button-clear button-light" ng-controller="MyNavCtrl" ng-click="myGoBack()">
             <i ng-class="{'ion-android-arrow-back': platform.isAndroid(), 'ion-ios-arrow-back': !platform.isAndroid()}" class="icon"></i>        
         </button>
         <button class="button button-clear button-dark" ng-click="goToAnchor('comments')">
-            <i class="icon ion-chatboxes"></i>
+            <i class="icon ion-quote"></i>
         </button>
-    </header>
+    </ion-header-bar>
     <ion-content has-header="false" delegate-handle="commentsScroll">
         <img src="../img/banner.jpg" alt=""/>
         <h1>Issue details</h1>
-        <button >new</button>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>

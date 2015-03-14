@@ -1,4 +1,4 @@
-<ion-side-menus>
+<ion-side-menus enable-menu-with-back-views="true">
     <ion-side-menu-content>
         <ion-nav-bar class="bar-calm">
             <ion-nav-back-button>
@@ -12,42 +12,58 @@
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
 
-    <ion-side-menu side="left">
-        <header class="bar bar-header bar-stable">
-            <h1 class="title">Left</h1>
+    <ion-side-menu side="left" id="main-menu">
+        <header class="bar bar-header bar-royal transparent">
+            <h1 class="title" ng-controller="MenuTitleCtrl">{{ user.firstname}} {{ user.lastname}}</h2>
         </header>
-        <ion-content>
-            <div class="list">
-
-                <a class="item item-icon-left" href="#">
+        <ion-content class="has-header">
+            <div class="list card transparent" ng-controller="SelectIssueCtrl">
+                <div class="item item-divider transparent">Afficher...</div>
+                <label class="item item-radio" menu-close>
+                    <input type="radio" name="group" checked>
+                    <div class="item-content">
+                        Mes Problèmes
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+                <label class="item item-radio" menu-close>
+                    <input type="radio" name="group">
+                    <div class="item-content">
+                        Problèmes proches
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+                <label class="item item-radio" menu-close>
+                    <input type="radio" name="group">
+                    <div class="item-content">
+                        Tous les problèmes
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+            </div>
+            <ul class="list card transparent" ng-controller="IssueTypeCtrl">
+                <div class="item item-divider transparent">Filtrer les types</div>
+                <li ng-repeat="issue_type in issue_types" class="item item-toggle item-issue-type">
+                    {{ issue_type.name}}
+                    <label class="toggle toggle-calm">
+                        <input type="checkbox" checked>
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+            <div class="list card transparent" ng-controller="ConfigurationCtrl">
+                <div class="item item-divider transparent">Configuration</div>
+                <a class="item item-icon-left">
+                    <i class="icon ion-person"></i>
+                    Profil
+                </a>
+                <a class="item item-icon-left">
                     <i class="icon ion-email"></i>
-                    Check mail
-                </a>
-
-                <a class="item item-icon-left item-icon-right" href="#">
-                    <i class="icon ion-chatbubble-working"></i>
-                    Call Ma
-                    <i class="icon ion-ios7-telephone-outline"></i>
-                </a>
-
-                <a class="item item-icon-left" href="#">
-                    <i class="icon ion-mic-a"></i>
-                    Record album
-                    <span class="item-note">
-                        Grammy
-                    </span>
-                </a>
-
-                <a class="item item-icon-left" href="#/new">
-                    <i class="icon ion-person-stalker"></i>
-                    Friends
-                    <span class="badge badge-assertive">0</span>
+                    Options
                 </a>
             </div>
-            <ion-list id="menu_bottom_list">
-                <ion-item>Item 1</ion-item>
-                <ion-item>Item 2</ion-item>
-            </ion-list>
         </ion-content>
     </ion-side-menu>
 </ion-side-menus>

@@ -1,13 +1,13 @@
-<ion-view view-title="Carte" hide-back-button="true">
+<ion-view view-title="Carte" hide-back-button="true" swipe-to target='app.list'>
     <ion-nav-buttons side="right">
-        <button class="button button-icon icon ion-clipboard" ui-sref="app.list"></button>
+        <button class="button button-icon icon ion-clipboard" ui-sref="app.list" nav-transition="none"></button>
     </ion-nav-buttons>
     <ion-content>
         <button ng-controller="DetailsCtrl" ng-click="showDetails()" class="button button-outline button-full button-positive">
             Go to issue X!
         </button>
     </ion-content>
-    <button class="button button-new button-large button-clear button-calm">
+    <button class="button button-new button-large button-clear button-calm" ui-sref="new">
         <i class="icon ion-plus-circled"></i>
     </button>
 </ion-view>

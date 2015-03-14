@@ -3,11 +3,60 @@
 }
 
 .transparent {
-    background-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .button-new {
     position: fixed;
     bottom: 0;
     right: 0;
+}
+
+.menu-title {
+    text-align: left !important;
+}
+
+.item-issue-type::first-letter {
+    text-transform: capitalize;
+}
+
+#main-menu {
+    background: url(../img/menu-bg.jpg) no-repeat left top;
+}
+
+#main-menu .item-divider {
+    color: #FFF;
+}
+
+#main-menu .icon {
+    color: #AAA;
+}
+
+.item-thumbnail-left {
+    padding-top: 16px !important;
+}
+
+.bar-new {
+    border-bottom: thin solid #11C1F3;
+}
+
+.bar-new h1 {
+    color: #11C1F3;
+}
+
+.button.button-icon.button-cancel::before,.button.button-icon.button-validate::before {
+    font-size: 1.5em;
+    opacity: 0.5;
+}
+
+.button-cancel {
+    color: #EF4E3A;
+}
+
+.button-validate {
+    color: #6C3;
+}
+
+.new-view {
+    background-image: linear-gradient(0deg, rgb(136, 210, 165), rgb(0, 124, 171));
 }
