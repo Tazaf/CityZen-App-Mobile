@@ -7,6 +7,7 @@ var app = angular.module('cityzen', ['ionic', 'cityzen.auth', 'cityzen.ctrls']);
 
 app.run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
+        
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -62,13 +63,21 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             })
             .state('details', {
                 url: '/details',
-                controller: 'DetailsCtrl',
-                templateUrl: 'templates/details.html'
+//                views: {
+//                    'menuContent': {
+                        controller: 'DetailsCtrl',
+                        templateUrl: 'templates/details.html'
+//                    }
+//                }
             })
-            .state('new', {
+            .state('app.new', {
                 url: '/new',
-                controller: 'NewCtrl',
-                templateUrl: "templates/new.html"
+                views: {
+                    'menuContent': {
+                        controller: 'NewCtrl',
+                        templateUrl: 'templates/new.html'
+                    }
+                }
             })
             .state('login', {
                 url: '/login',
