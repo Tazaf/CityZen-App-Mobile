@@ -16,10 +16,10 @@
             <div class="list">
                 <label class="item item-input">
                     <!-- Note the required="required" attribute used for validation. -->
-                    <input type="text" placeholder="First Name" ng-model="user.firstname" required="required"/>
+                    <input type="text" placeholder="Prénom" ng-model="user.firstname" required="required"/>
                 </label>
                 <label class="item item-input">
-                    <input type="text" placeholder="Last Name" ng-model="user.lastname" required="required"/>
+                    <input type="text" placeholder="Nom" ng-model="user.lastname" required="required"/>
                 </label>
             </div>
 
@@ -31,7 +31,7 @@
               The "ng-click" directive indicates which scope function to call when the form is submitted.
               The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
             -->
-            <button class="button button-full button-positive" ng-click="register()" ng-disabled="loginForm.$invalid">Register</button>
+            <button class="button button-full button-positive" ng-click="register()" ng-disabled="loginForm.$invalid">Connexion</button>
         </form>
     </ion-content>
 </ion-view>

@@ -44,11 +44,9 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
             data: $scope.user
         }).success(function (id) {
             $scope.user.id = id.userId;
-            console.log($scope.user);
 
             // If successful, give the user to the authentication service.
             AuthService.setUser($scope.user);
-            console.log(AuthService.currentUserId);
 
             // Hide the loading message.
             $ionicLoading.hide();

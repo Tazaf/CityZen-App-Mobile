@@ -17,7 +17,6 @@ app.controller('IssueTypeCtrl', function ($scope) {
 
 app.controller('MenuTitleCtrl', function ($scope, store) {
     $scope.user = store.get('user');
-    console.log($scope.user);
 });
 
 app.controller('SelectIssueCtrl', function ($scope) {

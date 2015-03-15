@@ -13,10 +13,10 @@ app.service('ToastService', function ($http, $window, $q, $ionicLoading, $timeou
         if (!position)
             position = 'top';
         angular.element('<p>')
-//        $ionicLoading.show({
-//            template: msg,
-//            noBackdrop: true,
-//            duration: duration
-//        });
+        $ionicLoading.show({
+            template: msg,
+            noBackdrop: true,
+            duration: duration
+        });
     };
 });

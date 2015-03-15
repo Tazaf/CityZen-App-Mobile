@@ -12,8 +12,9 @@
             Go to issue X!
         </button>
         <label class="item item-input">
-            <input type="text" ng-controller="SettingsModalCtrl" ng-model="toast">
+            <input type="text" ng-model="toast">
         </label>
+        <p>{{toast}}</p>
     </ion-content>
     <button class="button button-new ion-plus-circled" ui-sref="app.new"></button>
 </ion-view>
