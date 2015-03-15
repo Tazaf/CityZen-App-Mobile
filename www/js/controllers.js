@@ -1,6 +1,7 @@
 var app = angular.module('cityzen.ctrls', ['cityzen.auth']);
 
-app.controller('ListCtrl', function ($scope) {
+app.controller('ListCtrl', function ($rootScope) {
+    $rootScope.toggledrag = false;
 });
 
 app.controller('MapCtrl', function ($scope) {
@@ -11,7 +12,7 @@ app.controller('MenuCtrl', function ($scope) {
 
 app.controller('DetailsCtrl', function ($scope, $state, $ionicHistory, $ionicScrollDelegate, $location) {
     $scope.showDetails = function () {
-        $state.go('details');
+        $state.go('app.details');
     };
 
     $scope.goToAnchor = function (anchor) {
@@ -47,8 +48,8 @@ app.controller('NewModalCtrl', function ($scope, $ionicModal) {
     });
 });
 
-app.controller('NewCtrl', function($scope) {
-    
+app.controller('NewCtrl', function ($scope) {
+
 });
 
 app.controller('MyNavCtrl', function ($scope, $state, $ionicHistory) {

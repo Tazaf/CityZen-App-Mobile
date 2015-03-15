@@ -1,6 +1,11 @@
 <ion-view view-title="Liste" hide-back-button="true" swipe-to target='app.map'>
+    <ion-nav-bar class="bar-calm">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-small button-icon ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button class="button button-small button-icon icon ion-map" ui-sref="app.map" nav-transition="none"></button>
+        <button class="button button-small button-icon ion-map" ui-sref="app.map" nav-transition="none"></button>
     </ion-nav-buttons>
     <ion-content>
         <div class="list" ng-controller="DetailsCtrl">
@@ -58,7 +63,7 @@
             <ion-item class="item item-thumbnail-left">test 12</ion-item>
         </div>
     </ion-content>
-    <button class="button button-new button-large button-clear button-calm" ui-sref="new">
+    <button class="button button-new button-large button-clear button-calm" ui-sref="app.new">
         <i class="icon ion-plus-circled"></i>
     </button>
 </ion-view>

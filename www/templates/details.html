@@ -1,12 +1,10 @@
 <ion-view view-title="Détails de problème">
-    <ion-header-bar class="bar-energized">
-        <button class="button button-clear button-light" ng-controller="MyNavCtrl" ng-click="myGoBack()">
-            <i ng-class="{'ion-android-arrow-back': platform.isAndroid(), 'ion-ios-arrow-back': !platform.isAndroid()}" class="icon"></i>        
-        </button>
-        <button class="button button-clear button-dark" ng-click="goToAnchor('comments')">
-            <i class="icon ion-quote"></i>
-        </button>
-    </ion-header-bar>
+    <ion-nav-bar class="bar-calm">
+        <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-buttons side="right">
+        <button class="button back-button buttons  button-clear header-item ion-quote" ng-click="goToAnchor('comments')"></button>
+    </ion-nav-buttons>
     <ion-content has-header="false" delegate-handle="commentsScroll">
         <img src="../img/banner.jpg" alt=""/>
         <h1>Issue details</h1>

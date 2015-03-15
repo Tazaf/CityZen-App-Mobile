@@ -61,23 +61,23 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     }
                 }
             })
-            .state('details', {
+            .state('app.details', {
                 url: '/details',
-//                views: {
-//                    'menuContent': {
+                views: {
+                    'menuContent': {
                         controller: 'DetailsCtrl',
                         templateUrl: 'templates/details.html'
-//                    }
-//                }
+                    }
+                }
             })
-            .state('new', {
+            .state('app.new', {
                 url: '/new',
-//                views: {
-//                    'menuContent': {
+                views: {
+                    'menuContent': {
                         controller: 'NewCtrl',
                         templateUrl: 'templates/new.html'
-//                    }
-//                }
+                    }
+                }
             })
             .state('login', {
                 url: '/login',

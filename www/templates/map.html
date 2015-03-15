@@ -1,4 +1,9 @@
-<ion-view view-title="Carte" hide-back-button="true" swipe-to target='app.list'>
+<ion-view view-title="Carte" swipe-to target='app.list'>
+    <ion-nav-bar class="bar-calm">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-small button-icon ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
     <ion-nav-buttons side="right">
         <button class="button button-icon icon ion-clipboard" ui-sref="app.list" nav-transition="none"></button>
     </ion-nav-buttons>
@@ -7,7 +12,7 @@
             Go to issue X!
         </button>
     </ion-content>
-    <button class="button button-new button-large button-clear button-calm" ui-sref="new">
+    <button class="button button-new button-large button-clear button-calm" ui-sref="app.new">
         <i class="icon ion-plus-circled"></i>
     </button>
 </ion-view>
