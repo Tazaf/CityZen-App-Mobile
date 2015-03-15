@@ -10,6 +10,15 @@
     position: fixed;
     bottom: 0;
     right: 0;
+    font-size: 2.5em;
+    border: none;
+    background: none;
+    padding: 0;
+    color: #11C1F3;
+    margin: 0 2% 2% 0;
+}
+.button-new:hover {
+    color: #11C1F3;
 }
 
 .menu-title {
@@ -32,7 +41,7 @@
     color: #AAA;
 }
 
-.item-thumbnail-left {
+.item-thumbnail-left a.item-content {
     padding-top: 16px !important;
 }
 
@@ -44,19 +53,42 @@
     color: #11C1F3;
 }
 
-.button.button-icon.button-cancel::before,.button.button-icon.button-validate::before {
-    font-size: 1.5em;
-    opacity: 0.5;
-}
-
-.button-cancel {
-    color: #EF4E3A;
-}
-
-.button-validate {
-    color: #6C3;
-}
-
 .new-view {
     background-image: linear-gradient(0deg, rgb(136, 210, 165), rgb(0, 124, 171));
+}
+
+.button-medium::before {
+    font-size: 25px !important;
+}
+
+.loading-container {
+    -webkit-align-items: flex-start;
+    -moz-align-items: flex-start;
+    align-items: flex-start;
+    padding-top: 54px;
+}
+
+.loading-container .loading{
+    border-radius: 30px;
+    padding: 10px;
+    min-width: 100px;
+}
+
+.toast {
+    position: fixed;
+    bottom: 50px;
+    width: 100%;
+    background-color: white;
+    border: thin solid black;
+    z-index: 9999;
+}
+
+.toast span {
+    margin: auto;
+    height: 30px;
+    width: 150px;
+    background-color: red;
+    display: block;
+    text-align: center;
+    line-height: 30px;
 }

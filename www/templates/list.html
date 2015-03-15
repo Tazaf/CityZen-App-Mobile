@@ -2,51 +2,51 @@
     <ion-nav-bar class="bar-calm">
     </ion-nav-bar>
     <ion-nav-buttons side="left">
-        <button class="button button-small button-icon ion-navicon" menu-toggle="left"></button>
+        <button class="button button-icon ion-navicon" menu-toggle="left"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button class="button button-small button-icon ion-map" ui-sref="app.map" nav-transition="none"></button>
+        <button class="button button-icon button-medium ion-map" ui-sref="app.map"></button>
     </ion-nav-buttons>
     <ion-content>
-        <div class="list" ng-controller="DetailsCtrl">
-            <ion-item class="item item-thumbnail-left" ng-click="showDetails()">
+        <div class="list">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://i.imgur.com/OkwKGNh.jpg" alt="" />
                 <h2>test 01</h2>
                 <p>Nine Inch Nails</p>
             </ion-item>
-            <ion-item class="item item-thumbnail-left" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="https://departmentfortransport.files.wordpress.com/2014/02/bb2-vzyimaaw3cx-large.jpg" alt="" />
                 <h2>https://departmentfortransport.files.wordpress.com/2014/02/bb2-vzyimaaw3cx-large.jpg</h2>
             </ion-item>
-            <ion-item class="item item-thumbnail-left" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://all-that-is-interesting.com/wordpress/wp-content/uploads/2013/02/Moss-Graffiti-And-Regular-Graffiti.jpg" alt="" />
                 <h2>test 03</h2>
             </ion-item>
-            <ion-item class="item item-thumbnail-left" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://www.downvids.net/video/bestimages/img-dangerous-crossroad-916.jpg" alt="" />
                 <h2>test 04</h2>
             </ion-item>
-            <ion-item class="item item-thumbnail-left" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://seeclickfix.com/files/issue_images/0008/5245/2012-08-01_10.07.37.jpg" alt="" />
                 <h2>test 05</h2>
             </ion-item>
-            <ion-item class="item item-avatar" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://i.imgur.com/OkwKGNh.jpg" alt="" />
                 <h2>test 01</h2>
             </ion-item>
-            <ion-item class="item item-avatar" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="https://departmentfortransport.files.wordpress.com/2014/02/bb2-vzyimaaw3cx-large.jpg" alt="" />
                 <h2>test 02</h2>
             </ion-item>
-            <ion-item class="item item-avatar" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://all-that-is-interesting.com/wordpress/wp-content/uploads/2013/02/Moss-Graffiti-And-Regular-Graffiti.jpg" alt="" />
                 <h2>test 03</h2>
             </ion-item>
-            <ion-item class="item item-avatar" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://www.downvids.net/video/bestimages/img-dangerous-crossroad-916.jpg" alt="" />
                 <h2>test 04</h2>
             </ion-item>
-            <ion-item class="item item-avatar" ng-click="showDetails()">
+            <ion-item class="item item-thumbnail-left" ui-sref="app.details">
                 <img src="http://seeclickfix.com/files/issue_images/0008/5245/2012-08-01_10.07.37.jpg" alt="" />
                 <h2>test 05</h2>
             </ion-item>
@@ -63,7 +63,5 @@
             <ion-item class="item item-thumbnail-left">test 12</ion-item>
         </div>
     </ion-content>
-    <button class="button button-new button-large button-clear button-calm" ui-sref="app.new">
-        <i class="icon ion-plus-circled"></i>
-    </button>
+    <button class="button button-new ion-plus-circled" ui-sref="app.new"></button>
 </ion-view>

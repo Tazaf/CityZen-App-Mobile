@@ -74,7 +74,7 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
 });
 
 app.controller('LogoutCtrl', function (AuthService, $scope, $state) {
-    $scope.logOut = function () {
+    $scope.logout = function () {
         AuthService.unsetUser();
         $state.go('login');
     };

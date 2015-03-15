@@ -3,8 +3,25 @@
         <ion-nav-back-button></ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-buttons side="right">
-        <button class="button back-button buttons  button-clear header-item ion-checkmark"></button>
+        <button class="button back-button button-icon button-medium ion-checkmark-round" ng-click="register()" ng-disabled="loginForm.$invalid"></button>
     </ion-nav-buttons>
     <ion-content class="new-view">
+        <!-- The login form that the citizen must fill. -->
+        <form name="loginForm">
+
+            <!-- Ionic uses lists to group related input elements. -->
+            <div class="list">
+                <label class="item item-input">
+                    <!-- Note the required="required" attribute used for validation. -->
+                    <input type="text" placeholder="First Name" ng-model="user.firstname" required="required"/>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Last Name" ng-model="user.lastname" required="required"/>
+                </label>
+            </div>
+
+            <!-- Display an error message here, above the submit button, if an error occurred. -->
+            <p ng-if="error" class="error">{{ error}}</p>
+        </form>
     </ion-content>
 </ion-view>
