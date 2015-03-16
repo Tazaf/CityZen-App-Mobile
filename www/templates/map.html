@@ -15,7 +15,7 @@
             <input type="text" ng-model="toast.msg">
         </label> 
         <p>{{toast.msg}}</p> -->
-        <leaflet defaults="mapDefaults" center="mapCenter" markers="mapMarkers" data-tap-disabled="true"></leaflet>
+        <leaflet id="map" defaults="mapDefaults" center="mapCenter" markers="mapMarkers" data-tap-disabled="true"></leaflet>
         <!-- <leaflet></leaflet> -->
     </ion-content>
     <button class="button button-new ion-plus-circled" ui-sref="app.new"></button>

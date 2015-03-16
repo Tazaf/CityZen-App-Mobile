@@ -19,7 +19,15 @@
     z-index: 1000;
 }
 .button-new:hover {
-    color: #11C1F3;
+    color: #886aea;
+}
+
+.button-new:focus,
+.button-new:active {
+    background: none;
+    border: none;
+    box-shadow: none;
+    opacity: 0.5;
 }
 
 .left-title {
@@ -58,7 +66,12 @@
     background: url(../img/bg.jpg) no-repeat left bottom;
 }
 
-.flat-background .item-stacked-label {
+.flat-background-white {
+    background: url(../img/bg-pattern.jpg) repeat left bottom;
+}
+
+.flat-background .item-stacked-label,
+.flat-background-white .item-stacked-label{
     background: white;
 }
 
@@ -116,10 +129,24 @@
 
 .settings .card .item.range {
     border-top: 0;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
-.settings .card .item input {
+.settings .card .item.item-value {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.settings .card .item.item-title,
+.settings .card .item.item-title span {
+    padding-bottom: 0;
+}
+
+.settings .card .item input[type="text"] {
     text-align: right;
+    padding-top: 0;
+    padding-right: 16px;
 }
 
 .settings .card .item .close-range {
@@ -128,9 +155,8 @@
     top: 13px;
 }
 
-.settings .card .item .close-range:after {
+.settings .card .item .close-range-after {
     color: #AAA;
-    content: " Km";
     font-size: 11px;
 }
 

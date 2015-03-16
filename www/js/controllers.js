@@ -4,7 +4,7 @@ app.controller('ListCtrl', function ($scope) {
     $scope.$root.enableLeft = true;
 });
 
-app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess) {
+app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leafletData) {
     var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
     mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
     $scope.mapDefaults = {
@@ -16,6 +16,9 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess) {
         zoom: 14
     };
     $scope.mapMarkers = [];
+    leafletData.getMap('map').then(function(map) {
+        map.attributionControl.setPosition('bottomleft');
+    });
     $scope.$root.enableLeft = true;
 });
 

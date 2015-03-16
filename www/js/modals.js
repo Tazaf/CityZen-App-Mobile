@@ -40,30 +40,35 @@ app.controller('ProfileModalCtrl', function ($scope, $ionicModal, store, ToastSe
     });
 });
 
-app.controller('SettingsModalCtrl', function ($scope, $ionicModal, $rootScope, store, ToastService) {
-    $rootScope.toast = "SettingsModalCtrlMessage";
+app.controller('SettingsModalCtrl', function ($scope, $ionicModal, store) {
     $ionicModal.fromTemplateUrl('templates/modal-settings.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function (modal) {
         $scope.settings = modal;
     });
-//    $scope.changeValue = function () {
-//        console.log('Click');
-//        $rootScope.toast = "Deuxième message";
-//    };
+    // Set the value.closeRange value to a particular value
+    $scope.setCloseRange = function (value) {
+        $scope.values.closeRange = value;
+    };
+    // Open the settings modal
     $scope.openSettings = function () {
         $scope.settings.show();
     };
+    // Close the settings modal
     $scope.closeSettings = function () {
         $scope.settings.hide();
     };
+    // When the modal is shown, load the user's settings on the value attribute
     $scope.$on('modal.shown', function () {
-        $scope.values = {
+        var settings = store.get('settings');
+        var default_settings = {
             mapCenter: "Yverdon",
             homePage: "app.list",
             closeRange: 7
         };
+        $scope.values = settings ? settings : default_settings;
+        console.log($scope.values);
     });
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function () {
@@ -71,8 +76,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, $rootScope, s
     });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
-        console.log('Settings Closed');
-        console.log($scope.values);
+        store.set('settings', $scope.values);
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function () {
