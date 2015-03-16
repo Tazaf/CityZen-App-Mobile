@@ -3,29 +3,40 @@
         <h1 class="title left-title">Paramètres</h1>
         <button class="button button-clear" ng-click="closeSettings()">Fermer</button>
     </header>
-    <ion-content class="has-header">
+    <ion-content class="has-header settings">
         <form ng-submit="doLogin()">
-            <div class="list card">
-                <label class="item item-input item-stacked-label">
-                    <span class="input-label">Centre de la carte</span>
-                    <input type="text" ng-model="values.mapCenter" placeholder="Vide">
-                </label>
-                <div class="setting-info">Définit le centre de la carte au démarrage de l'application.</div>
-                <label class="item item-input item-select">
-                    <div class="input-label">
-                        Page d'accueil
+            <div class="list">
+                <div class="card">
+                    <label class="item item-input">
+                        <span class="input-label">Centre de la carte</span>
+                        <input type="text" ng-model="values.mapCenter" placeholder="Vide">
+                    </label>
+                    <div class="setting-info"><i class="icon ion-information-circled"></i>Définit le centre de la carte au démarrage de l'application.</div>
+                </div>
+                <div class="card">
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Page d'accueil
+                        </div>
+                        <select ng-model="values.homePage">
+                            <option value="app.carte">Carte</option>
+                            <option value="app.list">Liste</option>
+                        </select>
+                    </label>
+                    <div class="setting-info"><i class="icon ion-information-circled"></i>Définit quelle est la première page affichée au démarrage de l'application.</div>
+                </div>
+                <div class="card">
+                    <label class="item item-input">
+                        <span class="input-label">Distance problèmes</span>
+                        <span class="close-range">{{ values.closeRange }}</span>
+                    </label>
+                    <div class="item range range-positive">
+                        <label></label>
+                        <i class="icon ion-quote"></i>
+                        <input type="range" name="volume" min="1" max="15" ng-model="values.closeRange">
+                        <i class="icon ion-quote"></i>
                     </div>
-                    <select ng-model="values.homePage">
-                        <option value="app.carte">Carte</option>
-                        <option value="app.list">Liste</option>
-                    </select>
-                </label>
-                <div class="setting-info">Définit quelle est la première page au démarrage de l'application.</div>
-                <div class="item range range-positive">
-                    <label></label>
-                    <i class="icon ion-quote"></i>
-                    <input type="range" name="volume" min="0" max="100" value="50">
-                    <i class="icon ion-quote"></i>
+                    <div class="setting-info"><i class="icon ion-information-circled"></i>Définit la distance maximale des problèmes à afficher lors de la sélection des problèmes proches.</div>
                 </div>
             </div>
         </form>

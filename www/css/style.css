@@ -110,11 +110,43 @@
     visibility: hidden;
 }
 
+.settings .card .item {
+    border-bottom: 0;
+}
+
+.settings .card .item.range {
+    border-top: 0;
+}
+
+.settings .card .item input {
+    text-align: right;
+}
+
+.settings .card .item .close-range {
+    position: absolute;
+    right: 16px;
+    top: 13px;
+}
+
+.settings .card .item .close-range:after {
+    color: #AAA;
+    content: " Km";
+    font-size: 11px;
+}
+
 .setting-info {
     font-size: 13px;
     color: #AAA;
-    margin: auto;
+    margin: 1px 16px 6px 16px;
+    padding-top: 5px;
+    padding-left: 20px;
     white-space: initial;
-    margin-right: 16px;
-    padding-bottom: 6px;
+    border-top: 1px solid #DDD;
+    position: relative;
+}
+
+.setting-info i {
+    position: absolute;
+    top: 5px;
+    left: 2px;
 }

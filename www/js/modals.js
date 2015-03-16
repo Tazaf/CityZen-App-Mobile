@@ -61,7 +61,8 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, $rootScope, s
     $scope.$on('modal.shown', function () {
         $scope.values = {
             mapCenter: "Yverdon",
-            homePage: "app.list"
+            homePage: "app.list",
+            closeRange: 7
         };
     });
     //Cleanup the modal when we're done with it!
