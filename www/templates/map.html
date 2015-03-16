@@ -1,5 +1,5 @@
-<ion-view view-title="Carte" swipe-to target='app.list'>
-    <ion-nav-bar class="bar-calm">
+<ion-view view-title="Carte" hide-back-button="true">
+    <ion-nav-bar class="bar-royal">
     </ion-nav-bar>
     <ion-nav-buttons side="left">
         <button class="button button-icon ion-navicon" menu-toggle="left"></button>
@@ -7,14 +7,16 @@
     <ion-nav-buttons side="right">
         <button class="button button-icon button-medium ion-clipboard" ui-sref="app.list" nav-transition="none"></button>
     </ion-nav-buttons>
-    <ion-content>
-        <button class="button button-outline button-full button-positive" ui-sref="app.details" nav-transition="none">
+    <ion-content scroll="false">
+        <!-- <button class="button button-outline button-full button-positive" ui-sref="app.details" nav-transition="none">
             Go to issue X!
         </button>
         <label class="item item-input">
-            <input type="text" ng-model="toast">
-        </label>
-        <p>{{toast}}</p>
+            <input type="text" ng-model="toast.msg">
+        </label> 
+        <p>{{toast.msg}}</p> -->
+        <leaflet defaults="mapDefaults" center="mapCenter" markers="mapMarkers" data-tap-disabled="true"></leaflet>
+        <!-- <leaflet></leaflet> -->
     </ion-content>
     <button class="button button-new ion-plus-circled" ui-sref="app.new"></button>
 </ion-view>

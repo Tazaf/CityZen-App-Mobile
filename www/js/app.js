@@ -11,7 +11,8 @@ var app = angular.module('cityzen',
             'cityzen.constants',
             'menu.ctrls',
             'cityzen.directives',
-            'cityzen.modals'
+            'cityzen.modals',
+            'leaflet-directive'
         ]);
 
 app.run(function ($ionicPlatform) {

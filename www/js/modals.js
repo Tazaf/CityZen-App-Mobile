@@ -59,8 +59,10 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, $rootScope, s
         $scope.settings.hide();
     };
     $scope.$on('modal.shown', function () {
-        console.log('Settings Shown');
-        console.log($scope.user);
+        $scope.values = {
+            mapCenter: "Yverdon",
+            homePage: "app.list"
+        };
     });
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function () {
@@ -69,6 +71,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, $rootScope, s
     // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
         console.log('Settings Closed');
+        console.log($scope.values);
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function () {

@@ -4,7 +4,18 @@ app.controller('ListCtrl', function ($scope) {
     $scope.$root.enableLeft = true;
 });
 
-app.controller('MapCtrl', function ($scope) {
+app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess) {
+    var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
+    mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
+    $scope.mapDefaults = {
+        tileLayer: mapboxTileLayer
+    };
+    $scope.mapCenter = {
+        lat: 51.48,
+        lng: 0,
+        zoom: 14
+    };
+    $scope.mapMarkers = [];
     $scope.$root.enableLeft = true;
 });
 

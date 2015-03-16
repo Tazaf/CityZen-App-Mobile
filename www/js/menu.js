@@ -1,18 +1,16 @@
 var app = angular.module('menu.ctrls', ['angular-storage']);
 
-app.controller('IssueTypeCtrl', function ($scope) {
-    $scope.issue_types = [
-        {
-            "id": "5502ab6cdaf3ee0e0049e3b2",
-            "name": "graffiti"
-        }, {
-            "id": "5502ab6cdaf3ee0e0049e3b0",
-            "name": "broken streetlight"
-        }, {
-            "id": "5502ab6cdaf3ee0e0049e3b1",
-            "name": "dangerous crossroad"
-        }
-    ];
+app.controller('IssueTypeCtrl', function ($scope, $http, apiUrl) {
+    $scope.error = false;
+    $http({
+        method: 'GET',
+        url: apiUrl + '/issueTypes'
+    }).success(function (issue_types) {
+        $scope.issue_types = issue_types;
+        console.log('Success !');
+    }).error(function () {
+        $scope.error = true;
+    });
 });
 
 app.controller('MenuTitleCtrl', function ($scope, store) {
