@@ -1,16 +1,54 @@
-<ion-view view-title="Détails de problème">
+<ion-view view-title="Détails">
     <ion-nav-bar class="bar-royal">
         <ion-nav-back-button></ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-buttons side="right">
-        <button class="button back-button button-icon button-medium ion-chatbubbles" ng-click="goToAnchor('comments')"></button>
+        <button class="button back-button button-icon ion-pricetags" ng-controller="TagsCtrl" ng-click="showAddTagPopup()"></button>
+        <button class="button back-button button-icon ion-chatbubbles" ng-click="showAddCommentPopup()"></button>
     </ion-nav-buttons>
-    <ion-content has-header="false" delegate-handle="commentsScroll">
-        <img src="../img/banner.jpg" alt=""/>
-        <h1>Issue details</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>
-        <p id="comments">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse finibus egestas laoreet. Maecenas dapibus, nibh venenatis fringilla egestas, mauris sapien ultrices odio, non gravida justo dui non elit. Nulla semper egestas urna, in dignissim sem. Mauris aliquet tortor justo, in accumsan turpis consequat ac. Donec magna tellus, dignissim in dolor nec, lacinia semper orci. Nullam lacus diam, dictum id erat a, consectetur varius lectus. Pellentesque id tincidunt lectus. Nulla ultricies lacus sapien, at consectetur velit maximus id. Nunc dictum vitae diam id molestie. Quisque bibendum fermentum molestie. Duis sollicitudin ullamcorper vulputate. Duis eu arcu elit.</p>
+    <ion-content class="issue-details" has-header="false" delegate-handle="commentsScroll">
+        <img class="issue-img" src="{{issue.imageUrl}}" alt="">
+        <div class="row">
+            <div class="col tags" ng-controller="TagsCtrl">
+                <span ng-repeat="tag in issue.tags" ng-click="removeTag(tag)">{{tag}}<i class="icon ion-close"></i></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Création</h1>
+                <p>{{issue.createdOn | date:'dd MMM yyyy'}}</p>
+            </div>
+            <div class="col">
+                <h1>Dernière modification</h1>
+                <p>{{issue.updatedOn | date:'dd MMM yyyy'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Description</h1>
+                <p>{{issue.description}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Status</h1>
+                <div class="row state {{issue.state}}">
+                    <div class="col">Assigné</div>
+                    <div class="col">Reconnu</div>
+                    <div class="col">Débuté</div>
+                    <div class="col">Rejeté</div>
+                    <div class="col">Résolu</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Commentaires</h1>
+            </div>
+        </div>
+        <div class="card" ng-repeat="comment in issue.comments">
+            <div>{{comment.text}}</div>
+            <div>{{comment.author.name}}</div>
+        </div>
     </ion-content>
 </ion-view>

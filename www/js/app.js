@@ -12,7 +12,9 @@ var app = angular.module('cityzen',
             'menu.ctrls',
             'cityzen.directives',
             'cityzen.modals',
-            'leaflet-directive'
+            'leaflet-directive',
+            'cityzen.settings',
+            'cityzen.issues'
         ]);
 
 app.run(function ($ionicPlatform) {
@@ -45,6 +47,7 @@ app.run(function (AuthService, $rootScope, $state) {
         }
     });
 });
+
 app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
             .state('app', {
@@ -71,7 +74,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             })
             .state('app.details', {
-                url: '/details',
+                url: '/details?:issueId',
                 views: {
                     'menuContent': {
                         controller: 'DetailsCtrl',
@@ -94,7 +97,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'templates/login.html'
             });
     $urlRouterProvider.otherwise(function ($injector) {
-        var next_state = 'app.map';
+        var next_state = $injector.get('SettingsService').getHomePage();
         $injector.get('$state').go(next_state);
     });
 });

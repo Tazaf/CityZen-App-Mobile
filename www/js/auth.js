@@ -1,4 +1,4 @@
-var app = angular.module('cityzen.auth', ['angular-storage']);
+var app = angular.module('cityzen.auth', ['angular-storage', 'cityzen.settings']);
 
 app.service('AuthService', function (store) {
 
@@ -16,7 +16,7 @@ app.service('AuthService', function (store) {
     return service;
 });
 
-app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state) {
+app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, SettingsService) {
 
     // The $ionicView.beforeEnter event happens every time the screen is displayed.
     $scope.$on('$ionicView.beforeEnter', function () {
@@ -58,8 +58,8 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
                 historyRoot: true
             });
 
-            // Go to the issue creation tab.
-            var next_state = 'app.map';
+            // Go to the defined first screen.
+            var next_state = SettingsService.getHomePage();
             $state.go(next_state);
 
         }).error(function () {

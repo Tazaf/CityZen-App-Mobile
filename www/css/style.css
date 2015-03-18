@@ -75,10 +75,6 @@
     background: white;
 }
 
-/*.button-medium::before {
-    font-size: 25px !important;
-}*/
-
 /*.loading-container {
     -webkit-align-items: flex-start;
     -moz-align-items: flex-start;
@@ -175,4 +171,86 @@
     position: absolute;
     top: 5px;
     left: 2px;
+}
+
+.issue-state {
+    text-transform: capitalize;
+}
+
+p.issue-nb-com:last-of-type {
+    position: absolute;
+    bottom: 16px;
+    color: #886aea;
+}
+
+.list-error {
+    text-align: center;
+    color: #AAA;
+    margin-top: 100px;
+}
+
+.list-error i {
+    color: #EEE;
+    font-size: 128px;
+}
+
+.issue-img {
+    height: 300px;
+    display: block;
+    margin: auto;
+}
+
+.issue-details .col h1 {
+    border-bottom: 1px solid #886aea;
+    font-size: 12px;
+    color: #886aea;
+    padding: 5px 0;
+}
+
+.issue-details .state {
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.issue-details .state div {
+    font-size: 12px;
+    text-align: center;
+    padding: 3px 0;
+    color: white;
+    opacity: 0.15;
+    background-color: #886aea;
+}
+
+.issue-details .state .selected {
+    opacity: 1;
+}
+
+.tags span {
+    display: inline-block;
+    font-size: 12px;    
+    background-color: #886aea;
+    padding: 7px 25px 7px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    color: white;
+    position: relative;
+}
+
+.tags span>i {
+    opacity: 0.5;
+    position: absolute;
+    right: 8px;
+}
+
+.popup .popup-body {
+    overflow: hidden !important;
+}
+
+.popup-body input {
+    padding: 10px;
+}
+
+.popup-body .comment {
+    height: 100px;
+    padding: 10px;
 }

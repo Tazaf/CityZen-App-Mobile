@@ -12,7 +12,7 @@
                             Écran accueil
                         </div>
                         <select ng-model="values.homePage">
-                            <option value="app.carte">Carte</option>
+                            <option value="app.map">Carte</option>
                             <option value="app.list">Liste</option>
                         </select>
                     </label>
@@ -23,7 +23,7 @@
                         <span class="input-label">Centre carte</span>
                     </label>
                     <label class="item item-input item-value">
-                        <input type="text" ng-model="values.mapCenter" placeholder="Vide">
+                        <input type="text" ng-model="values.mapCenter.name" placeholder="Vide">
                     </label>
                     <div class="setting-info"><i class="icon ion-information-circled"></i>Définit le centre de la carte lors du premier affichage de l'écran Carte.</div>
                 </div>
