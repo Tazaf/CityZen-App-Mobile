@@ -16,7 +16,8 @@ var app = angular.module('cityzen',
             'cityzen.comments',
             'cityzen.maps',
             'cityzen.tags',
-            'cityzen.issues'
+            'cityzen.issues',
+            'geolocation'
         ]);
 
 app.run(function ($ionicPlatform) {
@@ -55,6 +56,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             .state('app', {
                 url: '/app',
                 abstract: true,
+                controller: 'MenuCtrl',
                 templateUrl: 'templates/menu.html'
             })
             .state('app.map', {

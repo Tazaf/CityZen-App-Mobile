@@ -1,19 +1,29 @@
 var app = angular.module('cityzen.settings', ['angular-storage']);
-
 app.service('SettingsService', function (store) {
     return {
+        defaultSettings: {
+            mapCenter: {
+                lat: 46.778571,
+                lng: 6.640916,
+                name: "Yverdon"
+            },
+            homePage: "app.map",
+            homeView: "all",
+            closeRange: 7,
+            stateFilter: [
+                'created',
+                'assigned',
+                'acknowledged',
+                'in_progress',
+                'rejected',
+                'solved'
+            ]
+        },
         getSettings: function () {
             var settings = store.get('settings');
             if (!settings) {
-                settings = {
-                    mapCenter: {
-                        lat: 46.778571,
-                        lng: 6.640916,
-                        name: "Yverdon"
-                    },
-                    homePage: "app.map",
-                    closeRange: 7
-                };
+                settings = this.defaultSettings;
+                store.set('settings', settings);
             }
             return settings;
         },
@@ -23,13 +33,15 @@ app.service('SettingsService', function (store) {
         getMapCenter: function () {
             return this.getSettings().mapCenter;
         },
+        getCloseRange: function () {
+            return this.getSettings().closeRange;
+        },
         saveSettings: function (settings) {
             store.set('settings', settings);
             return null;
         }
     };
 });
-
 app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsService) {
     $ionicModal.fromTemplateUrl('templates/modal-settings.html', {
         scope: $scope,

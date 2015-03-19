@@ -9,16 +9,18 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <ion-item class="item item-thumbnail-left"  collection-repeat="issue in issues" ng-click="goToDetails(issue.id)">
-                <img src="{{issue.imageUrl}}" alt="" />
+            <ion-item class="item item-avatar"  collection-repeat="issue in issues" ng-click="goToDetails(issue.id)">
+                <i class="issue-{{issue.state}}"></i>
+                <!-- <img class="issue-{{issue.state}}" src="" alt="" /> -->
                 <h2>{{issue.description}}</h2>
-                <p class="issue-state">{{issue.state}}</p>
-                <p class="issue-nb-com">{{issue.comments.length}} Commentaire{{issue.comments.length > 1 ? 's' : ''}}</p>
+                <p class="issue-stats">{{issue.comments.length}} <i class="icon ion-chatbubbles"></i> {{issue.tags.length}}<i class="icon ion-pricetags"></i></p>
+                <span>{{issue.owner.name}}</span>
             </ion-item>
         </div>
         <div class="list-error" ng-if="error">
             <p>{{error.msg}}</p>
         </div>
     </ion-content>
+    <button class="button button-help ion-help-circled" ng-if="issues.length > 0" ng-click="showHelp()"></button>
     <button class="button button-new ion-plus-circled" ui-sref="app.new"></button>
 </ion-view>

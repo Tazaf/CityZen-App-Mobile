@@ -6,36 +6,36 @@
 
     <ion-side-menu side="left" id="main-menu" is-enabled="$root.enableLeft">
         <header class="bar bar-header bar-royal transparent">
-            <h1 class="title" ng-controller="MenuTitleCtrl">{{user.firstname}} {{user.lastname}}</h1>
+            <h1 class="title">{{user.firstname}} {{user.lastname}}</h1>
         </header>
         <ion-content class="has-header">
             <div class="list card transparent" ng-controller="SelectIssueCtrl">
                 <div class="item item-divider transparent">Afficher seulement</div>
-                <label class="item item-radio" menu-close>
-                    <input type="radio" name="group" checked>
+                <label class="item item-radio" menu-close ng-click="saveConfig()">
+                    <input type="radio" name="group" ng-model="config.homeView" value="all">
                     <div class="item-content">
-                        Mes Problèmes
+                        Tous les problèmes
                     </div>
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
-                <label class="item item-radio" menu-close>
-                    <input type="radio" name="group">
+                <label class="item item-radio" menu-close ng-click="saveConfig()">
+                    <input type="radio" name="group" ng-model="config.homeView" value="close">
                     <div class="item-content">
                         Problèmes proches
                     </div>
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
-                <label class="item item-radio" menu-close>
-                    <input type="radio" name="group">
+                <label class="item item-radio" menu-close ng-click="saveConfig()">
+                    <input type="radio" name="group" ng-model="config.homeView" value="mine">
                     <div class="item-content">
-                        Tous les problèmes
+                        Mes Problèmes
                     </div>
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
             </div>
             <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="error">
                 <div class="item item-divider transparent">Filtrer les types</div>
-                <li ng-repeat="issue_type in issue_types" class="item item-toggle item-issue-type">
+                <li ng-repeat="issue_type in issue_types" class="item item-toggle item-issue-type" ng-click="saveConfig()">
                     {{ issue_type.name}}
                     <label class="toggle toggle-stable">
                         <input type="checkbox" checked>

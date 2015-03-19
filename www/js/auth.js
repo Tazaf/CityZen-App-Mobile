@@ -33,7 +33,7 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
 
         // Show a loading message if the request takes too long.
         $ionicLoading.show({
-            template: 'Logging in...',
+            template: 'Connexion...',
             delay: 750
         });
 
@@ -71,9 +71,10 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
     };
 });
 
-app.controller('LogoutCtrl', function (AuthService, $scope, $state) {
+app.controller('LogoutCtrl', function (AuthService, $scope, $state, $window) {
     $scope.logout = function () {
         AuthService.unsetUser();
+        $window.location.reload(true);
         $state.go('login');
     };
 });
