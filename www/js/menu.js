@@ -1,4 +1,4 @@
-var app = angular.module('menu.ctrls', ['angular-storage']);
+var app = angular.module('cityzen.menus', ['angular-storage']);
 
 app.controller('IssueTypeCtrl', function ($scope, $http, apiUrl) {
     $scope.error = false;

@@ -6,14 +6,16 @@
 var app = angular.module('cityzen',
         [
             'ionic',
+            'leaflet-directive',
             'cityzen.auth',
             'cityzen.ctrls',
             'cityzen.constants',
-            'menu.ctrls',
+            'cityzen.menus',
             'cityzen.directives',
-            'cityzen.modals',
-            'leaflet-directive',
             'cityzen.settings',
+            'cityzen.comments',
+            'cityzen.maps',
+            'cityzen.tags',
             'cityzen.issues'
         ]);
 
@@ -74,11 +76,20 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             })
             .state('app.details', {
-                url: '/details?:issueId',
+                url: '/issue/:issueId',
                 views: {
                     'menuContent': {
                         controller: 'DetailsCtrl',
                         templateUrl: 'templates/details.html'
+                    }
+                }
+            })
+            .state('app.details.map', {
+                url: '/map',
+                views: {
+                    'menuContent@app': {
+                        controller: 'DetailsMapCtrl',
+                        templateUrl: 'templates/details-map.html'
                     }
                 }
             })
@@ -101,6 +112,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         $injector.get('$state').go(next_state);
     });
 });
+
 app.config(function ($ionicConfigProvider) {
     $ionicConfigProvider.views.transition('none');
 });

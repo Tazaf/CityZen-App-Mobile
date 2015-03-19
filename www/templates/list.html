@@ -9,15 +9,14 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <ion-item class="item item-thumbnail-left"  ng-repeat="issue in issues" ui-sref="app.details({issueId: '{{issue.id}}'})">
+            <ion-item class="item item-thumbnail-left"  collection-repeat="issue in issues" ng-click="goToDetails(issue.id)">
                 <img src="{{issue.imageUrl}}" alt="" />
                 <h2>{{issue.description}}</h2>
                 <p class="issue-state">{{issue.state}}</p>
-                <p class="issue-nb-com">{{issue.comments.length}} Comment{{issue.comments.length > 1 ? 's' : ''}}</p>
+                <p class="issue-nb-com">{{issue.comments.length}} Commentaire{{issue.comments.length > 1 ? 's' : ''}}</p>
             </ion-item>
         </div>
         <div class="list-error" ng-if="error">
-            <i class="ion-alert-circled"></i>
             <p>{{error.msg}}</p>
         </div>
     </ion-content>

@@ -1,3 +1,4 @@
+/* MISC STYLES */
 #login-title {
     text-align: center;
 }
@@ -5,6 +6,23 @@
 .transparent {
     background-color: rgba(255, 255, 255, 0.25) !important;
 }
+
+.left-title {
+    text-align: left !important;
+}
+
+.flat-background {
+    background: url(../img/bg.jpg) no-repeat left bottom;
+}
+.flat-background-white {
+    background: url(../img/bg-pattern.jpg) repeat left bottom;
+}
+.flat-background .item-stacked-label,
+.flat-background-white .item-stacked-label{
+    background: white;
+}
+
+/* NEW BUTTON STYLES */
 
 .button-new {
     position: fixed;
@@ -21,7 +39,6 @@
 .button-new:hover {
     color: #886aea;
 }
-
 .button-new:focus,
 .button-new:active {
     background: none;
@@ -30,63 +47,62 @@
     opacity: 0.5;
 }
 
-.left-title {
-    text-align: left !important;
-}
-
-.item-issue-type::first-letter {
-    text-transform: capitalize;
-}
-
-#main-menu {
-    background: url(../img/bg.jpg) no-repeat right top;
-}
-
-#main-menu .item-divider {
-    color: #FFF;
-}
-
-#main-menu .icon {
-    color: #AAA;
-}
+/* LIST ISSUE STYLES */
 
 .item-thumbnail-left a.item-content {
     padding-top: 16px !important;
 }
 
+.issue-state {
+    text-transform: capitalize;
+}
+.issue-nb-com:last-of-type {
+    position: absolute;
+    bottom: 16px;
+    color: #886aea;
+}
+
+.list-error {
+    text-align: center;
+    color: #AAA;
+    margin-top: 200px;
+}
+.list-error:before {
+    font-family: "Ionicons";
+    content: "\f34a";
+    font-size: 128px;
+    color: #EEE;
+}
+.list-error p {
+    margin-top: 20px;
+}
+
+/* MAIN MENU STYLES */
+
+
+.item-issue-type::first-letter {
+    text-transform: capitalize;
+}
+#main-menu {
+    background: url(../img/bg.jpg) no-repeat right top;
+}
+#main-menu .item-divider {
+    color: #FFF;
+}
+#main-menu .icon {
+    color: #AAA;
+}
+
+/* NEW ISSUE FORM STYLES */
+
 .bar-new {
     border-bottom: thin solid #11C1F3;
 }
-
 .bar-new h1 {
     color: #11C1F3;
 }
 
-.flat-background {
-    background: url(../img/bg.jpg) no-repeat left bottom;
-}
-
-.flat-background-white {
-    background: url(../img/bg-pattern.jpg) repeat left bottom;
-}
-
-.flat-background .item-stacked-label,
-.flat-background-white .item-stacked-label{
-    background: white;
-}
-
-/*.loading-container {
-    -webkit-align-items: flex-start;
-    -moz-align-items: flex-start;
-    align-items: flex-start;
-    padding-top: 54px;
-}
-
-.loading-container .loading{
-    border-radius: 30px;
-    padding: 10px;
-    min-width: 100px;
-}*/
+/* TOAST STYLES */
 
 .toast {
     position: fixed;
@@ -96,7 +112,6 @@
     border: thin solid black;
     z-index: 9999;
 }
-
 .toast span {
     margin: auto;
     height: 30px;
@@ -107,55 +122,49 @@
     line-height: 30px;
 }
 
-/* LEAFLET CSS HACKS */
+/* LEAFLET HACKS */
 
 .leaflet-container {
     width: 100%;
     height: 100%;
     position: static;
 }
-
 .leaflet-control-zoom {
     visibility: hidden;
 }
 
+/* SETTINGS MODAL STYLES */
+
 .settings .card .item {
     border-bottom: 0;
 }
-
 .settings .card .item.range {
     border-top: 0;
     padding-left: 16px;
     padding-right: 16px;
 }
-
 .settings .card .item.item-value {
     border-top: 0;
     padding-top: 0;
 }
-
 .settings .card .item.item-title,
 .settings .card .item.item-title span {
     padding-bottom: 0;
 }
-
 .settings .card .item input[type="text"] {
     text-align: right;
     padding-top: 0;
     padding-right: 16px;
 }
-
 .settings .card .item .close-range {
     position: absolute;
     right: 16px;
     top: 13px;
 }
-
 .settings .card .item .close-range-after {
     color: #AAA;
     font-size: 11px;
 }
-
 .setting-info {
     font-size: 13px;
     color: #AAA;
@@ -166,52 +175,30 @@
     border-top: 1px solid #DDD;
     position: relative;
 }
-
 .setting-info i {
     position: absolute;
     top: 5px;
     left: 2px;
 }
 
-.issue-state {
-    text-transform: capitalize;
-}
-
-p.issue-nb-com:last-of-type {
-    position: absolute;
-    bottom: 16px;
-    color: #886aea;
-}
-
-.list-error {
-    text-align: center;
-    color: #AAA;
-    margin-top: 100px;
-}
-
-.list-error i {
-    color: #EEE;
-    font-size: 128px;
-}
+/* ISSUE DETAILS STYLES */
 
 .issue-img {
     height: 300px;
     display: block;
     margin: auto;
+    background-color: #eee;
 }
-
 .issue-details .col h1 {
     border-bottom: 1px solid #886aea;
     font-size: 12px;
     color: #886aea;
     padding: 5px 0;
 }
-
 .issue-details .state {
     padding: 0;
     margin-bottom: 10px;
 }
-
 .issue-details .state div {
     font-size: 12px;
     text-align: center;
@@ -220,10 +207,11 @@ p.issue-nb-com:last-of-type {
     opacity: 0.15;
     background-color: #886aea;
 }
-
 .issue-details .state .selected {
     opacity: 1;
 }
+
+/* ISSUE TAGS STYLES */
 
 .tags span {
     display: inline-block;
@@ -234,23 +222,97 @@ p.issue-nb-com:last-of-type {
     margin-bottom: 5px;
     color: white;
     position: relative;
+    text-transform: capitalize;
 }
-
 .tags span>i {
     opacity: 0.5;
     position: absolute;
     right: 8px;
 }
 
+.tags .no-tag {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(136, 106, 234, 0.10);
+    color: #886aea;
+}
+
+.tags .no-tag:before {
+    font-family: "Ionicons";
+    content: "\f4d7";
+    margin-right: 7px;
+    font-size: 13px;
+}
+
+/* POPUP HACKS */
+
 .popup .popup-body {
     overflow: hidden !important;
 }
-
 .popup-body input {
     padding: 10px;
+    border: 1px solid #886aea;
+}
+.popup-body textarea {
+    height: 110px;
+    padding: 10px;
+    border: 1px solid #886aea;
 }
 
-.popup-body .comment {
-    height: 100px;
+/* ISSUE DETAILS NEW COMMENT FORM */
+
+.details-footer {
+    background-color: #fafafa;
+}
+.details-footer .item-input-inset {
+    width: 100%;
+}
+.details-footer label {
+    background-color: white;
+    border-radius: 0;
+    border-bottom: 1px solid #886aea;
+}
+.details-footer label input {
+    background-color: white;
+    width: 100%;
+}
+.details-footer button {
+    color: #886aea;
+}
+.details-footer button:hover {
+    color: #886aea;
+    opacity: 0.5;
+}
+
+/* ISSUE DETAILS STATUS STYLES */
+
+.assigned .col:first-of-type,
+.acknowledged .col:nth-of-type(2),
+.in_progress .col:nth-of-type(3),
+.rejected .col:nth-of-type(4),
+.solved .col:last-of-type {
+    opacity: 1;
+}
+
+/* ISSUE DETAILS COMMENTS STYLES */
+
+.col.comments {
+    padding: 0 10px;
+}
+.col.comments h1 {
+    margin-bottom: 0;
+}
+.col.comments .card:first-of-type {
+    margin-top: 10px;
+}
+.col.comments .card {
+    margin: 10px 0;
     padding: 10px;
+}
+.col.comments .card div:last-of-type {
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    padding-top: 2px;
+    font-size: 12px;
+    color: #AAA;
 }
