@@ -78,7 +78,9 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
                 });
         request.then(function (response) {
             console.log('success');
-            console.log(response);
+            console.log(response.data);
+            console.log(response.status);
+            console.log(response.statusText);
         }, function(error) {
             console.log('error');
             console.log(error.data);
