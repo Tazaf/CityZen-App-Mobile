@@ -22,6 +22,20 @@
     background: white;
 }
 
+.loading-container .loading {
+    background: none;
+    border-radius: 0;
+}
+
+.loading-container .loading i {
+    font-size: 35px;
+}
+
+.loading-container .loading h1 {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
 /* NEW BUTTON STYLES */
 
 .button-new,
@@ -43,6 +57,12 @@
 .button-help {
     margin: 0 54px 7px 0;
 }
+.button-help::before, .button-new::before {
+    background-color: white;
+    border-radius: 50px;
+    line-height: 30px;
+    height: 30px;
+}
 .button-new:hover {
     color: #886aea;
 }
@@ -57,8 +77,8 @@
 /* LIST ISSUE STYLES */
 
 .item.item-avatar {
-    padding-bottom: 12px;
-    padding-top: 12px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 .item-avatar > i:first-child {
     position: absolute;
@@ -72,19 +92,29 @@
     text-align: center;
     line-height: 40px;
     font-size: 35px;
-    color: #AAA;
+    color: #CCC;
 }
 .item-avatar span {
     position: absolute;
-    right: 16px;
-    bottom: 12px;
+    bottom: 9px;
     font-size: 12px;
-    color: #AAA;
+    padding-top: 14px;
+    color: #886aea;
+    padding-left: 15px;
 }
 .item-avatar span:after {
     font-family: "Ionicons";
     content: "\f213";
-    margin-left: 5px;
+    position: absolute;
+    left: 0;
+}
+.item-avatar span:before {
+    content: "rapporté par ";
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #CCC;
 }
 .issue-created:before {
     content: "\f29d";
@@ -93,7 +123,6 @@
     content: "\f211";
 }
 .issue-acknowledged:before {
-    // content: "\f279";
     content: "\f26b";
 }
 .issue-in_progress:before {
@@ -108,13 +137,10 @@
 .issue-state {
     text-transform: capitalize;
 }
-.issue-stats {
-    position: relative;
-    width: 100%;
-}
-.issue-stats:last-of-type {
+p.issue-stats {
     position: absolute;
-    bottom: 12px;
+    bottom: 10px;
+    right: 16px;
     color: #886aea;
 }
 .issue-stats .icon {
@@ -123,18 +149,18 @@
     opacity: 0.75;
 }
 
-.list-error {
+.issue-error {
     text-align: center;
     color: #AAA;
     margin-top: 200px;
 }
-.list-error:before {
+.issue-error:before {
     font-family: "Ionicons";
     content: "\f34a";
     font-size: 128px;
     color: #EEE;
 }
-.list-error p {
+.issue-error p {
     margin-top: 20px;
 }
 
@@ -194,6 +220,39 @@
     visibility: hidden;
 }
 
+/* SETTINGS CENTER MAP */
+
+#map-center-thumbnail {
+    width: initial;
+    height: 70px;
+    cursor: auto;
+    margin: 0 16px;
+    padding: 0;
+}
+#map-center-thumbnail .leaflet-clickable {
+    cursor: auto;
+}
+#map-center-thumbnail .leaflet-control-attribution {
+    display: none;
+}
+#map-center-thumbnail + .setting-info {
+    border: none;
+}
+#map-center-modify {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+#map-center-full {
+    
+}
+
+#map-center-select button {
+    margin-left: 5px;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 /* SETTINGS MODAL STYLES */
 
 .settings .card .item {
@@ -245,7 +304,7 @@
 /* ISSUE DETAILS STYLES */
 
 .issue-img {
-    height: 300px;
+    height: 250px;
     display: block;
     margin: auto;
     background-color: #eee;
@@ -255,6 +314,9 @@
     font-size: 12px;
     color: #886aea;
     padding: 5px 0;
+}
+.issue-details .col p {
+    margin: 0;
 }
 .issue-details .state {
     padding: 0;
@@ -270,6 +332,9 @@
 }
 .issue-details .state .selected {
     opacity: 1;
+}
+.issue-type {
+    text-transform: capitalize;
 }
 
 /* ISSUE TAGS STYLES */
@@ -386,4 +451,13 @@
     padding-top: 2px;
     font-size: 12px;
     color: #AAA;
+}
+.col.comments .card div:last-of-type span {
+    position: relative;
+    top: 3px;
+}
+.col.comments .card div:last-of-type span::before {
+    font-family: "Ionicons";
+    content: "\f213";
+    margin-right: 5px;
 }

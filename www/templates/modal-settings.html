@@ -1,45 +1,67 @@
 <ion-modal-view class="flat-background-white">
     <header class="bar bar-header bar-royal">
         <h1 class="title left-title">Paramètres</h1>
-        <button class="button button-clear" ng-click="closeSettings()">Fermer</button>
+        <button class="button button-clear" ng-click="closeModal('settings')">Fermer</button>
     </header>
     <ion-content class="has-header settings">
-        <form ng-submit="doLogin()">
-            <div class="list">
-                <div class="card">
-                    <label class="item item-input item-select">
-                        <div class="input-label">
-                            Écran accueil
-                        </div>
-                        <select ng-model="values.homePage">
-                            <option value="app.map">Carte</option>
-                            <option value="app.list">Liste</option>
-                        </select>
-                    </label>
-                    <div class="setting-info"><i class="icon ion-information-circled"></i>Indique quel écran sera affiché en premier au lancement de l'apllication.</div>
-                </div>
-                <div class="card">
-                    <label class="item item-input item-title">
-                        <span class="input-label">Centre carte</span>
-                    </label>
-                    <label class="item item-input item-value">
-                        <input type="text" ng-model="values.mapCenter.name" placeholder="Vide">
-                    </label>
-                    <div class="setting-info"><i class="icon ion-information-circled"></i>Définit le centre de la carte lors du premier affichage de l'écran Carte.</div>
-                </div>
-                <div class="card">
-                    <label class="item item-input item-title">
-                        <span class="input-label">Distance problèmes</span>
-                        <span class="close-range">{{ values.closeRange }} <span class="close-range-after">Km{{values.closeRange > 1 ? 's' : ''}}</span></span>
-                    </label>
-                    <div class="item range range-positive">
-                        <i ng-click="setCloseRange(1)">1</i>
-                        <input type="range" name="volume" min="1" max="15" ng-model="values.closeRange">
-                        <i ng-click="setCloseRange(15)">15</i>
+        <div class="list">
+            <div class="card">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Écran accueil
                     </div>
-                    <div class="setting-info"><i class="icon ion-information-circled"></i>Les problèmes situés à plus de {{values.closeRange}} Km{{values.closeRange > 1 ? 's' : ''}} de votre position ne seront pas affichés sur la vue Problèmes proches.</div>
-                </div>
+                    <select ng-model="settings.homePage">
+                        <option value="app.map">Carte</option>
+                        <option value="app.list">Liste</option>
+                    </select>
+                </label>
+                <div class="setting-info"><i class="icon ion-information-circled"></i>Indique quel écran sera affiché en premier au lancement de l'apllication.</div>
             </div>
-        </form>
+            <div class="card">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Vue par défaut
+                    </div>
+                    <select ng-model="settings.homeView">
+                        <option value="all">Tous les problèmes</option>
+                        <option value="close">Problèmes proches</option>
+                        <option value="mine">Mes Problèmes</option>
+                    </select>
+                </label>
+                <div class="setting-info"><i class="icon ion-information-circled"></i>Indique quelle vue sera sélectionnée au lancement de l'apllication.</div>
+            </div>
+            <div class="card">
+                <label class="item item-input">
+                    <span class="input-label">Ma Position</span>
+                    <button id="map-center-modify" class="button button-small button-light" ng-click="openModal('mapCenter')">Modifier</button>
+                </label>
+                <leaflet id="map-center-thumbnail" class="item" defaults="posMapDefaults" markers="posMarker" data-tap-disabled="true"></leaflet>
+                <div class="setting-info"><i class="icon ion-information-circled"></i>Définit le point sur la carte qui sera utilisé comme votre position actuelle s'il n'est pas possible de vous géolocaliser.</div>
+            </div>
+            <div class="card">
+                <label class="item item-input item-title">
+                    <span class="input-label">Distance problèmes</span>
+                    <span class="close-range">{{settings.closeRange}} <span class="close-range-after">mètres</span></span>
+                </label>
+                <div class="item range range-positive">
+                    <i ng-click="setCloseRange(100)">100</i>
+                    <input type="range" name="volume" min="100" max="1500" step="50" ng-model="settings.closeRange">
+                    <i ng-click="setCloseRange(1500)">1500</i>
+                </div>
+                <div class="setting-info"><i class="icon ion-information-circled"></i>Les problèmes situés à plus de {{settings.closeRange}} mètres de votre position (à vol d'oiseau) ne seront pas affichés sur la vue Problèmes proches.</div>
+            </div>
+            <div class="card">
+                <label class="item item-input item-title">
+                    <span class="input-label">Zoom par défaut</span>
+                    <span class="close-range">{{settings.zoom}}<span class="close-range-after">x</span></span>
+                </label>
+                <div class="item range range-positive">
+                    <i ng-click="setZoom(1)">1</i>
+                    <input type="range" name="volume" min="1" max="19" ng-model="settings.zoom">
+                    <i ng-click="setZoom(19)">19</i>
+                </div>
+                <div class="setting-info"><i class="icon ion-information-circled"></i>Règle le niveau de zoom de la carte lorsqu'il n'y a qu'un seul marqueur à afficher.</div>
+            </div>
+        </div>
     </ion-content>
 </ion-modal-view>

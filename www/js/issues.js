@@ -1,5 +1,5 @@
-var app = angular.module('cityzen.issues', ['angular-storage', 'cityzen.tags', 'cityzen.comments']);
-app.factory('IssuesService', function ($http, apiUrl, TagsService, CommentsService, geolocation, SettingsService) {
+var app = angular.module('cityzen.issues', ['angular-storage', 'cityzen.tags', 'cityzen.comments', 'cityzen.maps']);
+app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsService, geolocation, SettingsService, MapService) {
     return {
         getAllIssues: function (page, nb_item) {
             return $http({
@@ -22,7 +22,10 @@ app.factory('IssuesService', function ($http, apiUrl, TagsService, CommentsServi
                 }
             });
         },
-        getCloseIssues: function (page, nb_item, range, pos) {
+        /*
+         * 
+         */
+        getCloseIssues: function (page, nb_item, pos, range) {
             console.log('Getting the closest issues');
             return $http({
                 method: 'POST',
@@ -30,7 +33,7 @@ app.factory('IssuesService', function ($http, apiUrl, TagsService, CommentsServi
                     loc: {
                         $geoWithin: {
                             $centerSphere: [
-                                pos,
+                                [pos.lng, pos.lat],
                                 range
                             ]
                         }
@@ -56,46 +59,53 @@ app.factory('IssuesService', function ($http, apiUrl, TagsService, CommentsServi
         },
         getViewData: function (view, pos) {
             if (view === 'all') {
-                console.log(view);
-                console.log('All Issues');
                 return this.getAllIssues(0, '*');
             }
             if (view === 'close') {
-                console.log(view);
-                console.log('Close Issues');
-                var getData = this.getCloseIssues;
+                var _this = this;
                 if (pos) {
-                    var range = SettingsService.getCloseRange();
-                    return getData(0, '*', pos, range);
+                    var range = SettingsService.getCloseRange() / 1000 / 6378.1;
+                    console.log(range);
+                    return _this.getCloseIssues(0, '*', pos, range);
                 } else {
-                    return geolocation.getLocation().then(function (data) {
+                    return MapService.locate().then(function (pos) {
                         var range = SettingsService.getCloseRange();
-                        var pos = [data.coords.latitude, data.coords.longitude];
-                        return getData(0, '*', pos, range);
-                    }, function (error) {
-                        console.log('Error : ' + error);
-                        return error;
+                        console.log(range);
+                        return _this.getCloseIssues(0, '*', pos, range);
                     });
                 }
             }
             if (view === 'mine') {
-                console.log(view);
-                console.log('My Issues');
                 return this.getMyIssues(0, '*');
             }
+        },
+        getIssueData: function (id) {
+            var dfd = $q.defer();
+            var _this = this;
+            _this
+                    .getOneIssue(id)
+                    .success(function (data) {
+                        dfd.resolve(_this.orderData(data));
+                    })
+                    .error(function (error) {
+                        console.log('Load an Issue Error : ' + error);
+                        dfd.resolve(null);
+                    });
+            return dfd.promise;
         }
     };
 });
 
-app.controller('ListCtrl', function ($scope, IssuesService, $state, $ionicPopup, $ionicLoading) {
+app.controller('ListCtrl', function ($rootScope, $scope, IssuesService, $state, $ionicPopup, Loading, MapService) {
     console.log('ListCtrl loaded');
-    // Définition Variables, Fonctions et Events
-    $scope.$root.enableLeft = true;
+    $rootScope.enableLeft = true;
+    
     $scope.goToDetails = function (issueId) {
         $state.go('app.details', {issueId: issueId});
     };
+    
     $scope.showHelp = function () {
-        var alertPopup = $ionicPopup.alert({
+        $ionicPopup.alert({
             title: 'Légende des statuts',
             buttons: [{
                     text: 'OK',
@@ -104,49 +114,56 @@ app.controller('ListCtrl', function ($scope, IssuesService, $state, $ionicPopup,
             templateUrl: 'templates/popup-info-states.html'
         });
     };
-    $scope.loadData = function () {
+    
+    $scope.loadData = function (pos) {
+        Loading.show($scope, "Chargement...");
         $scope.error = null;
+        console.log("Active View : " + $scope.activeView);
         IssuesService
-                .getViewData($scope.config.homeView)
+                .getViewData($scope.config.activeView, pos)
                 .then(function (response) {
+                    console.log("Response : ");
                     console.log(response.data);
                     if (response.data.length === 0) {
                         $scope.error = {msg: "Désolé, aucun résultat..."};
                     } else {
                         $scope.issues = response.data;
+
                     }
                 }, function (error) {
-                    $scope.error = {
-                        msg: "Impossible de charger des problèmes."
-                    };
+                    $scope.error = {msg: "Impossible de charger les problèmes."};
+                    console.log(error);
+                })
+                .then(function () {
+                    Loading.hide();
                 });
-        $ionicLoading.hide();
     };
-    $scope.$on('$ionicView.enter', function () {
-        $ionicLoading.show({
-            template: 'Chargement...'
-        });
-        $scope.loadData();
-    });
+    
+    $scope.handleError = function(error) {
+        console.log('Error !');
+        console.log(error);
+    };
 
-    $scope.$on('configChanged', function () {
+    MapService.locate().then($scope.loadData, $scope.handleError());
+
+    // Update the data when a config changes
+    $scope.$on('viewChange', function () {
         $scope.issues = [];
         $scope.loadData();
     });
 });
-app.controller('DetailsCtrl', function ($scope, $state, $stateParams, IssuesService, store, $ionicLoading) {
-    // Disable the swipe menu for this screen
-    $scope.$root.enableLeft = false;
+app.controller('DetailsCtrl', function ($rootScope, $scope, $state, $stateParams, issue, store, Loading) {
+    
+    $rootScope.enableLeft = false;
     // Re-enable the swipe menu for the adequates screens
     $scope.$on('$stateChangeStart', function () {
-        $scope.$root.enableLeft = true;
+        $rootScope.enableLeft = true;
     });
-    $scope.$on('$ionicView.enter', function () {
-        $ionicLoading.show({
-            template: 'Chargement...'
-        });
-        $scope.loadData();
+
+    $scope.$on('newComment', function (e, data) {
+        $scope.issue = data;
     });
+
     $scope.showIssueOnMap = function () {
         store.set('issue', {
             lat: $scope.issue.lat,
@@ -155,17 +172,13 @@ app.controller('DetailsCtrl', function ($scope, $state, $stateParams, IssuesServ
         });
         $state.go('app.details.map');
     };
-    $scope.loadData = function () {
-        IssuesService
-                .getOneIssue($stateParams.issueId)
-                .success(function (data) {
-                    $scope.issue = IssuesService.orderData(data);
-                })
-                .error(function (error) {
-                    $scope.error = {
-                        msg: "Impossible de charger les données..."
-                    };
-                });
-        $ionicLoading.hide();
-    };
+
+    Loading.show($scope, "Chargement...");
+    if (issue) {
+        $scope.issue = issue;
+        Loading.hide();
+    } else {
+        $scope.error = {msg: "Impossible de charger le problème."};
+        Loading.hide();
+    }
 });

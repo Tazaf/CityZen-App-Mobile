@@ -42,7 +42,7 @@ app.run(function (AuthService, $rootScope, $state) {
     $rootScope.$on('$stateChangeStart', function (event, toState) {
 
 // If the user is not logged in and is trying to access another state than "login"...
-        if (!AuthService.currentUserId && toState.name != 'login') {
+        if (!AuthService.currentUserId && toState.name !== 'login') {
 
 // ... then cancel the transition and go to the "login" state instead.
             event.preventDefault();
@@ -56,6 +56,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             .state('app', {
                 url: '/app',
                 abstract: true,
+                resolve: {
+                    android: function () {
+                        return ionic.Platform.isAndroid();
+                    },
+                    user: function (store) {
+                        return store.get('user');
+                    },
+                    settings: function (SettingsService) {
+                        return SettingsService.getSettings();
+                    }
+                },
                 controller: 'MenuCtrl',
                 templateUrl: 'templates/menu.html'
             })
@@ -79,6 +90,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             })
             .state('app.details', {
                 url: '/issue/:issueId',
+                resolve: {
+                    issue: function ($stateParams, IssuesService) {
+                        return IssuesService.getIssueData($stateParams.issueId);
+                    }
+                },
                 views: {
                     'menuContent': {
                         controller: 'DetailsCtrl',
@@ -117,4 +133,20 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 app.config(function ($ionicConfigProvider) {
     $ionicConfigProvider.views.transition('none');
+    $ionicConfigProvider.views.forwardCache(true);
+});
+
+app.factory('Loading', function ($ionicLoading) {
+    return {
+        show: function (scope, text) {
+            scope.loading = {text: text};
+            $ionicLoading.show({
+                scope: scope,
+                templateUrl: 'templates/loading.html'
+            });
+        },
+        hide: function () {
+            $ionicLoading.hide();
+        }
+    };
 });

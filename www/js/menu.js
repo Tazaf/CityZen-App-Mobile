@@ -12,21 +12,22 @@ app.controller('IssueTypeCtrl', function ($scope, $http, apiUrl) {
     });
 });
 
-app.controller('MenuCtrl', function ($rootScope, $scope, SettingsService, store) {
-    $scope.user = store.get('user');
-    $scope.config = SettingsService.getSettings();
-    console.log('Config loaded');
-    $scope.saveConfig = function() {
-        console.log('Saving Config');
-        SettingsService.saveSettings($scope.config);
-        console.log('Config Saved');
-        $rootScope.$broadcast('configChanged', 'arg1', 'arg2');
+app.controller('MenuCtrl', function ($scope, android, user, settings) {
+    console.log('Initialising config');
+    $scope.isAndroid = android;
+    $scope.user = user;
+    $scope.settings = settings;
+    $scope.config = {
+        activeView: $scope.settings.homeView
     };
+    console.log('Config loaded');
 });
 
-app.controller('SelectIssueCtrl', function ($scope) {
-    console.log('Configuration ' + $scope.config);
-});
-
-app.controller('ConfigurationCtrl', function ($scope) {
+app.controller('SelectIssueCtrl', function ($rootScope, $scope, SettingsService) {
+    console.log('SelectIssueCtrl loaded');
+    $scope.changeView = function() {
+        console.log("active view : " + $scope.config.activeView);
+        console.log("home view : " + $scope.settings.homeView);
+        $rootScope.$broadcast('viewChange');
+    };
 });

@@ -28,10 +28,10 @@ app.controller('CommentsCtrl', function ($scope, CommentsService, IssuesService)
                 .addComment($scope.comment, $scope.issue.id)
                 .success(function (data) {
                     $scope.comment = null;
-                    $scope.$parent.issue = IssuesService.orderData(data);
+                    $scope.$emit('newComment', IssuesService.orderData(data));
                 })
                 .error(function () {
-                    // TODO : ajouter une alert d'erreur
+                    // TODO : ajouter une alerte d'erreur
                     console.log('error');
                 });
     };

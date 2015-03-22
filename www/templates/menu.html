@@ -11,22 +11,22 @@
         <ion-content class="has-header">
             <div class="list card transparent" ng-controller="SelectIssueCtrl">
                 <div class="item item-divider transparent">Afficher seulement</div>
-                <label class="item item-radio" menu-close ng-click="saveConfig()">
-                    <input type="radio" name="group" ng-model="config.homeView" value="all">
+                <label class="item item-radio" menu-close ng-click="changeView()">
+                    <input type="radio" name="group" ng-model="config.activeView" value="all">
                     <div class="item-content">
                         Tous les problèmes
                     </div>
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
-                <label class="item item-radio" menu-close ng-click="saveConfig()">
-                    <input type="radio" name="group" ng-model="config.homeView" value="close">
+                <label class="item item-radio" menu-close ng-click="changeView()">
+                    <input type="radio" name="group" ng-model="config.activeView" value="close">
                     <div class="item-content">
                         Problèmes proches
                     </div>
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
-                <label class="item item-radio" menu-close ng-click="saveConfig()">
-                    <input type="radio" name="group" ng-model="config.homeView" value="mine">
+                <label class="item item-radio" menu-close ng-click="changeView()">
+                    <input type="radio" name="group" ng-model="config.activeView" value="mine">
                     <div class="item-content">
                         Mes Problèmes
                     </div>
@@ -36,7 +36,7 @@
             <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="error">
                 <div class="item item-divider transparent">Filtrer les types</div>
                 <li ng-repeat="issue_type in issue_types" class="item item-toggle item-issue-type" ng-click="saveConfig()">
-                    {{ issue_type.name}}
+                    {{issue_type.name}}
                     <label class="toggle toggle-stable">
                         <input type="checkbox" checked>
                         <div class="track">
@@ -45,13 +45,9 @@
                     </label>
                 </li>
             </ul>
-            <div class="list card transparent" ng-controller="ConfigurationCtrl">
+            <div class="list card transparent">
                 <div class="item item-divider transparent">Configuration</div>
-                <!-- <a class="item item-icon-left" menu-close nav-clear ng-controller="ProfileModalCtrl" ng-click="openProfile()">
-                    <i class="icon ion-person"></i>
-                    Profil
-                </a> -->
-                <a class="item item-icon-left" menu-close nav-clear ng-controller="SettingsModalCtrl" ng-click="openSettings()">
+                <a class="item item-icon-left" menu-close nav-clear ng-controller="SettingsModalCtrl" ng-click="openModal('settings')">
                     <i class="icon ion-settings"></i>
                     Paramètres
                 </a>
