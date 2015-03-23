@@ -150,11 +150,9 @@ app.config(function ($ionicConfigProvider) {
 
 app.factory('Loading', function ($ionicLoading) {
     return {
-        show: function (scope, text) {
-            scope.loading = {text: text};
+        show: function (text) {
             $ionicLoading.show({
-                scope: scope,
-                templateUrl: 'templates/loading.html'
+                template: "<i class=\"fa fa-refresh fa-spin\"></i><h1>" + text + "</h1>"
             });
         },
         hide: function () {

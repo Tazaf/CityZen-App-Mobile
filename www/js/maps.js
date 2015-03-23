@@ -7,22 +7,10 @@ app.factory('MapService', function (SettingsService, geolocation, $q, $cordovaGe
          * If not, load the map center defined in the settings.
          */
         locate: function () {
+            Loading.show("Localisation");
             console.log('locating with cordova');
             var dfd = $q.defer();
             var posOptions = {timeout: 10000, enableHighAccuracy: false};
-//            geolocation.getLocation()
-//                    .then(function (response) {
-//                        var data = {
-//                            lat: response.coords.latitude,
-//                            lng: response.coords.longitude
-//                        };
-//                        dfd.resolve(data);
-//                        console.log('located !');
-//                    }, function (error) {
-//                        var data = SettingsService.getMapCenter();
-//                        dfd.resolve(data);
-//                        console.log('Default position...');
-//                    });
             $cordovaGeolocation
                     .getCurrentPosition(posOptions)
                     .then(function (pos) {
@@ -45,7 +33,7 @@ app.factory('MapService', function (SettingsService, geolocation, $q, $cordovaGe
 
 
 // A controller that displays information for the active view's issues
-app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService, $ionicPlatform) {
+app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService, $ionicPlatform, $ionicHistory) {
     console.log('MapCtrl loaded');
 
     // Default user position marker
@@ -60,15 +48,7 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // Disable the swipe menu for this view
     $rootScope.enableLeft = true;
-//    var pos_icon = {
-//        iconUrl: 'img/pos-marker.png',
-//        shadowUrl: 'img/pos-marker-shadow.png',
-//        iconSize: [25, 41], // size of the icon
-//        iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
-//        shadowSize: [41, 41], // size of the shadow
-//        shadowAnchor: [12, 41], // the same for the shadow
-//        popupAnchor: [0, -36] // point from which the popup should open relative to the iconAnchor
-//    };
+
     // Hide the leaflet directive from the template while loading the data
     $scope.showMap = false;
 //    $scope.pos_icon = pos_icon;
@@ -86,8 +66,7 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // A function that loads the map in the template
     $scope.loadMap = function (pos) {
-        Loading.hide();
-        Loading.show($scope, "Chargement de la carte");
+        Loading.show("Chargement de la carte");
         var dfd = $q.defer();
         // Load the map
         var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
@@ -116,10 +95,8 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // A function that loads the issues' data according to the active view
     $scope.loadData = function (pos) {
-        Loading.hide();
-        Loading.show($scope, "Chargement des données");
+        Loading.show("Chargement des données");
         var dfd = $q.defer();
-        Loading.show($scope, "Chargement...");
         $scope.error = null;
         IssuesService
                 .getViewData($scope.config.activeView, pos)
@@ -130,6 +107,7 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
                         console.log('Aucun résultats');
                     } else {
                         $scope.issues = response.data;
+                        $scope.init_issues = response.data;
                         dfd.resolve($scope.issues, pos);
                         console.log('Des résultats');
                         console.log(response.data);
@@ -145,8 +123,6 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
     };
 
     $scope.resetMarkers = function (data) {
-        Loading.hide();
-        Loading.show($scope, "Mis à zéro des marqueurs");
         var dfd = $q.defer();
         // Reset the mapMarkers array if there is more than just the position marker
         if ($scope.mapMarkers.length > 1) {
@@ -165,8 +141,7 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // A function that inserts the issues' data on the map with markers
     $scope.insertData = function (data) {
-        Loading.hide();
-        Loading.show($scope, "Insertion des données");
+        Loading.show("Création des marqueurs");
         // If there is any loaded data, create a marker for each one of them and add it to the mapMarkers array
         if (data.length > 0) {
             console.log('Des données ! On les insèrent dans les marqueurs');
@@ -200,7 +175,6 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
     $ionicPlatform.ready(function () {
         console.log('platform ready');
         // When first loading of this controller
-        Loading.show($scope, "Localisation");
         MapService.locate()
                 .then($scope.loadMap)
                 .then($scope.loadData)
@@ -212,10 +186,32 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
         console.log('Oh ! The view has changed to ' + $scope.config.activeView);
         MapService.locate().then($scope.loadData).then($scope.resetMarkers).then($scope.insertData, $scope.handleError);
     });
-
-    // When catching the typeChange event, filter the issues' data according to the new filters
-    $scope.$on('filterChange', function () {
+    
+    // Update the data when a config changes
+    $scope.$on('issueTypeChange', function () {
+        $scope.error = null;
+        $scope.issues = IssuesService.filterIssueState($scope.init_issues, $scope.settings.stateFilters);
+        $scope.issues = IssuesService.filterIssueType($scope.issues, $scope.config.issueTypes);
+        if ($scope.issues.length === 0) {
+            $scope.error = {msg: "Désolé, aucun résultat..."};
+        }
+        $scope.resetMarkers($scope.issues).then($scope.insertData, $scope.handleError);
     });
+    // Update the data when a config changes
+    $scope.$on('issueStateChange', function () {
+        $scope.error = null;
+        $scope.issues = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
+        $scope.issues = IssuesService.filterIssueState($scope.issues, $scope.settings.stateFilters);
+        if ($scope.issues.length === 0) {
+            $scope.error = {msg: "Désolé, aucun résultat..."};
+        }
+        $scope.resetMarkers($scope.issues).then($scope.insertData, $scope.handleError);
+    });
+
+    $scope.$on('$ionicView.enter', function (event, data) {
+        console.log($ionicHistory.viewHistory());
+    });
+
 });
 
 // Controller that show a particular issue on its own map
@@ -250,10 +246,5 @@ app.controller('DetailsMapCtrl', function ($rootScope, store, $scope, mapboxMapI
     ];
     leafletData.getMap('map-details').then(function (map) {
         map.attributionControl.setPosition('bottomleft');
-    });
-
-    // When leaving the view, delete the issue's data from the storage
-    $scope.$on('$ionicView.beforeLeave', function () {
-        store.remove('issue');
     });
 });

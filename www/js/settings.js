@@ -11,13 +11,13 @@ app.service('SettingsService', function (store) {
             homePage: "app.map",
             homeView: "all",
             closeRange: 850,
-            stateFilter: [
-                'created',
-                'assigned',
-                'acknowledged',
-                'in_progress',
-                'rejected',
-                'solved'
+            stateFilters: [
+                {text: 'Créé', name: 'created', checked: true},
+                {text: 'Assigné', name: 'assigned', checked: true},
+                {text: 'Reconnu', name: 'acknowledged', checked: true},
+                {text: 'En cours', name: 'in_progress', checked: true},
+                {text: 'Rejeté', name: 'rejected', checked: true},
+                {text: 'Résolu', name: 'solved', checked: true}
             ]
         },
         /*

@@ -9,7 +9,7 @@
             <h1 class="title">{{user.firstname}} {{user.lastname}}</h1>
         </header>
         <ion-content class="has-header">
-            <div class="list card transparent" ng-controller="SelectIssueCtrl">
+            <div class="list card transparent" ng-controller="ViewIssuesCtrl">
                 <div class="item item-divider transparent">Afficher seulement</div>
                 <label class="item item-radio" menu-close ng-click="changeView()">
                     <input type="radio" name="group" ng-model="config.activeView" value="all">
@@ -33,17 +33,25 @@
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
             </div>
-            <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="error">
+            <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="error.issueTypes">
                 <div class="item item-divider transparent">Filtrer les types</div>
-                <li ng-repeat="issue_type in issue_types" class="item item-toggle item-issue-type" ng-click="saveConfig()">
-                    {{issue_type.name}}
-                    <label class="toggle toggle-stable">
-                        <input type="checkbox" checked>
-                        <div class="track">
-                            <div class="handle"></div>
-                        </div>
-                    </label>
-                </li>
+                <ion-toggle ng-repeat="issueType in config.issueTypes"
+                            ng-model="issueType.checked" 
+                            ng-checked="issueType.checked"
+                            ng-click="issueTypeFilter()"
+                            class="item-issue-type">
+                    {{issueType.name}}
+                </ion-toggle>
+            </ul>
+            <ul class="list card transparent" ng-controller="IssueStateCtrl" ng-hide="error.stateFilters">
+                <div class="item item-divider transparent">Filtrer les statuts</div>
+                <ion-toggle ng-repeat="stateFilter in settings.stateFilters"
+                            ng-model="stateFilter.checked" 
+                            ng-checked="stateFilter.checked"
+                            ng-click="issueStateFilter()"
+                            class="item-issue-type">
+                    {{stateFilter.text}}
+                </ion-toggle>
             </ul>
             <div class="list card transparent">
                 <div class="item item-divider transparent">Configuration</div>

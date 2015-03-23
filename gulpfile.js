@@ -73,3 +73,7 @@ gulp.task('conf-dev', function () {
 gulp.task('conf-prod', function () {
     saveConfig('production');
 });
+
+gulp.task('conf-live', function () {
+    saveConfig('livereload');
+});

@@ -35,7 +35,8 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
             scope: $scope,
             templateUrl: 'templates/loading.html'
         });
-        console.log($scope.user);
+        console.log('URL utilisée...');
+        console.log(apiUrl);
         // Make the request to retrieve or create the user.
         $http({
             method: 'POST',
@@ -65,7 +66,7 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
 
             // If an error occurs, hide the loading message and show an error message.
             $ionicLoading.hide();
-            $scope.error = error;
+            $scope.error = apiUrl;
         });
 //        console.log('URL utilisée...');
 //        console.log(apiUrl);
