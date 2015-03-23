@@ -1,23 +1,39 @@
 var app = angular.module('cityzen.maps', ['cityzen.settings', 'cityzen.issues', 'angular-storage']);
 
-app.factory('MapService', function (SettingsService, geolocation, $q) {
+app.factory('MapService', function (SettingsService, geolocation, $q, $cordovaGeolocation, Loading) {
     return {
         /*
          * Locate the user if he allowed it.
          * If not, load the map center defined in the settings.
          */
         locate: function () {
-            console.log('locating');
+            console.log('locating with cordova');
             var dfd = $q.defer();
-            geolocation.getLocation()
-                    .then(function (response) {
+            var posOptions = {timeout: 10000, enableHighAccuracy: false};
+//            geolocation.getLocation()
+//                    .then(function (response) {
+//                        var data = {
+//                            lat: response.coords.latitude,
+//                            lng: response.coords.longitude
+//                        };
+//                        dfd.resolve(data);
+//                        console.log('located !');
+//                    }, function (error) {
+//                        var data = SettingsService.getMapCenter();
+//                        dfd.resolve(data);
+//                        console.log('Default position...');
+//                    });
+            $cordovaGeolocation
+                    .getCurrentPosition(posOptions)
+                    .then(function (pos) {
                         var data = {
-                            lat: response.coords.latitude,
-                            lng: response.coords.longitude
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude
                         };
                         dfd.resolve(data);
                         console.log('located !');
                     }, function (error) {
+                        console.log(error.message);
                         var data = SettingsService.getMapCenter();
                         dfd.resolve(data);
                         console.log('Default position...');
@@ -29,18 +45,33 @@ app.factory('MapService', function (SettingsService, geolocation, $q) {
 
 
 // A controller that displays information for the active view's issues
-app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService) {
+app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService, $ionicPlatform) {
     console.log('MapCtrl loaded');
+
+    // Default user position marker
+    function defaultMarker(pos) {
+        return {
+            lat: pos.lat,
+            lng: pos.lng,
+            message: "<p>Ma position</p>",
+            icon: $scope.pos_icon
+        };
+    }
+
     // Disable the swipe menu for this view
     $rootScope.enableLeft = true;
-    var pos_icon = {
-        iconUrl: 'img/pos-marker.png',
-        iconSize: [38, 95], // size of the icon
-        iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    };
+//    var pos_icon = {
+//        iconUrl: 'img/pos-marker.png',
+//        shadowUrl: 'img/pos-marker-shadow.png',
+//        iconSize: [25, 41], // size of the icon
+//        iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+//        shadowSize: [41, 41], // size of the shadow
+//        shadowAnchor: [12, 41], // the same for the shadow
+//        popupAnchor: [0, -36] // point from which the popup should open relative to the iconAnchor
+//    };
     // Hide the leaflet directive from the template while loading the data
     $scope.showMap = false;
-    $scope.icons = pos_icon;
+//    $scope.pos_icon = pos_icon;
 
     // When catching the positionChange event, replace the position marker and if necessary, reload the issues
     $scope.$on('positionChange', function () {
@@ -55,6 +86,8 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // A function that loads the map in the template
     $scope.loadMap = function (pos) {
+        Loading.hide();
+        Loading.show($scope, "Chargement de la carte");
         var dfd = $q.defer();
         // Load the map
         var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
@@ -68,13 +101,7 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
             lng: pos.lng,
             zoom: Number($scope.settings.zoom)
         };
-        $scope.mapMarkers = [{
-                lat: pos.lat,
-                lng: pos.lng,
-                message: "<p>Mon emplacement</p>",
-                icon: pos_icon
-            }
-        ];
+        $scope.mapMarkers = [defaultMarker(pos)];
         leafletData.getMap('map').then(function (map) {
             $scope.map = map;
             map.attributionControl.setPosition('bottomleft');
@@ -89,6 +116,8 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // A function that loads the issues' data according to the active view
     $scope.loadData = function (pos) {
+        Loading.hide();
+        Loading.show($scope, "Chargement des données");
         var dfd = $q.defer();
         Loading.show($scope, "Chargement...");
         $scope.error = null;
@@ -116,17 +145,14 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
     };
 
     $scope.resetMarkers = function (data) {
+        Loading.hide();
+        Loading.show($scope, "Mis à zéro des marqueurs");
         var dfd = $q.defer();
         // Reset the mapMarkers array if there is more than just the position marker
         if ($scope.mapMarkers.length > 1) {
             console.log('Des marqueures ! On reset avec que le marqueur de position');
-            MapService.locate().then(function (response) {
-                $scope.mapMarkers = [{
-                        lat: response.lat,
-                        lng: response.lng,
-                        message: "<p>Mon emplacement</p>",
-                        icon: pos_icon
-                    }];
+            MapService.locate().then(function (pos) {
+                $scope.mapMarkers = [defaultMarker(pos)];
                 console.log("Le reset est fait !");
                 dfd.resolve(data);
             });
@@ -139,6 +165,8 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
 
     // A function that inserts the issues' data on the map with markers
     $scope.insertData = function (data) {
+        Loading.hide();
+        Loading.show($scope, "Insertion des données");
         // If there is any loaded data, create a marker for each one of them and add it to the mapMarkers array
         if (data.length > 0) {
             console.log('Des données ! On les insèrent dans les marqueurs');
@@ -169,11 +197,15 @@ app.controller('MapCtrl', function ($scope, mapboxMapId, mapboxTokenAccess, leaf
         Loading.hide();
     };
 
-    // When first loading of this controller
-    MapService.locate()
-            .then($scope.loadMap)
-            .then($scope.loadData)
-            .then($scope.insertData, $scope.handleError);
+    $ionicPlatform.ready(function () {
+        console.log('platform ready');
+        // When first loading of this controller
+        Loading.show($scope, "Localisation");
+        MapService.locate()
+                .then($scope.loadMap)
+                .then($scope.loadData)
+                .then($scope.insertData, $scope.handleError);
+    });
 
     // When catching the viewChange event, reload the issues' data according to the new view
     $scope.$on('viewChange', function () {

@@ -78,6 +78,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
         animation: 'slide-in-up',
         backdropClickToClose: false
     }).then(function (modal) {
+        console.log('settings chargé');
         $scope.modals['settings'] = modal;
     });
 
@@ -88,6 +89,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
         animation: 'slide-in-up',
         backdropClickToClose: false
     }).then(function (modal) {
+        console.log('mapCenter chargé');
         $scope.modals['mapCenter'] = modal;
     });
 
@@ -103,6 +105,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
 
     // Open the settings modal
     $scope.openModal = function (modal_id) {
+        console.log('id du modal appelé : ' + modal_id);
         $scope.modals[modal_id].show();
     };
 
@@ -133,9 +136,11 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
                 tileLayer: mapboxTileLayer,
                 attributionControl: false
             };
-            $scope.posMarker = {position: {
+            $scope.posMarker = {
+                position: {
                     lat: $scope.settings.mapCenter.lat,
-                    lng: $scope.settings.mapCenter.lng
+                    lng: $scope.settings.mapCenter.lng,
+                    icon: $scope.pos_icon
                 }
             };
             $scope.newPosMarker = {};
@@ -157,6 +162,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
                 new_position: {
                     lat: $scope.posMarker.position.lat,
                     lng: $scope.posMarker.position.lng,
+                    icon: $scope.pos_icon,
                     draggable: true
                 }};
             leafletData.getMap('map-center-full').then(function (map) {

@@ -37,56 +37,56 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
         });
         console.log($scope.user);
         // Make the request to retrieve or create the user.
-//        $http({
-//            method: 'POST',
-//            url: apiUrl + '/users/logister',
-//            data: $scope.user
-//        }).success(function (id) {
-//            $scope.user.id = id.userId;
-//
-//            // If successful, give the user to the authentication service.
-//            AuthService.setUser($scope.user);
-//
-//            // Hide the loading message.
-//            $ionicLoading.hide();
-//
-//            // Set the next view as the root of the history.
-//            // Otherwise, the next screen will have a "back" arrow pointing back to the login screen.
-//            $ionicHistory.nextViewOptions({
-//                disableBack: true,
-//                historyRoot: true
-//            });
-//
-//            // Go to the defined first screen.
-//            var next_state = SettingsService.getHomePage();
-//            $state.go(next_state);
-//
-//        }).error(function (error) {
-//
-//            // If an error occurs, hide the loading message and show an error message.
-//            $ionicLoading.hide();
-//            $scope.error = error;
-//        });
-        console.log('URL utilisée...');
-        console.log(apiUrl);
+        $http({
+            method: 'POST',
+            url: apiUrl + '/users/logister',
+            data: $scope.user
+        }).success(function (id) {
+            $scope.user.id = id.userId;
 
-        var request =
-                $http({
-                    method: 'POST',
-                    url: apiUrl + '/users/logister',
-                    data: $scope.user
-                });
-        request.then(function (response) {
-            console.log('success');
-            console.log(response.data);
-            console.log(response.status);
-            console.log(response.statusText);
-        }, function(error) {
-            console.log('error');
-            console.log(error.data);
-            console.log(error.status);
-            console.log(error.statusText);
+            // If successful, give the user to the authentication service.
+            AuthService.setUser($scope.user);
+
+            // Hide the loading message.
+            $ionicLoading.hide();
+
+            // Set the next view as the root of the history.
+            // Otherwise, the next screen will have a "back" arrow pointing back to the login screen.
+            $ionicHistory.nextViewOptions({
+                disableBack: true,
+                historyRoot: true
+            });
+
+            // Go to the defined first screen.
+            var next_state = SettingsService.getHomePage();
+            $state.go(next_state);
+
+        }).error(function (error) {
+
+            // If an error occurs, hide the loading message and show an error message.
+            $ionicLoading.hide();
+            $scope.error = error;
         });
+//        console.log('URL utilisée...');
+//        console.log(apiUrl);
+//
+//        var request =
+//                $http({
+//                    method: 'POST',
+//                    url: apiUrl + '/users/logister',
+//                    data: $scope.user
+//                });
+//        request.then(function (response) {
+//            console.log('success');
+//            console.log(response.data);
+//            console.log(response.status);
+//            console.log(response.statusText);
+//        }, function (error) {
+//            console.log('error');
+//            console.log(error.data);
+//            console.log(error.status);
+//            console.log(error.statusText);
+//        });
 
     };
 });
@@ -103,10 +103,11 @@ app.factory('AuthInterceptor', function (AuthService) {
         // In it, you can modify the request configuration object.
         request: function (config) {
 
-            // If the user is logged in, add the X-User-Id header.
+            // If the user is logged in, add the X - User - Id header.
             if (AuthService.currentUserId) {
                 config.headers['X-User-Id'] = AuthService.currentUserId;
             }
+            //config.headers['X-User-Id'] = '5502abacdaf3ee0e0049e872';
             return config;
         }
     };

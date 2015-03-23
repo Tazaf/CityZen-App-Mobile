@@ -11,6 +11,7 @@ angular.module('geolocation')
   .factory('geolocation', ['$q','$rootScope','$window','geolocation_msgs',function ($q,$rootScope,$window,geolocation_msgs) {
     return {
       getLocation: function (opts) {
+        console.log('entering getLocation()');
         var deferred = $q.defer();
         if ($window.navigator && $window.navigator.geolocation) {
           $window.navigator.geolocation.getCurrentPosition(function(position){

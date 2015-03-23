@@ -118,7 +118,7 @@ app.controller('ListCtrl', function ($rootScope, $scope, IssuesService, $state, 
     $scope.loadData = function (pos) {
         Loading.show($scope, "Chargement...");
         $scope.error = null;
-        console.log("Active View : " + $scope.activeView);
+        console.log("Active View : " + $scope.config.activeView);
         IssuesService
                 .getViewData($scope.config.activeView, pos)
                 .then(function (response) {
@@ -152,7 +152,7 @@ app.controller('ListCtrl', function ($rootScope, $scope, IssuesService, $state, 
         $scope.loadData();
     });
 });
-app.controller('DetailsCtrl', function ($rootScope, $scope, $state, $stateParams, issue, store, Loading) {
+app.controller('DetailsCtrl', function ($rootScope, $scope, $state, issue, store, Loading) {
     
     $rootScope.enableLeft = false;
     // Re-enable the swipe menu for the adequates screens

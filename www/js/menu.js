@@ -6,13 +6,15 @@ app.controller('IssueTypeCtrl', function ($scope, $http, apiUrl) {
         method: 'GET',
         url: apiUrl + '/issueTypes'
     }).success(function (issue_types) {
+        console.log('issueTypes : succès');
         $scope.issue_types = issue_types;
     }).error(function () {
+        console.log('issueTypes : error');
         $scope.error = true;
     });
 });
 
-app.controller('MenuCtrl', function ($scope, android, user, settings) {
+app.controller('MenuCtrl', function ($scope, android, user, settings, pos_icon) {
     console.log('Initialising config');
     $scope.isAndroid = android;
     $scope.user = user;
@@ -20,6 +22,7 @@ app.controller('MenuCtrl', function ($scope, android, user, settings) {
     $scope.config = {
         activeView: $scope.settings.homeView
     };
+    $scope.pos_icon = pos_icon;
     console.log('Config loaded');
 });
 

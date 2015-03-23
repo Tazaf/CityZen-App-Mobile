@@ -17,7 +17,8 @@ var app = angular.module('cityzen',
             'cityzen.maps',
             'cityzen.tags',
             'cityzen.issues',
-            'geolocation'
+            'geolocation',
+            'ngCordova'
         ]);
 
 app.run(function ($ionicPlatform) {
@@ -65,6 +66,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     },
                     settings: function (SettingsService) {
                         return SettingsService.getSettings();
+                    },
+                    pos_icon: function () {
+                        return {
+                            iconUrl: 'img/pos-marker.png',
+                            shadowUrl: 'img/pos-marker-shadow.png',
+                            iconSize: [25, 41], // size of the icon
+                            iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+                            shadowSize: [41, 41], // size of the shadow
+                            shadowAnchor: [12, 41], // the same for the shadow
+                            popupAnchor: [0, -36] // point from which the popup should open relative to the iconAnchor
+                        };
                     }
                 },
                 controller: 'MenuCtrl',
