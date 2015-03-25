@@ -60,11 +60,11 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
             if (view === 'close') {
                 var _this = this;
                 if (pos) {
-                    var range = SettingsService.getCloseRange() / 1000 / 6378.1;
+                    var range = SettingsService.active.closeRange / 1000 / 6378.1;
                     return _this.getCloseIssues(0, '*', pos, range);
                 } else {
                     return MapService.locate().then(function (pos) {
-                        var range = SettingsService.getCloseRange() / 100 / 6378.1;
+                        var range = SettingsService.active.closeRange / 100 / 6378.1;
                         return _this.getCloseIssues(0, '*', pos, range);
                     });
                 }
@@ -107,6 +107,22 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
                 }
             }
             return response;
+        },
+        filterIssues: function (data, filters, type) {
+            var temp_filtered_results;
+            var filtered_results;
+            if (type === "state") {
+                temp_filtered_results = this.filterIssueType(data, filters);
+                filtered_results = this.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
+            }
+
+//            $scope.error = null;
+//            var temp_filtered_results = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
+//            $scope.issues = IssuesService.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
+//            if ($scope.issues.length === 0) {
+//                $scope.error = {msg: messages.no_result};
+//            }
+
         }
     };
 });
@@ -117,7 +133,10 @@ app.controller('ListCtrl', function (
         $state,
         $ionicPopup,
         Loading,
-        MapService) {
+        MapService,
+        messages,
+        $ionicPlatform,
+        SettingsService) {
     console.log('ListCtrl loaded');
     $rootScope.enableLeft = true;
     $scope.goToDetails = function (issueId) {
@@ -134,7 +153,7 @@ app.controller('ListCtrl', function (
         });
     };
     $scope.loadData = function (pos) {
-        Loading.show("Chargement des données");
+        Loading.show(messages.load_data);
         $scope.error = null;
         console.log("Active View : " + $scope.config.activeView);
         IssuesService
@@ -143,13 +162,15 @@ app.controller('ListCtrl', function (
                     console.log("Response : ");
                     console.log(response.data);
                     if (response.data.length === 0) {
-                        $scope.error = {msg: "Désolé, aucun résultat..."};
+                        $scope.error = {msg: messages.no_result};
                     } else {
                         $scope.issues = response.data;
                         $scope.init_issues = response.data;
+                        console.log('Des résultats');
+                        console.log(response.data.length);
                     }
                 }, function (error) {
-                    $scope.error = {msg: "Impossible de charger les problèmes."};
+                    $scope.error = {msg: messages.error};
                     console.log(error);
                 })
                 .then(function () {
@@ -160,32 +181,40 @@ app.controller('ListCtrl', function (
         console.log('Error !');
         console.log(error);
     };
-    MapService.locate().then($scope.loadData, $scope.handleError());
+
+    $ionicPlatform.ready(function () {
+        MapService.locate().then($scope.loadData, $scope.handleError);
+    });
+
     // Update the data when a config changes
     $scope.$on('viewChange', function () {
         $scope.issues = [];
-        MapService.locate().then($scope.loadData, $scope.handleError());
+        MapService.locate().then($scope.loadData, $scope.handleError);
     });
+
     // Update the data when a config changes
     $scope.$on('issueTypeChange', function () {
         $scope.error = null;
-        $scope.issues = IssuesService.filterIssueState($scope.init_issues, $scope.settings.stateFilters);
+        $scope.issues = IssuesService.filterIssueState($scope.init_issues, SettingsService.active.stateFilters);
         $scope.issues = IssuesService.filterIssueType($scope.issues, $scope.config.issueTypes);
         if ($scope.issues.length === 0) {
-            $scope.error = {msg: "Désolé, aucun résultat..."};
+            $scope.error = {msg: messages.no_result};
         }
+        console.log($scope.issues.length);
     });
+
     // Update the data when a config changes
     $scope.$on('issueStateChange', function () {
         $scope.error = null;
-        $scope.issues = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
-        $scope.issues = IssuesService.filterIssueState($scope.issues, $scope.settings.stateFilters);
+        var temp_filtered_results = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
+        $scope.issues = IssuesService.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
         if ($scope.issues.length === 0) {
-            $scope.error = {msg: "Désolé, aucun résultat..."};
+            $scope.error = {msg: messages.no_result};
         }
+        console.log($scope.issues.length);
     });
 });
-app.controller('DetailsCtrl', function ($rootScope, $scope, $state, issue, store, Loading) {
+app.controller('DetailsCtrl', function (messages, $rootScope, $scope, $state, issue, store, Loading) {
 
     $rootScope.enableLeft = false;
     // Re-enable the swipe menu for the adequates screens
@@ -203,12 +232,12 @@ app.controller('DetailsCtrl', function ($rootScope, $scope, $state, issue, store
         });
         $state.go('app.details.map');
     };
-    Loading.show("Chargement...");
+    Loading.show(messages.loading);
     if (issue) {
         $scope.issue = issue;
         Loading.hide();
     } else {
-        $scope.error = {msg: "Impossible de charger le problème."};
+        $scope.error = {msg: messages.error_issue};
         Loading.hide();
     }
 });

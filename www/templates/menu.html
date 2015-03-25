@@ -33,7 +33,7 @@
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
             </div>
-            <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="error.issueTypes">
+            <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="!config.issueTypes">
                 <div class="item item-divider transparent">Filtrer les types</div>
                 <ion-toggle ng-repeat="issueType in config.issueTypes"
                             ng-model="issueType.checked" 
@@ -45,7 +45,7 @@
             </ul>
             <ul class="list card transparent" ng-controller="IssueStateCtrl" ng-hide="error.stateFilters">
                 <div class="item item-divider transparent">Filtrer les statuts</div>
-                <ion-toggle ng-repeat="stateFilter in settings.stateFilters"
+                <ion-toggle ng-repeat="stateFilter in stateFilters"
                             ng-model="stateFilter.checked" 
                             ng-checked="stateFilter.checked"
                             ng-click="issueStateFilter()"

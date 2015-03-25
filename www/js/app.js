@@ -17,11 +17,12 @@ var app = angular.module('cityzen',
             'cityzen.maps',
             'cityzen.tags',
             'cityzen.issues',
+            'cityzen.messages',
             'geolocation',
             'ngCordova'
         ]);
 
-app.run(function ($ionicPlatform) {
+app.run(function ($ionicPlatform, SettingsService) {
     $ionicPlatform.ready(function () {
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -32,6 +33,8 @@ app.run(function ($ionicPlatform) {
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
+        
+        SettingsService.active = SettingsService.getSettings();
     });
 });
 
@@ -77,6 +80,25 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                             shadowAnchor: [12, 41], // the same for the shadow
                             popupAnchor: [0, -36] // point from which the popup should open relative to the iconAnchor
                         };
+                    },
+                    issueTypes: function ($http, apiUrl) {
+                        return $http({
+                            method: 'GET',
+                            url: apiUrl + '/issueTypes'
+                        }).then(function(response) {
+                            var issueTypes = [];
+                            for (var i = 0; i < response.data.length; i++) {
+                                issueTypes.push({
+                                    name: response.data[i].name,
+                                    checked: true
+                                });
+                            }
+                            return issueTypes;
+                        }, function(error) {
+                            console.log('IssueTypes Error :');
+                            console.log(error);
+                            return null;
+                        });
                     }
                 },
                 controller: 'MenuCtrl',
@@ -151,11 +173,13 @@ app.config(function ($ionicConfigProvider) {
 app.factory('Loading', function ($ionicLoading) {
     return {
         show: function (text) {
+            console.log('Loading : ' + text);
             $ionicLoading.show({
                 template: "<i class=\"fa fa-refresh fa-spin\"></i><h1>" + text + "</h1>"
             });
         },
         hide: function () {
+            console.log('Loading caché');
             $ionicLoading.hide();
         }
     };

@@ -16,7 +16,7 @@ app.service('AuthService', function (store) {
     return service;
 });
 
-app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, SettingsService) {
+app.controller('LoginCtrl', function (messages, apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, SettingsService) {
 
 // The $ionicView.beforeEnter event happens every time the screen is displayed.
     $scope.$on('$ionicView.beforeEnter', function () {
@@ -59,7 +59,7 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
             });
 
             // Go to the defined first screen.
-            var next_state = SettingsService.getHomePage();
+            var next_state = SettingsService.active.homePage;
             $state.go(next_state);
 
         }).error(function (error) {
@@ -68,27 +68,6 @@ app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory,
             $ionicLoading.hide();
             $scope.error = apiUrl;
         });
-//        console.log('URL utilisée...');
-//        console.log(apiUrl);
-//
-//        var request =
-//                $http({
-//                    method: 'POST',
-//                    url: apiUrl + '/users/logister',
-//                    data: $scope.user
-//                });
-//        request.then(function (response) {
-//            console.log('success');
-//            console.log(response.data);
-//            console.log(response.status);
-//            console.log(response.statusText);
-//        }, function (error) {
-//            console.log('error');
-//            console.log(error.data);
-//            console.log(error.status);
-//            console.log(error.statusText);
-//        });
-
     };
 });
 app.controller('LogoutCtrl', function (AuthService, $scope, $state, $window) {
@@ -108,7 +87,6 @@ app.factory('AuthInterceptor', function (AuthService) {
             if (AuthService.currentUserId) {
                 config.headers['X-User-Id'] = AuthService.currentUserId;
             }
-            //config.headers['X-User-Id'] = '5502abacdaf3ee0e0049e872';
             return config;
         }
     };

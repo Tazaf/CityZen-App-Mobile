@@ -20,6 +20,7 @@ app.service('SettingsService', function (store) {
                 {text: 'Résolu', name: 'solved', checked: true}
             ]
         },
+        active: {},
         /*
          * If there are settings stored, get and return them.
          * If there's not, get and return the default settings.
@@ -39,28 +40,10 @@ app.service('SettingsService', function (store) {
             return this.getSettings().homePage;
         },
         /*
-         * Returns the value of the homeView setting
-         */
-        getHomeView: function () {
-            return this.getSettings().homeView;
-        },
-        /*
-         * Returns the value for the mapCenter setting
-         */
-        getMapCenter: function () {
-            return this.getSettings().mapCenter;
-        },
-        /*
-         * Returns the value for the closeRange setting
-         */
-        getCloseRange: function () {
-            return this.getSettings().closeRange;
-        },
-        /*
          * Saves the settings on the storage
          */
-        saveSettings: function (settings) {
-            store.set('settings', settings);
+        saveSettings: function () {
+            store.set('settings', this.active);
             return null;
         }
     };
@@ -78,7 +61,6 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
         animation: 'slide-in-up',
         backdropClickToClose: false
     }).then(function (modal) {
-        console.log('settings chargé');
         $scope.modals['settings'] = modal;
     });
 
@@ -89,23 +71,21 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
         animation: 'slide-in-up',
         backdropClickToClose: false
     }).then(function (modal) {
-        console.log('mapCenter chargé');
         $scope.modals['mapCenter'] = modal;
     });
 
     // Set the settings.closeRange value to a particular value
     $scope.setCloseRange = function (value) {
-        $scope.settings.closeRange = value;
+        SettingsService.active.closeRange = value;
     };
 
     // Set the settings.zoom value to a particular value
     $scope.setZoom = function (value) {
-        $scope.settings.zoom = value;
+        SettingsService.active.zoom = value;
     };
 
     // Open the settings modal
     $scope.openModal = function (modal_id) {
-        console.log('id du modal appelé : ' + modal_id);
         $scope.modals[modal_id].show();
     };
 
@@ -115,14 +95,8 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
     };
 
     $scope.saveNewPosition = function () {
-        $scope.posMarker.position.lat = $scope.newPosMarker.new_position.lat;
-        $scope.posMarker.position.lng = $scope.newPosMarker.new_position.lng;
-        $scope.settings.mapCenter = $scope.posMarker.position;
-        leafletData.getMap('map-center-thumbnail').then(function (map) {
-            $scope.map = map;
-            map.setView($scope.posMarker.position, 15);
-            $scope.closeModal('mapCenter');
-        });
+        SettingsService.active.mapCenter = $scope.newPosMarker.new_position;
+        $scope.closeModal('mapCenter');
     };
 
     // When the modal is shown, load the user's settings on the value attribute
@@ -130,38 +104,16 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
         var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
         mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
         if (modal.id === 'settings') {
-            console.log('settings map');
-            $scope.map = null;
-            $scope.posMapDefaults = {
-                tileLayer: mapboxTileLayer,
-                attributionControl: false
-            };
-            $scope.posMarker = {
-                position: {
-                    lat: $scope.settings.mapCenter.lat,
-                    lng: $scope.settings.mapCenter.lng,
-                    icon: $scope.pos_icon
-                }
-            };
             $scope.newPosMarker = {};
-            console.log($scope.posMarker);
-            leafletData.getMap('map-center-thumbnail').then(function (map) {
-                $scope.map = map;
-                map.dragging.disable();
-                map.touchZoom.disable();
-                map.doubleClickZoom.disable();
-                map.scrollWheelZoom.disable();
-                map.setView($scope.posMarker.position, 15);
-            });
+            $scope.settings = SettingsService.active;
         } else {
-            console.log('map center map');
             $scope.posMapDefaults = {
                 tileLayer: mapboxTileLayer
             };
             $scope.newPosMarker = {
                 new_position: {
-                    lat: $scope.posMarker.position.lat,
-                    lng: $scope.posMarker.position.lng,
+                    lat: SettingsService.active.mapCenter.lat,
+                    lng: SettingsService.active.mapCenter.lng,
                     icon: $scope.pos_icon,
                     draggable: true
                 }};
@@ -178,15 +130,15 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
 
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function (e, modal) {
-        //$scope.settingsModal.remove();
     });
 
     // Execute action on hide modal
     $scope.$on('modal.hidden', function (e, modal) {
         if (modal.id === 'settings') {
-            SettingsService.saveSettings($scope.settings);
+            SettingsService.active = $scope.settings;
+            SettingsService.saveSettings();
             delete $scope.newPosMarker;
-            delete $scope.posMarker;
+            delete $scope.settings;
         } else {
             delete $scope.newPosMarker.new_position;
             $rootScope.$broadcast('positionChange');

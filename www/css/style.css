@@ -41,37 +41,35 @@
 .button-new,
 .button-help {
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     right: 0;
-    font-size: 2.5em;
+    font-size: 3em;
     border: none;
     background: none;
     padding: 0;
     color: #886aea;
     z-index: 1000;
     border-radius: 100px;
+    cursor: pointer;
 }
 .button-new {
-    margin: 0 7px 7px 0;
+    margin-right: 20px;
 }
 .button-help {
-    margin: 0 54px 7px 0;
+    margin-right: 75px;
 }
-.button-help::before, .button-new::before {
+.button-help:hover, .button-help:active,
+.button-new:hover, .button-new:active {
+    opacity: 0.75;
+}
+
+.button-help::before,
+.button-new::before {
     background-color: white;
     border-radius: 50px;
-    line-height: 30px;
-    height: 30px;
-}
-.button-new:hover {
-    color: #886aea;
-}
-.button-new:focus,
-.button-new:active {
-    background: none;
-    border: none;
-    box-shadow: none;
-    opacity: 0.5;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
 }
 
 /* LIST ISSUE STYLES */
