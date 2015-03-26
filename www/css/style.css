@@ -215,7 +215,10 @@ p.issue-stats {
     position: static;
 }
 .leaflet-control-zoom {
-    visibility: hidden;
+    opacity: 0.5;
+}
+.leaflet-control-layers.leaflet-control {
+    display: none;
 }
 
 /* SETTINGS CENTER MAP */
@@ -243,7 +246,7 @@ p.issue-stats {
 }
 
 #map-center-full {
-    
+
 }
 
 #map-center-select button {

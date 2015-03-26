@@ -64,10 +64,25 @@ app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAc
         Loading.show(messages.load_map);
         var dfd = $q.defer();
         // Load the map
-        var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
-        mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
-        $scope.mapDefaults = {
-            tileLayer: mapboxTileLayer
+        $scope.layers = {
+            baselayers: {
+                base_map: {
+                    name: 'Base Map',
+                    url: 'http://api.tiles.mapbox.com/v4/{mapid}/{z}/{x}/{y}.png?access_token={apikey}',
+                    type: 'xyz',
+                    layerOptions: {
+                        apikey: mapboxTokenAccess,
+                        mapid: mapboxMapId
+                    }
+                }
+            },
+            overlays: {
+                issues: {
+                    name: "Issues",
+                    type: "markercluster",
+                    visible: true
+                }
+            }
         };
         // Set the map's center
         $scope.mapCenter = {
@@ -124,6 +139,8 @@ app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAc
         if (data.length > 0) {
             for (var i = 0; i < data.length; i++) {
                 var marker = {
+                    //group: 'issues',
+                    layer: "issues",
                     lat: data[i].lat,
                     lng: data[i].lng,
                     message: "<p ui-sref=\"app.details({issueId:'" + data[i].id + "'})\">" + data[i].description + "</p>"
@@ -170,7 +187,7 @@ app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAc
         }
         $scope.insertData($scope.issues);
     });
-    
+
     // Update the data when a config changes
     $scope.$on('issueStateChange', function () {
         $scope.error = null;

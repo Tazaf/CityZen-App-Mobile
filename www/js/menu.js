@@ -4,12 +4,12 @@ app.controller('MenuCtrl', function ($scope, android, user, pos_icon, issueTypes
     console.log('Initialising config');
     $scope.isAndroid = android;
     $scope.user = user;
-    console.log(SettingsService.active);
     $scope.config = {
         activeView: SettingsService.active.homeView,
         issueTypes: issueTypes
     };
     $scope.pos_icon = pos_icon;
+    $scope.stateFilters = SettingsService.active.stateFilters;
     console.log('Config loaded');
 });
 
