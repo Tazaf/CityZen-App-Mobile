@@ -1,6 +1,6 @@
 var app = angular.module('cityzen.menus', ['angular-storage', 'cityzen.settings']);
 
-app.controller('MenuCtrl', function ($scope, android, user, settings, pos_icon, issueTypes, SettingsService) {
+app.controller('MenuCtrl', function ($scope, android, user, pos_icon, issueTypes, SettingsService) {
     console.log('Initialising config');
     $scope.isAndroid = android;
     $scope.user = user;

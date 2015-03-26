@@ -1,4 +1,4 @@
-var app = angular.module('cityzen.comments', ['cityzen.issues']);
+var app = angular.module('cityzen.comments', ['cityzen.issues', 'cityzen.data-manager']);
 
 app.service('CommentsService', function ($http, apiUrl, $filter) {
     return {
@@ -20,7 +20,7 @@ app.service('CommentsService', function ($http, apiUrl, $filter) {
     };
 });
 
-app.controller('CommentsCtrl', function ($scope, CommentsService, IssuesService) {
+app.controller('CommentsCtrl', function ($scope, CommentsService, DataManager) {
     $scope.comment = null;
     // Add a new comment
     $scope.addComment = function () {
@@ -28,7 +28,7 @@ app.controller('CommentsCtrl', function ($scope, CommentsService, IssuesService)
                 .addComment($scope.comment, $scope.issue.id)
                 .success(function (data) {
                     $scope.comment = null;
-                    $scope.$emit('newComment', IssuesService.orderData(data));
+                    $scope.$emit('newComment', DataManager.orderData(data));
                 })
                 .error(function () {
                     // TODO : ajouter une alerte d'erreur

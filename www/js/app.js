@@ -67,9 +67,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     user: function (store) {
                         return store.get('user');
                     },
-                    settings: function (SettingsService) {
-                        return SettingsService.getSettings();
-                    },
                     pos_icon: function () {
                         return {
                             iconUrl: 'img/pos-marker.png',

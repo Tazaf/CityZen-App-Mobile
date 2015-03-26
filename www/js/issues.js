@@ -1,5 +1,5 @@
-var app = angular.module('cityzen.issues', ['angular-storage', 'cityzen.tags', 'cityzen.comments', 'cityzen.maps']);
-app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsService, SettingsService, MapService) {
+var app = angular.module('cityzen.issues', ['angular-storage', 'cityzen.tags', 'cityzen.comments', 'cityzen.maps', 'cityzen.data-manager']);
+app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsService, SettingsService, MapService, DataManager) {
     return {
         getAllIssues: function (page, nb_item) {
             return $http({
@@ -48,11 +48,6 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
                 url: apiUrl + '/issues/' + id
             });
         },
-        orderData: function (data) {
-            data.tags = TagsService.orderTags(data.tags);
-            data.comments = CommentsService.oderComments(data.comments);
-            return data;
-        },
         getViewData: function (view, pos) {
             if (view === 'all') {
                 return this.getAllIssues(0, '*');
@@ -75,54 +70,15 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
         },
         getIssueData: function (id) {
             var dfd = $q.defer();
-            var _this = this;
-            _this
+            this
                     .getOneIssue(id)
                     .success(function (data) {
-                        dfd.resolve(_this.orderData(data));
+                        dfd.resolve(DataManager.orderData(data));
                     })
                     .error(function (error) {
                         dfd.resolve(null);
                     });
             return dfd.promise;
-        },
-        filterIssueType: function (data, filters) {
-            var response = [];
-            for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < filters.length; j++) {
-                    if (filters[j].checked && data[i].issueType.name === filters[j].name) {
-                        response.push(data[i]);
-                    }
-                }
-            }
-            return response;
-        },
-        filterIssueState: function (data, filters) {
-            var response = [];
-            for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < filters.length; j++) {
-                    if (filters[j].checked && data[i].state === filters[j].name) {
-                        response.push(data[i]);
-                    }
-                }
-            }
-            return response;
-        },
-        filterIssues: function (data, filters, type) {
-            var temp_filtered_results;
-            var filtered_results;
-            if (type === "state") {
-                temp_filtered_results = this.filterIssueType(data, filters);
-                filtered_results = this.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
-            }
-
-//            $scope.error = null;
-//            var temp_filtered_results = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
-//            $scope.issues = IssuesService.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
-//            if ($scope.issues.length === 0) {
-//                $scope.error = {msg: messages.no_result};
-//            }
-
         }
     };
 });
