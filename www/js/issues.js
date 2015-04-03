@@ -94,7 +94,11 @@ app.controller('ListCtrl', function (
         $ionicPlatform,
         SettingsService) {
     console.log('ListCtrl loaded');
-    $rootScope.enableLeft = true;
+
+    $scope.$on('$ionicView.beforeEnter', function () {
+        $rootScope.enableLeft = true;
+    });
+
     $scope.goToDetails = function (issueId) {
         $state.go('app.details', {issueId: issueId});
     };
@@ -148,7 +152,7 @@ app.controller('ListCtrl', function (
         MapService.locate().then($scope.loadData, $scope.handleError);
     });
 
-    // Update the data when a config changes
+    // Update the data when a filter changes
     $scope.$on('issueTypeChange', function () {
         $scope.error = null;
         $scope.issues = IssuesService.filterIssueState($scope.init_issues, SettingsService.active.stateFilters);
@@ -159,7 +163,7 @@ app.controller('ListCtrl', function (
         console.log($scope.issues.length);
     });
 
-    // Update the data when a config changes
+    // Update the data when a filter changes
     $scope.$on('issueStateChange', function () {
         $scope.error = null;
         var temp_filtered_results = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
@@ -170,16 +174,23 @@ app.controller('ListCtrl', function (
         console.log($scope.issues.length);
     });
 });
+
+/**
+ * This controller is used to manage a single issue data and show them to the user.
+ */
 app.controller('DetailsCtrl', function (messages, $rootScope, $scope, $state, issue, store, Loading) {
 
-    $rootScope.enableLeft = false;
-    // Re-enable the swipe menu for the adequates screens
-    $scope.$on('$stateChangeStart', function () {
-        $rootScope.enableLeft = true;
+    // Disable the swipe menu for this view.
+    $scope.$on('$ionicView.beforeEnter', function () {
+        $rootScope.enableLeft = false;
     });
+
+    // Reload the data when a new comment is posted.
     $scope.$on('newComment', function (e, data) {
         $scope.issue = data;
     });
+    
+    // This function saves the localisation of the issue in order to pass them to the app.details.map view.
     $scope.showIssueOnMap = function () {
         store.set('issue', {
             lat: $scope.issue.lat,
@@ -188,6 +199,8 @@ app.controller('DetailsCtrl', function (messages, $rootScope, $scope, $state, is
         });
         $state.go('app.details.map');
     };
+    
+    // Loads the issue's data in the view or show an error message if this fails.
     Loading.show(messages.loading);
     if (issue) {
         $scope.issue = issue;

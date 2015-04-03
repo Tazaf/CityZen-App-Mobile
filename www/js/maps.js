@@ -30,7 +30,7 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
 
 
 // A controller that displays information for the active view's issues
-app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService, $ionicPlatform, SettingsService) {
+app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService, $ionicPlatform, SettingsService) {
     console.log('MapCtrl loaded');
 
     // Default user position marker
@@ -44,7 +44,13 @@ app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAc
     }
 
     // Disable the swipe menu for this view
-    $rootScope.enableLeft = true;
+    $scope.$on('$ionicView.beforeEnter', function () {
+        $rootScope.enableLeft = true;
+        $timeout(function () {
+            $scope.$broadcast('invalidateSize');
+        });
+    });
+
 
     // Hide the leaflet directive from the template while loading the data
     $scope.showMap = false;
@@ -93,7 +99,7 @@ app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAc
         $scope.mapMarkers = [defaultMarker(pos)];
         leafletData.getMap('map').then(function (map) {
             $scope.map = map;
-            map.attributionControl.setPosition('bottomleft');
+            $scope.map.attributionControl.setPosition('bottomleft');
             dfd.resolve(pos);
         }, function (error) {
             dfd.reject(error);
@@ -204,7 +210,9 @@ app.controller('MapCtrl', function (messages, $scope, mapboxMapId, mapboxTokenAc
 app.controller('DetailsMapCtrl', function ($rootScope, store, $scope, mapboxMapId, mapboxTokenAccess, leafletData, SettingsService) {
 
     // Disable the swipe menu for this screen
-    $rootScope.enableLeft = false;
+    $scope.$on('$ionicView.beforeEnter', function () {
+        $rootScope.enableLeft = false;
+    });
 
     // Get the issue's data from the storage
     var issue = store.get('issue');

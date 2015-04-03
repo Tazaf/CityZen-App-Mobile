@@ -50,7 +50,7 @@ app.service('SettingsService', function (store) {
 });
 
 // A controller for the settings screen.
-app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsService, mapboxMapId, mapboxTokenAccess, leafletData, $rootScope) {
+app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, SettingsService, mapboxMapId, mapboxTokenAccess, leafletData, $rootScope) {
 
     $scope.modals = [];
 
@@ -96,6 +96,7 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
 
     $scope.saveNewPosition = function () {
         SettingsService.active.mapCenter = $scope.newPosMarker.new_position;
+        $rootScope.$broadcast('positionChange');
         $scope.closeModal('mapCenter');
     };
 
@@ -119,6 +120,11 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
                 }};
             leafletData.getMap('map-center-full').then(function (map) {
                 $scope.map = map;
+                $scope.map.attributionControl.setPosition('bottomleft');
+                $timeout(function () {
+                    $scope.map.invalidateSize();
+                    console.log('invalidateSize');
+                });
                 $scope.map.on('click', function (event) {
                     $scope.newPosMarker.new_position.lat = event.latlng.lat;
                     $scope.newPosMarker.new_position.lng = event.latlng.lng;
@@ -141,7 +147,6 @@ app.controller('SettingsModalCtrl', function ($scope, $ionicModal, SettingsServi
             delete $scope.settings;
         } else {
             delete $scope.newPosMarker.new_position;
-            $rootScope.$broadcast('positionChange');
         }
     });
 
