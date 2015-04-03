@@ -33,9 +33,9 @@
                     <i class="radio-icon ion-checkmark"></i>
                 </label>
             </div>
-            <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="!config.issueTypes">
+            <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="!issueTypes">
                 <div class="item item-divider transparent">Filtrer les types</div>
-                <ion-toggle ng-repeat="issueType in config.issueTypes"
+                <ion-toggle ng-repeat="issueType in issueTypes"
                             ng-model="issueType.checked" 
                             ng-checked="issueType.checked"
                             ng-click="issueTypeFilter()"

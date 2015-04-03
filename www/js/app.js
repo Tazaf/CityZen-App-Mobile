@@ -33,8 +33,9 @@ app.run(function ($ionicPlatform, SettingsService) {
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-        
-        SettingsService.active = SettingsService.getSettings();
+
+        SettingsService.stored = SettingsService.getSettings();
+        console.log(SettingsService.stored);
     });
 });
 
@@ -82,7 +83,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                         return $http({
                             method: 'GET',
                             url: apiUrl + '/issueTypes'
-                        }).then(function(response) {
+                        }).then(function (response) {
                             var issueTypes = [];
                             for (var i = 0; i < response.data.length; i++) {
                                 issueTypes.push({
@@ -91,7 +92,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                                 });
                             }
                             return issueTypes;
-                        }, function(error) {
+                        }, function (error) {
                             console.log('IssueTypes Error :');
                             console.log(error);
                             return null;

@@ -59,7 +59,7 @@ app.controller('LoginCtrl', function (messages, apiUrl, AuthService, $http, $ion
             });
 
             // Go to the defined first screen.
-            var next_state = SettingsService.active.homePage;
+            var next_state = SettingsService.stored.homePage;
             $state.go(next_state);
 
         }).error(function (error) {

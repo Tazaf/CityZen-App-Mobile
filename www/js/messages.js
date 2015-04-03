@@ -8,5 +8,6 @@ angular.module('cityzen.messages', [])
             locating: "Localisation",
             load_map: "Chargement de la carte",
             load_data: "Chargement des données",
-            create_markers: "Création des marqueurs"
+            create_markers: "Création des marqueurs",
+            filter_fail: "Aucun résultat pour ces critères"
         });

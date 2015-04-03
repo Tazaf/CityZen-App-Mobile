@@ -1,4 +1,4 @@
-var app = angular.module('cityzen.maps', ['cityzen.settings', 'cityzen.issues', 'angular-storage']);
+var app = angular.module('cityzen.maps', ['cityzen.settings', 'cityzen.issues', 'angular-storage', 'cityzen.data-manager']);
 
 app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolocation, Loading) {
     return {
@@ -20,7 +20,7 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
                         dfd.resolve(data);
                     }, function (error) {
                         console.log(error.message);
-                        var data = SettingsService.active.mapCenter;
+                        var data = SettingsService.stored.mapCenter;
                         dfd.resolve(data);
                     });
             return dfd.promise;
@@ -30,7 +30,7 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
 
 
 // A controller that displays information for the active view's issues
-app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, IssuesService, $q, $rootScope, MapService, $ionicPlatform, SettingsService) {
+app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, $q, $rootScope, MapService, SettingsService) {
     console.log('MapCtrl loaded');
 
     // Default user position marker
@@ -51,6 +51,13 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         });
     });
 
+    $scope.$on('$ionicView.enter', function () {
+        if (!$scope.showMap && $scope.issues) {
+            loadMap().then(insertData);
+        } else if ($scope.issues) {
+            insertData();
+        }
+    });
 
     // Hide the leaflet directive from the template while loading the data
     $scope.showMap = false;
@@ -66,8 +73,9 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
     });
 
     // A function that loads the map in the template
-    $scope.loadMap = function (pos) {
+    function loadMap() {
         Loading.show(messages.load_map);
+        var pos = $scope.pos === undefined ? SettingsService.stored.mapCenter : $scope.pos;
         var dfd = $q.defer();
         // Load the map
         $scope.layers = {
@@ -94,7 +102,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         $scope.mapCenter = {
             lat: pos.lat,
             lng: pos.lng,
-            zoom: Number(SettingsService.active.zoom)
+            zoom: Number(SettingsService.stored.zoom)
         };
         $scope.mapMarkers = [defaultMarker(pos)];
         leafletData.getMap('map').then(function (map) {
@@ -104,40 +112,15 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         }, function (error) {
             dfd.reject(error);
         });
-        // Show the map on the template
+//         Show the map on the template
         $scope.showMap = true;
         return dfd.promise;
-    };
-
-    // A function that loads the issues' data according to the active view
-    $scope.loadData = function (pos) {
-        Loading.show(messages.load_data);
-        var dfd = $q.defer();
-        $scope.error = null;
-        IssuesService
-                .getViewData($scope.config.activeView, pos)
-                .then(function (response) {
-                    if (response.data.length === 0) {
-                        $scope.error = {msg: messages.no_result};
-                        dfd.resolve([], pos);
-                    } else {
-                        $scope.issues = response.data;
-                        $scope.init_issues = response.data;
-                        $scope.pos = pos;
-                        dfd.resolve($scope.issues);
-                    }
-                }, function (error) {
-                    $scope.error = {msg: messages.error};
-                    dfd.reject(error);
-                    console.log('ERROR !');
-                    console.log(error);
-                });
-        return dfd.promise;
-    };
+    }
 
     // A function that inserts the issues' data on the map with markers
-    $scope.insertData = function (data) {
+    function insertData() {
         Loading.show(messages.create_markers);
+        var data = $scope.issues;
         if ($scope.mapMarkers.length > 1) {
             $scope.mapMarkers = [defaultMarker($scope.pos)];
         }
@@ -145,8 +128,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         if (data.length > 0) {
             for (var i = 0; i < data.length; i++) {
                 var marker = {
-                    //group: 'issues',
-                    layer: "issues",
+                    layer: 'issues',
                     lat: data[i].lat,
                     lng: data[i].lng,
                     message: "<p ui-sref=\"app.details({issueId:'" + data[i].id + "'})\">" + data[i].description + "</p>"
@@ -157,52 +139,19 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
             $scope.map.fitBounds($scope.mapMarkers);
         } else {
             // Set the view to display only the position marker with the desired zoom
-            $scope.map.setView([$scope.mapMarkers[0].lat, $scope.mapMarkers[0].lng], SettingsService.active.zoom);
+            $scope.map.setView([$scope.mapMarkers[0].lat, $scope.mapMarkers[0].lng], SettingsService.stored.zoom);
         }
         Loading.hide();
-    };
+    }
 
-    // A function that handles the error occuring on the chain of function.
-    // TODO : use this handle to display onscreen notification with a adequate message
-    $scope.handleError = function (error) {
-        console.log('Error Handled');
-        console.log(error);
-        Loading.hide();
-    };
-
-    // When first loading of this controller
-    $ionicPlatform.ready(function () {
-        MapService.locate()
-                .then($scope.loadMap)
-                .then($scope.loadData)
-                .then($scope.insertData, $scope.handleError);
+    $scope.$on('dataloaded', function () {
+        insertData();
     });
 
-    // When catching the viewChange event, reload the issues' data according to the new view
-    $scope.$on('viewChange', function () {
-        MapService.locate().then($scope.loadData).then($scope.insertData, $scope.handleError);
-    });
-
-    // Update the data when a config changes
-    $scope.$on('issueTypeChange', function () {
-        $scope.error = null;
-        $scope.issues = IssuesService.filterIssueState($scope.init_issues, SettingsService.active.stateFilters);
-        $scope.issues = IssuesService.filterIssueType($scope.issues, $scope.config.issueTypes);
-        if ($scope.issues.length === 0) {
-            $scope.error = {msg: messages.no_result};
+    $scope.$on('located', function () {
+        if (!$scope.showMap) {
+            loadMap();
         }
-        $scope.insertData($scope.issues);
-    });
-
-    // Update the data when a config changes
-    $scope.$on('issueStateChange', function () {
-        $scope.error = null;
-        $scope.issues = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
-        $scope.issues = IssuesService.filterIssueState($scope.issues, SettingsService.active.stateFilters);
-        if ($scope.issues.length === 0) {
-            $scope.error = {msg: messages.no_result};
-        }
-        $scope.insertData($scope.issues);
     });
 });
 
@@ -228,7 +177,7 @@ app.controller('DetailsMapCtrl', function ($rootScope, store, $scope, mapboxMapI
     $scope.mapCenter = {
         lat: issue.lat,
         lng: issue.lng,
-        zoom: Number(SettingsService.active.zoom)
+        zoom: Number(SettingsService.stored.zoom)
     };
 
     // Create a marker with the issue's information

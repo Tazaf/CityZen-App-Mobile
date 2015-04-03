@@ -20,7 +20,7 @@ app.service('SettingsService', function (store) {
                 {text: 'Résolu', name: 'solved', checked: true}
             ]
         },
-        active: {},
+        stored: {},
         /*
          * If there are settings stored, get and return them.
          * If there's not, get and return the default settings.
@@ -43,7 +43,7 @@ app.service('SettingsService', function (store) {
          * Saves the settings on the storage
          */
         saveSettings: function () {
-            store.set('settings', this.active);
+            store.set('settings', this.stored);
             return null;
         }
     };
@@ -76,12 +76,12 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
 
     // Set the settings.closeRange value to a particular value
     $scope.setCloseRange = function (value) {
-        SettingsService.active.closeRange = value;
+        SettingsService.stored.closeRange = value;
     };
 
     // Set the settings.zoom value to a particular value
     $scope.setZoom = function (value) {
-        SettingsService.active.zoom = value;
+        SettingsService.stored.zoom = value;
     };
 
     // Open the settings modal
@@ -95,26 +95,28 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
     };
 
     $scope.saveNewPosition = function () {
-        SettingsService.active.mapCenter = $scope.newPosMarker.new_position;
+        SettingsService.stored.mapCenter = $scope.newPosMarker.new_position;
         $rootScope.$broadcast('positionChange');
         $scope.closeModal('mapCenter');
     };
 
     // When the modal is shown, load the user's settings on the value attribute
     $scope.$on('modal.shown', function (event, modal) {
+        $scope.init_zoom = SettingsService.stored.zoom;
+        $scope.init_range = SettingsService.stored.closeRange;
         var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
         mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
         if (modal.id === 'settings') {
             $scope.newPosMarker = {};
-            $scope.settings = SettingsService.active;
+            $scope.settings = SettingsService.stored;
         } else {
             $scope.posMapDefaults = {
                 tileLayer: mapboxTileLayer
             };
             $scope.newPosMarker = {
                 new_position: {
-                    lat: SettingsService.active.mapCenter.lat,
-                    lng: SettingsService.active.mapCenter.lng,
+                    lat: SettingsService.stored.mapCenter.lat,
+                    lng: SettingsService.stored.mapCenter.lng,
                     icon: $scope.pos_icon,
                     draggable: true
                 }};
@@ -141,8 +143,12 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
     // Execute action on hide modal
     $scope.$on('modal.hidden', function (e, modal) {
         if (modal.id === 'settings') {
-            SettingsService.active = $scope.settings;
+            SettingsService.stored = $scope.settings;
             SettingsService.saveSettings();
+            console.log(SettingsService.stored.closeRange !== $scope.init_range);
+            if ((SettingsService.stored.zoom !== $scope.init_zoom && $scope.issues.length === 0) || (SettingsService.stored.closeRange !== $scope.init_range && $scope.config.activeView === 'close')) {
+                $rootScope.$broadcast('reload');
+            }
             delete $scope.newPosMarker;
             delete $scope.settings;
         } else {

@@ -6,20 +6,21 @@ app.factory('DataManager', function (TagsService, CommentsService, SettingsServi
             data.comments = CommentsService.oderComments(data.comments);
             return data;
         },
-        filterIssueType: function (data, filters) {
+        filterIssueType: function (data) {
             var response = [];
+            var filters = SettingsService.stored.typeFilters;
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < filters.length; j++) {
-                    var condition = type === "state" ? data[i].state === filters[j].name : data[i].issueType.name === filters[j].name;
-                    if (filters[j].checked && condition) {
+                    if (filters[j].checked && data[i].issueType.name === filters[j].name) {
                         response.push(data[i]);
                     }
                 }
             }
             return response;
         },
-        filterIssueState: function (data, filters) {
+        filterIssueState: function (data) {
             var response = [];
+            var filters = SettingsService.stored.stateFilters;
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < filters.length; j++) {
                     if (filters[j].checked && data[i].state === filters[j].name) {
@@ -46,19 +47,18 @@ app.factory('DataManager', function (TagsService, CommentsService, SettingsServi
             var filtered_results;
             if (type === "state") {
                 temp_filtered_results = this.filterIssueType(data, filters);
-                filtered_results = this.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
+                filtered_results = this.filterIssueState(temp_filtered_results, SettingsService.stored.stateFilters);
             } else if (type === "type") {
                 temp_filtered_results = this.filterIssueState()
             }
 
 //            $scope.error = null;
 //            var temp_filtered_results = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
-//            $scope.issues = IssuesService.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
+//            $scope.issues = IssuesService.filterIssueState(temp_filtered_results, SettingsService.stored.stateFilters);
 //            if ($scope.issues.length === 0) {
 //                $scope.error = {msg: messages.no_result};
 //            }
 
         }
-
     };
 });

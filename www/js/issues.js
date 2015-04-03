@@ -55,11 +55,11 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
             if (view === 'close') {
                 var _this = this;
                 if (pos) {
-                    var range = SettingsService.active.closeRange / 1000 / 6378.1;
+                    var range = SettingsService.stored.closeRange / 1000 / 6378.1;
                     return _this.getCloseIssues(0, '*', pos, range);
                 } else {
                     return MapService.locate().then(function (pos) {
-                        var range = SettingsService.active.closeRange / 100 / 6378.1;
+                        var range = SettingsService.stored.closeRange / 100 / 6378.1;
                         return _this.getCloseIssues(0, '*', pos, range);
                     });
                 }
@@ -82,21 +82,16 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
         }
     };
 });
-app.controller('ListCtrl', function (
-        $rootScope,
-        $scope,
-        IssuesService,
-        $state,
-        $ionicPopup,
-        Loading,
-        MapService,
-        messages,
-        $ionicPlatform,
-        SettingsService) {
+app.controller('ListCtrl', function ($rootScope, $scope, $state, $ionicPopup, Loading) {
     console.log('ListCtrl loaded');
 
     $scope.$on('$ionicView.beforeEnter', function () {
         $rootScope.enableLeft = true;
+    });
+
+    $scope.$on('dataloaded', function () {
+        console.log('data loaded');
+        Loading.hide();
     });
 
     $scope.goToDetails = function (issueId) {
@@ -112,67 +107,6 @@ app.controller('ListCtrl', function (
             templateUrl: 'templates/popup-info-states.html'
         });
     };
-    $scope.loadData = function (pos) {
-        Loading.show(messages.load_data);
-        $scope.error = null;
-        console.log("Active View : " + $scope.config.activeView);
-        IssuesService
-                .getViewData($scope.config.activeView, pos)
-                .then(function (response) {
-                    console.log("Response : ");
-                    console.log(response.data);
-                    if (response.data.length === 0) {
-                        $scope.error = {msg: messages.no_result};
-                    } else {
-                        $scope.issues = response.data;
-                        $scope.init_issues = response.data;
-                        console.log('Des résultats');
-                        console.log(response.data.length);
-                    }
-                }, function (error) {
-                    $scope.error = {msg: messages.error};
-                    console.log(error);
-                })
-                .then(function () {
-                    Loading.hide();
-                });
-    };
-    $scope.handleError = function (error) {
-        console.log('Error !');
-        console.log(error);
-    };
-
-    $ionicPlatform.ready(function () {
-        MapService.locate().then($scope.loadData, $scope.handleError);
-    });
-
-    // Update the data when a config changes
-    $scope.$on('viewChange', function () {
-        $scope.issues = [];
-        MapService.locate().then($scope.loadData, $scope.handleError);
-    });
-
-    // Update the data when a filter changes
-    $scope.$on('issueTypeChange', function () {
-        $scope.error = null;
-        $scope.issues = IssuesService.filterIssueState($scope.init_issues, SettingsService.active.stateFilters);
-        $scope.issues = IssuesService.filterIssueType($scope.issues, $scope.config.issueTypes);
-        if ($scope.issues.length === 0) {
-            $scope.error = {msg: messages.no_result};
-        }
-        console.log($scope.issues.length);
-    });
-
-    // Update the data when a filter changes
-    $scope.$on('issueStateChange', function () {
-        $scope.error = null;
-        var temp_filtered_results = IssuesService.filterIssueType($scope.init_issues, $scope.config.issueTypes);
-        $scope.issues = IssuesService.filterIssueState(temp_filtered_results, SettingsService.active.stateFilters);
-        if ($scope.issues.length === 0) {
-            $scope.error = {msg: messages.no_result};
-        }
-        console.log($scope.issues.length);
-    });
 });
 
 /**
@@ -189,7 +123,7 @@ app.controller('DetailsCtrl', function (messages, $rootScope, $scope, $state, is
     $scope.$on('newComment', function (e, data) {
         $scope.issue = data;
     });
-    
+
     // This function saves the localisation of the issue in order to pass them to the app.details.map view.
     $scope.showIssueOnMap = function () {
         store.set('issue', {
@@ -199,7 +133,7 @@ app.controller('DetailsCtrl', function (messages, $rootScope, $scope, $state, is
         });
         $state.go('app.details.map');
     };
-    
+
     // Loads the issue's data in the view or show an error message if this fails.
     Loading.show(messages.loading);
     if (issue) {
