@@ -32,7 +32,6 @@ app.controller('CommentsCtrl', function ($scope, CommentsService, DataManager) {
                 })
                 .error(function () {
                     // TODO : ajouter une alerte d'erreur
-                    console.log('error');
                 });
     };
 });

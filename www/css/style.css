@@ -245,10 +245,6 @@ p.issue-stats {
     right: 16px;
 }
 
-#map-center-full {
-
-}
-
 #map-center-select button {
     margin-left: 5px;
     border-color: rgba(0, 0, 0, 0.1);
@@ -271,6 +267,22 @@ p.issue-stats {
 .settings .card .item.item-title,
 .settings .card .item.item-title span {
     padding-bottom: 0;
+}
+.settings .state_filters>label {
+    margin-bottom: 16px;
+}
+.settings .state_filters>ul {
+    margin: 0;
+}
+.settings .state_filters ul .item {
+    margin: 0 16px;
+    font-size: 14px;
+}
+.settings .state_filters ul .item:last-child {
+    border-bottom: none;
+}
+.settings .state_filters ul .item:first-child {
+    border-top: 1px solid #DDD;
 }
 .settings .card .item input[type="text"] {
     text-align: right;

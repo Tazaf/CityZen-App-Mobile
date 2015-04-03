@@ -48,8 +48,7 @@
                 <ion-toggle ng-repeat="stateFilter in stateFilters"
                             ng-model="stateFilter.checked" 
                             ng-checked="stateFilter.checked"
-                            ng-click="issueStateFilter()"
-                            class="item-issue-type">
+                            ng-click="issueStateFilter()">
                     {{stateFilter.text}}
                 </ion-toggle>
             </ul>

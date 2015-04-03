@@ -1,26 +1,17 @@
-var app = angular.module('cityzen.settings', ['angular-storage']);
+var app = angular.module('cityzen.settings', ['angular-storage', 'cityzen.default_settings']);
 
-app.service('SettingsService', function (store) {
+app.service('SettingsService', function (store, default_settings) {
     return {
-        default: {
-            mapCenter: {
-                lat: 50,
-                lng: 7
-            },
-            zoom: 12,
-            homePage: "app.map",
-            homeView: "all",
-            closeRange: 850,
-            stateFilters: [
-                {text: 'Créé', name: 'created', checked: true},
-                {text: 'Assigné', name: 'assigned', checked: true},
-                {text: 'Reconnu', name: 'acknowledged', checked: true},
-                {text: 'En cours', name: 'in_progress', checked: true},
-                {text: 'Rejeté', name: 'rejected', checked: true},
-                {text: 'Résolu', name: 'solved', checked: true}
-            ]
-        },
+        /**
+         * Contains in run-time the user's settings as defined by himself.
+         * These settings are retrieved from the LocalStorage.
+         */
         stored: {},
+        /**
+         * Contains in run-time the run-time settings as defined while using the application.
+         * These settings are, for example, the current view, the current selected filters, etc.
+         */
+        active: {},
         /*
          * If there are settings stored, get and return them.
          * If there's not, get and return the default settings.
@@ -28,7 +19,7 @@ app.service('SettingsService', function (store) {
         getSettings: function () {
             var settings = store.get('settings');
             if (!settings) {
-                settings = this.default;
+                settings = default_settings;
                 store.set('settings', settings);
             }
             return settings;
@@ -38,6 +29,9 @@ app.service('SettingsService', function (store) {
          */
         getHomePage: function () {
             return this.getSettings().homePage;
+        },
+        getStateFilters: function() {
+            return this.getSettings().stateFilters;
         },
         /*
          * Saves the settings on the storage
@@ -102,7 +96,6 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
 
     // When the modal is shown, load the user's settings on the value attribute
     $scope.$on('modal.shown', function (event, modal) {
-        $scope.init_zoom = SettingsService.stored.zoom;
         $scope.init_range = SettingsService.stored.closeRange;
         var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
         mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
@@ -125,7 +118,6 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
                 $scope.map.attributionControl.setPosition('bottomleft');
                 $timeout(function () {
                     $scope.map.invalidateSize();
-                    console.log('invalidateSize');
                 });
                 $scope.map.on('click', function (event) {
                     $scope.newPosMarker.new_position.lat = event.latlng.lat;
@@ -145,9 +137,8 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
         if (modal.id === 'settings') {
             SettingsService.stored = $scope.settings;
             SettingsService.saveSettings();
-            console.log(SettingsService.stored.closeRange !== $scope.init_range);
-            if ((SettingsService.stored.zoom !== $scope.init_zoom && $scope.issues.length === 0) || (SettingsService.stored.closeRange !== $scope.init_range && $scope.config.activeView === 'close')) {
-                $rootScope.$broadcast('reload');
+            if (SettingsService.stored.closeRange !== $scope.init_range && $scope.config.activeView === 'close') {
+                $rootScope.$broadcast('rangeChange');
             }
             delete $scope.newPosMarker;
             delete $scope.settings;

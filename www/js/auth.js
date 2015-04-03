@@ -35,8 +35,6 @@ app.controller('LoginCtrl', function (messages, apiUrl, AuthService, $http, $ion
             scope: $scope,
             templateUrl: 'templates/loading.html'
         });
-        console.log('URL utilisée...');
-        console.log(apiUrl);
         // Make the request to retrieve or create the user.
         $http({
             method: 'POST',

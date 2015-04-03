@@ -1,4 +1,4 @@
-var app = angular.module('cityzen.maps', ['cityzen.settings', 'cityzen.issues', 'angular-storage', 'cityzen.data-manager']);
+var app = angular.module('cityzen.maps', ['cityzen.settings', 'cityzen.issues', 'angular-storage', 'leaflet-directive', 'ngCordova']);
 
 app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolocation, Loading) {
     return {
@@ -13,15 +13,14 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
             $cordovaGeolocation
                     .getCurrentPosition(posOptions)
                     .then(function (pos) {
-                        var data = {
+                        SettingsService.active.pos = {
                             lat: pos.coords.latitude,
                             lng: pos.coords.longitude
                         };
-                        dfd.resolve(data);
+                        dfd.resolve();
                     }, function (error) {
-                        console.log(error.message);
-                        var data = SettingsService.stored.mapCenter;
-                        dfd.resolve(data);
+                        SettingsService.active.pos = SettingsService.stored.mapCenter;
+                        dfd.resolve();
                     });
             return dfd.promise;
         }
@@ -31,9 +30,20 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
 
 // A controller that displays information for the active view's issues
 app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, $q, $rootScope, MapService, SettingsService) {
-    console.log('MapCtrl loaded');
 
-    // Default user position marker
+    /**
+     * Returns a marker Object indicating the user's position based on the pos parameter.
+     * This parameter must be an object with at least a lat and a lng properties which value must be a number.
+     * The returned object will have :
+     * <ul>
+     * <li>A lat property equal to the parameter's lat property.</li>
+     * <li>A lng property equal to the parameter's lng property</li>
+     * <li>A message property equal to "Ma position"</li>
+     * <li>An icon property equal to the scope pos_icon property</li>
+     * </ul>
+     * @param {Object} pos An object with lat and lng properties.
+     * @returns {Object} An object that can be use as it is to create a Leaflet marker.
+     */
     function defaultMarker(pos) {
         return {
             lat: pos.lat,
@@ -43,39 +53,10 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         };
     }
 
-    // Disable the swipe menu for this view
-    $scope.$on('$ionicView.beforeEnter', function () {
-        $rootScope.enableLeft = true;
-        $timeout(function () {
-            $scope.$broadcast('invalidateSize');
-        });
-    });
-
-    $scope.$on('$ionicView.enter', function () {
-        if (!$scope.showMap && $scope.issues) {
-            loadMap().then(insertData);
-        } else if ($scope.issues) {
-            insertData();
-        }
-    });
-
-    // Hide the leaflet directive from the template while loading the data
-    $scope.showMap = false;
-
-    // When catching the positionChange event, if the geolocation failed or is not active, replace the position marker
-    $scope.$on('positionChange', function () {
-        MapService.locate().then(function (pos) {
-            console.log(pos);
-            $scope.mapMarkers[0].lat = pos.lat;
-            $scope.mapMarkers[0].lng = pos.lng;
-            $scope.map.fitBounds($scope.mapMarkers);
-        }).then(Loading.hide);
-    });
-
     // A function that loads the map in the template
     function loadMap() {
         Loading.show(messages.load_map);
-        var pos = $scope.pos === undefined ? SettingsService.stored.mapCenter : $scope.pos;
+        var pos = SettingsService.active.pos;
         var dfd = $q.defer();
         // Load the map
         $scope.layers = {
@@ -112,7 +93,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         }, function (error) {
             dfd.reject(error);
         });
-//         Show the map on the template
+        // Show the map on the template
         $scope.showMap = true;
         return dfd.promise;
     }
@@ -122,7 +103,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         Loading.show(messages.create_markers);
         var data = $scope.issues;
         if ($scope.mapMarkers.length > 1) {
-            $scope.mapMarkers = [defaultMarker($scope.pos)];
+            $scope.mapMarkers = [defaultMarker(SettingsService.active.pos)];
         }
         // If there is any loaded data, create a marker for each one of them and add it to the mapMarkers array
         if (data.length > 0) {
@@ -143,6 +124,35 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         }
         Loading.hide();
     }
+
+    // Hide the leaflet directive from the template while loading the data
+    $scope.showMap = false;
+
+    // Disable the swipe menu for this view
+    $scope.$on('$ionicView.beforeEnter', function () {
+        $rootScope.enableLeft = true;
+        $timeout(function () {
+            $scope.$broadcast('invalidateSize');
+        });
+    });
+
+    $scope.$on('$ionicView.enter', function () {
+        if (!$scope.showMap && $scope.issues) {
+            loadMap().then(insertData);
+        } else if ($scope.issues) {
+            insertData();
+        }
+    });
+
+    // When catching the positionChange event, if the geolocation failed or is not active, replace the position marker
+    $scope.$on('positionChange', function () {
+        MapService.locate().then(function () {
+            var pos = SettingsService.active.pos;
+            $scope.mapMarkers[0].lat = pos.lat;
+            $scope.mapMarkers[0].lng = pos.lng;
+            $scope.map.fitBounds($scope.mapMarkers);
+        }).then(Loading.hide);
+    });
 
     $scope.$on('dataloaded', function () {
         insertData();

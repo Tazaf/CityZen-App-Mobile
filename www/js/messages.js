@@ -1,3 +1,6 @@
+/*
+ * This module defines the messages and their value that can be showned to the user while using the application.
+ */
 angular.module('cityzen.messages', [])
         .constant("messages", {
             no_result: "Désolé, aucun résultat...",

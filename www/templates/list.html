@@ -11,7 +11,6 @@
         <div class="list">
             <ion-item class="item item-avatar"  collection-repeat="issue in issues" ng-click="goToDetails(issue.id)">
                 <i class="issue-{{issue.state}}"></i>
-                <!-- <img class="issue-{{issue.state}}" src="" alt="" /> -->
                 <h2>{{issue.description}}</h2>
                 <p class="issue-stats">{{issue.comments.length}} <i class="icon ion-chatbubbles"></i> {{issue.tags.length}}<i class="icon ion-pricetags"></i></p>
                 <span>{{issue.owner.name}}</span>

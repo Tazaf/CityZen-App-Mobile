@@ -3,23 +3,16 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('cityzen',
-        [
+var app = angular.module('cityzen', [
             'ionic',
-            'leaflet-directive',
             'cityzen.auth',
-            'cityzen.ctrls',
             'cityzen.constants',
             'cityzen.menus',
-            'cityzen.directives',
             'cityzen.settings',
-            'cityzen.comments',
             'cityzen.maps',
-            'cityzen.tags',
             'cityzen.issues',
             'cityzen.messages',
-            'geolocation',
-            'ngCordova'
+            'cityzen.new_issue'
         ]);
 
 app.run(function ($ionicPlatform, SettingsService) {
@@ -35,7 +28,7 @@ app.run(function ($ionicPlatform, SettingsService) {
         }
 
         SettingsService.stored = SettingsService.getSettings();
-        console.log(SettingsService.stored);
+        SettingsService.active.stateFilters = JSON.parse(JSON.stringify(SettingsService.getStateFilters()));
     });
 });
 
@@ -93,8 +86,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                             }
                             return issueTypes;
                         }, function (error) {
-                            console.log('IssueTypes Error :');
-                            console.log(error);
                             return null;
                         });
                     }
@@ -171,13 +162,11 @@ app.config(function ($ionicConfigProvider) {
 app.factory('Loading', function ($ionicLoading) {
     return {
         show: function (text) {
-            console.log('Loading : ' + text);
             $ionicLoading.show({
                 template: "<i class=\"fa fa-refresh fa-spin\"></i><h1>" + text + "</h1>"
             });
         },
         hide: function () {
-            console.log('Loading caché');
             $ionicLoading.hide();
         }
     };

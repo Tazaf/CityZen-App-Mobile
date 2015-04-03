@@ -1,16 +1,17 @@
-var app = angular.module('cityzen.menus', ['angular-storage', 'cityzen.settings', 'cityzen.maps', 'cityzen.issues', 'cityzen.data-manager']);
+var app = angular.module('cityzen.menus', ['angular-storage', 'cityzen.settings', 'cityzen.maps', 'cityzen.issues', 'cityzen.data-manager', 'cityzen.auth']);
 
-app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueTypes, SettingsService, MapService, messages, Loading, IssuesService, DataManager) {
+app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueTypes, SettingsService, MapService, messages, Loading, IssuesService, DataManager, AuthService) {
+    $scope.logout = function () {
+        AuthService.logout();
+    };
 
-    function loadData(pos) {
-        $scope.pos = pos;
+    function loadData() {
         $scope.$broadcast('located');
         Loading.show(messages.load_data);
         $scope.error = null;
-        console.log("Active View : " + $scope.config.activeView);
         var dfd = $q.defer();
         IssuesService
-                .getViewData($scope.config.activeView, pos)
+                .getViewData($scope.config.activeView)
                 .then(function (response) {
                     if (response.data.length === 0) {
                         $scope.error = {msg: messages.no_result};
@@ -37,7 +38,6 @@ app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueT
         MapService.locate().then(loadData).then(function (data) {
             $scope.init_issues = data;
             sort();
-            console.log($scope.issues);
         }, handleError);
     }
 
@@ -53,7 +53,6 @@ app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueT
     }
 
     $scope.$on('viewChange', function () {
-        console.log($scope.config.activeView);
         main();
     });
 
@@ -62,20 +61,17 @@ app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueT
         sort();
     });
 
-    $scope.$on('reload', function () {
+    $scope.$on('rangeChange', function () {
         main();
     });
 
-    console.log('Initialising config');
     $scope.isAndroid = android;
     $scope.user = user;
     $scope.config = {
         activeView: SettingsService.stored.homeView
-//        issueTypes: issueTypes
     };
-    SettingsService.stored.typeFilters = issueTypes;
+    SettingsService.active.typeFilters = issueTypes;
     $scope.pos_icon = pos_icon;
-    console.log('Config loaded');
 
     main();
 });
@@ -87,16 +83,14 @@ app.controller('ViewIssuesCtrl', function ($rootScope, $scope) {
 });
 
 app.controller('IssueTypeCtrl', function ($scope, $rootScope, SettingsService) {
-    $scope.issueTypes = SettingsService.stored.typeFilters;
+    $scope.issueTypes = SettingsService.active.typeFilters;
     $scope.issueTypeFilter = function () {
         $rootScope.$broadcast('filterChange');
     };
 });
 
-app.controller('IssueStateCtrl', function ($scope, $rootScope, SettingsService) {
-    console.log(SettingsService.stored);
-    $scope.stateFilters = SettingsService.stored.stateFilters;
-    console.log($scope.issueTypes);
+app.controller('IssueStateCtrl', function ($scope, $rootScope, SettingsService, store) {
+    $scope.stateFilters = SettingsService.active.stateFilters;
     $scope.issueStateFilter = function () {
         $rootScope.$broadcast('filterChange');
     };

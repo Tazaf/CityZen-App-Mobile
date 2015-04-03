@@ -66,13 +66,11 @@ app.controller('TagsCtrl', function ($scope, TagsService, $ionicPopup, $filter) 
                     })
                     .error(function () {
                         // TODO : ajouter une alert d'erreur
-                        console.log('error');
                     });
         }
     };
     // Remove a tag
     $scope.removeTag = function (tag) {
-        console.log(tag);
         TagsService
                 .removeTag(tag, $scope.issue.id)
                 .success(function () {
@@ -81,7 +79,7 @@ app.controller('TagsCtrl', function ($scope, TagsService, $ionicPopup, $filter) 
                     });
                 })
                 .error(function () {
-                    console.log('error');
+                    // TODO : ajouter une alerte d'erreur
                 });
     };
 });

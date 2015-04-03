@@ -61,6 +61,20 @@
                 </div>
                 <div class="setting-info"><i class="icon ion-information-circled"></i>Règle le niveau de zoom de la carte lorsqu'il n'y a qu'un seul marqueur à afficher.</div>
             </div>
+            <div class="card state_filters">
+                <label class="item item-input item-title">
+                    <span class="input-label">Filtres de statuts</span>
+                </label>
+                <ul class="list transparent">
+                    <ion-toggle ng-repeat="stateFilter in settings.stateFilters"
+                                ng-model="stateFilter.checked" 
+                                ng-checked="stateFilter.checked"
+                                ng-click="issueStateFilter()">
+                        {{stateFilter.text}}
+                    </ion-toggle>
+                </ul>
+                <div class="setting-info"><i class="icon ion-information-circled"></i>Définit quels sont les filtres de statuts sélectionnés au chargement de l'application.</div>
+            </div>
         </div>
     </ion-content>
 </ion-modal-view>

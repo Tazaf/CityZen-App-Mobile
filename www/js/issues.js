@@ -1,5 +1,8 @@
+/*
+ * This module is used to manage the issues throughout the application.
+ */
 var app = angular.module('cityzen.issues', ['angular-storage', 'cityzen.tags', 'cityzen.comments', 'cityzen.maps', 'cityzen.data-manager']);
-app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsService, SettingsService, MapService, DataManager) {
+app.factory('IssuesService', function ($q, $http, apiUrl, SettingsService, MapService, DataManager) {
     return {
         getAllIssues: function (page, nb_item) {
             return $http({
@@ -48,7 +51,8 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
                 url: apiUrl + '/issues/' + id
             });
         },
-        getViewData: function (view, pos) {
+        getViewData: function (view) {
+            var pos = SettingsService.active.pos;
             if (view === 'all') {
                 return this.getAllIssues(0, '*');
             }
@@ -83,14 +87,11 @@ app.factory('IssuesService', function ($q, $http, apiUrl, TagsService, CommentsS
     };
 });
 app.controller('ListCtrl', function ($rootScope, $scope, $state, $ionicPopup, Loading) {
-    console.log('ListCtrl loaded');
-
     $scope.$on('$ionicView.beforeEnter', function () {
         $rootScope.enableLeft = true;
     });
 
     $scope.$on('dataloaded', function () {
-        console.log('data loaded');
         Loading.hide();
     });
 
