@@ -1,3 +1,7 @@
 {
-  "apiUrl": "https://example.com/api"
+    "apiUrl": "https://example.com/api",
+    "mapboxMapId": "example.12345",
+    "mapboxTokenAccess": "ex.em.ple.123.456",
+    "qimgUrl": "https://example.com/api",
+    "qimgToken": "example.12345"
 }

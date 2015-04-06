@@ -2,7 +2,7 @@
  * This module is used to manage the issues throughout the application.
  */
 var app = angular.module('cityzen.issues', ['angular-storage', 'cityzen.tags', 'cityzen.comments', 'cityzen.maps', 'cityzen.data-manager']);
-app.factory('IssuesService', function ($q, $http, apiUrl, SettingsService, MapService, DataManager) {
+app.factory('IssuesService', function ($q, $http, apiUrl, Settings, MapService, DataManager) {
     return {
         getAllIssues: function (page, nb_item) {
             return $http({
@@ -52,18 +52,18 @@ app.factory('IssuesService', function ($q, $http, apiUrl, SettingsService, MapSe
             });
         },
         getViewData: function (view) {
-            var pos = SettingsService.active.pos;
+            var pos = Settings.active.pos;
             if (view === 'all') {
                 return this.getAllIssues(0, '*');
             }
             if (view === 'close') {
                 var _this = this;
                 if (pos) {
-                    var range = SettingsService.stored.closeRange / 1000 / 6378.1;
+                    var range = Settings.stored.closeRange / 1000 / 6378.1;
                     return _this.getCloseIssues(0, '*', pos, range);
                 } else {
                     return MapService.locate().then(function (pos) {
-                        var range = SettingsService.stored.closeRange / 100 / 6378.1;
+                        var range = Settings.stored.closeRange / 100 / 6378.1;
                         return _this.getCloseIssues(0, '*', pos, range);
                     });
                 }

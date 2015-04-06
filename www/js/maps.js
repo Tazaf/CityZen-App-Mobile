@@ -1,6 +1,6 @@
 var app = angular.module('cityzen.maps', ['cityzen.settings', 'cityzen.issues', 'angular-storage', 'leaflet-directive', 'ngCordova']);
 
-app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolocation, Loading) {
+app.factory('MapService', function (messages, Settings, $q, $cordovaGeolocation, Loading) {
     return {
         /*
          * Locate the user if he allowed it.
@@ -9,19 +9,21 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
         locate: function () {
             Loading.show(messages.locating);
             var dfd = $q.defer();
-            var posOptions = {timeout: 10000, enableHighAccuracy: false};
-            $cordovaGeolocation
-                    .getCurrentPosition(posOptions)
-                    .then(function (pos) {
-                        SettingsService.active.pos = {
-                            lat: pos.coords.latitude,
-                            lng: pos.coords.longitude
-                        };
-                        dfd.resolve();
-                    }, function (error) {
-                        SettingsService.active.pos = SettingsService.stored.mapCenter;
-                        dfd.resolve();
-                    });
+            Settings.active.pos = Settings.stored.mapCenter;
+            dfd.resolve();
+//            var posOptions = {timeout: 10000, enableHighAccuracy: false};
+//            $cordovaGeolocation
+//                    .getCurrentPosition(posOptions)
+//                    .then(function (pos) {
+//                        Settings.active.pos = {
+//                            lat: pos.coords.latitude,
+//                            lng: pos.coords.longitude
+//                        };
+//                        dfd.resolve();
+//                    }, function (error) {
+//                        Settings.active.pos = Settings.stored.mapCenter;
+//                        dfd.resolve();
+//                    });
             return dfd.promise;
         }
     };
@@ -29,7 +31,7 @@ app.factory('MapService', function (messages, SettingsService, $q, $cordovaGeolo
 
 
 // A controller that displays information for the active view's issues
-app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, $q, $rootScope, MapService, SettingsService) {
+app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Loading, $q, $rootScope, MapService, Settings) {
 
     /**
      * Returns a marker Object indicating the user's position based on the pos parameter.
@@ -56,7 +58,8 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
     // A function that loads the map in the template
     function loadMap() {
         Loading.show(messages.load_map);
-        var pos = SettingsService.active.pos;
+        var pos = Settings.active.pos;
+        console.log(Settings.active.pos);
         var dfd = $q.defer();
         // Load the map
         $scope.layers = {
@@ -83,7 +86,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         $scope.mapCenter = {
             lat: pos.lat,
             lng: pos.lng,
-            zoom: Number(SettingsService.stored.zoom)
+            zoom: Number(Settings.stored.zoom)
         };
         $scope.mapMarkers = [defaultMarker(pos)];
         leafletData.getMap('map').then(function (map) {
@@ -103,7 +106,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
         Loading.show(messages.create_markers);
         var data = $scope.issues;
         if ($scope.mapMarkers.length > 1) {
-            $scope.mapMarkers = [defaultMarker(SettingsService.active.pos)];
+            $scope.mapMarkers = [defaultMarker(Settings.active.pos)];
         }
         // If there is any loaded data, create a marker for each one of them and add it to the mapMarkers array
         if (data.length > 0) {
@@ -120,7 +123,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
             $scope.map.fitBounds($scope.mapMarkers);
         } else {
             // Set the view to display only the position marker with the desired zoom
-            $scope.map.setView([$scope.mapMarkers[0].lat, $scope.mapMarkers[0].lng], SettingsService.stored.zoom);
+            $scope.map.setView([$scope.mapMarkers[0].lat, $scope.mapMarkers[0].lng], Settings.stored.zoom);
         }
         Loading.hide();
     }
@@ -147,7 +150,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
     // When catching the positionChange event, if the geolocation failed or is not active, replace the position marker
     $scope.$on('positionChange', function () {
         MapService.locate().then(function () {
-            var pos = SettingsService.active.pos;
+            var pos = Settings.active.pos;
             $scope.mapMarkers[0].lat = pos.lat;
             $scope.mapMarkers[0].lng = pos.lng;
             $scope.map.fitBounds($scope.mapMarkers);
@@ -166,7 +169,7 @@ app.controller('MapCtrl', function ($timeout, messages, $scope, mapboxMapId, map
 });
 
 // Controller that show a particular issue on its own map
-app.controller('DetailsMapCtrl', function ($rootScope, store, $scope, mapboxMapId, mapboxTokenAccess, leafletData, SettingsService) {
+app.controller('DetailsMapCtrl', function ($rootScope, store, $scope, mapboxMapId, mapboxTokenAccess, leafletData, Settings) {
 
     // Disable the swipe menu for this screen
     $scope.$on('$ionicView.beforeEnter', function () {
@@ -187,7 +190,7 @@ app.controller('DetailsMapCtrl', function ($rootScope, store, $scope, mapboxMapI
     $scope.mapCenter = {
         lat: issue.lat,
         lng: issue.lng,
-        zoom: Number(SettingsService.stored.zoom)
+        zoom: Number(Settings.stored.zoom)
     };
 
     // Create a marker with the issue's information

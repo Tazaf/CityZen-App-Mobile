@@ -180,11 +180,61 @@ p.issue-stats {
 
 /* NEW ISSUE FORM STYLES */
 
-.bar-new {
-    border-bottom: thin solid #11C1F3;
+.new-issue .img-thumbnail {
+    position: relative;
+    padding: 6px;
 }
-.bar-new h1 {
-    color: #11C1F3;
+.new-issue .img-thumbnail button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-height: 30px;
+    min-width: 30px;
+}
+.new-issue .img-thumbnail img {
+    margin: auto;
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    border-bottom: none;
+}
+.new-issue textarea {
+    width: 100%;
+    min-height: 50px;
+}
+.new-issue .item-textarea {
+    padding: 6px 16px;
+}
+.new-issue .photo {
+    position: absolute;
+    top: 13px;
+    right: 16px;
+}
+.new-issue .photo .button {
+/*    font-size: 29px;
+    line-height: 36px;
+    padding: 0 15px;
+    height: 36px;
+    display: inline-block;*/
+    min-width: 50px;
+    min-height: 40px;
+    font-size: 25px;
+    line-height: 33px;
+}
+.new-issue .btn:last-of-type {
+    border-left: 1px solid #DDD;
+}
+.new-issue .item-input .button.button-small {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.new-issue .position .button-small {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 3px 11px;
 }
 
 /* TOAST STYLES */

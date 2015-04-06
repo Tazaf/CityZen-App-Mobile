@@ -4,18 +4,18 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('cityzen', [
-            'ionic',
-            'cityzen.auth',
-            'cityzen.constants',
-            'cityzen.menus',
-            'cityzen.settings',
-            'cityzen.maps',
-            'cityzen.issues',
-            'cityzen.messages',
-            'cityzen.new_issue'
-        ]);
+    'ionic',
+    'cityzen.auth',
+    'cityzen.constants',
+    'cityzen.menus',
+    'cityzen.settings',
+    'cityzen.maps',
+    'cityzen.issues',
+    'cityzen.messages',
+    'cityzen.new_issue'
+]);
 
-app.run(function ($ionicPlatform, SettingsService) {
+app.run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -26,10 +26,12 @@ app.run(function ($ionicPlatform, SettingsService) {
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-
-        SettingsService.stored = SettingsService.getSettings();
-        SettingsService.active.stateFilters = JSON.parse(JSON.stringify(SettingsService.getStateFilters()));
     });
+});
+
+app.run(function (Settings) {
+    Settings.stored = Settings.getSettings();
+    Settings.active.stateFilters = JSON.parse(JSON.stringify(Settings.getStateFilters()));
 });
 
 app.run(function (AuthService, $rootScope, $state) {
@@ -41,6 +43,7 @@ app.run(function (AuthService, $rootScope, $state) {
 
 // If the user is not logged in and is trying to access another state than "login"...
         if (!AuthService.currentUserId && toState.name !== 'login') {
+            console.log('Activating login');
 
 // ... then cancel the transition and go to the "login" state instead.
             event.preventDefault();
@@ -80,6 +83,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                             var issueTypes = [];
                             for (var i = 0; i < response.data.length; i++) {
                                 issueTypes.push({
+                                    id: response.data[i].id,
                                     name: response.data[i].name,
                                     checked: true
                                 });
@@ -135,11 +139,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             })
             .state('app.new', {
-                url: '/new',
+                url: '/newIssue',
                 views: {
                     'menuContent': {
-                        controller: 'NewCtrl',
-                        templateUrl: 'templates/new.html'
+                        controller: 'NewIssueCtrl',
+                        templateUrl: 'templates/new_issue.html'
                     }
                 }
             })
@@ -149,7 +153,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'templates/login.html'
             });
     $urlRouterProvider.otherwise(function ($injector) {
-        var next_state = $injector.get('SettingsService').getHomePage();
+        var next_state = $injector.get('Settings').getHomePage();
         $injector.get('$state').go(next_state);
     });
 });

@@ -1,5 +1,5 @@
 var app = angular.module('cityzen.data-manager', ['cityzen.tags', 'cityzen.comments', 'cityzen.settings']);
-app.factory('DataManager', function (TagsService, CommentsService, SettingsService) {
+app.factory('DataManager', function (TagsService, CommentsService, Settings) {
     return {
         orderData: function (data) {
             data.tags = TagsService.orderTags(data.tags);
@@ -8,7 +8,7 @@ app.factory('DataManager', function (TagsService, CommentsService, SettingsServi
         },
         filterIssueType: function (data) {
             var response = [];
-            var filters = SettingsService.active.typeFilters;
+            var filters = Settings.active.typeFilters;
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < filters.length; j++) {
                     if (filters[j].checked && data[i].issueType.name === filters[j].name) {
@@ -20,7 +20,7 @@ app.factory('DataManager', function (TagsService, CommentsService, SettingsServi
         },
         filterIssueState: function (data) {
             var response = [];
-            var filters = SettingsService.active.stateFilters;
+            var filters = Settings.active.stateFilters;
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < filters.length; j++) {
                     if (filters[j].checked && data[i].state === filters[j].name) {

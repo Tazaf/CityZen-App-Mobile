@@ -1,6 +1,6 @@
 var app = angular.module('cityzen.settings', ['angular-storage', 'cityzen.default_settings']);
 
-app.service('SettingsService', function (store, default_settings) {
+app.service('Settings', function (store, default_settings) {
     return {
         /**
          * Contains in run-time the user's settings as defined by himself.
@@ -44,7 +44,7 @@ app.service('SettingsService', function (store, default_settings) {
 });
 
 // A controller for the settings screen.
-app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, SettingsService, mapboxMapId, mapboxTokenAccess, leafletData, $rootScope) {
+app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Settings, mapboxMapId, mapboxTokenAccess, leafletData, $rootScope) {
 
     $scope.modals = [];
 
@@ -70,12 +70,12 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
 
     // Set the settings.closeRange value to a particular value
     $scope.setCloseRange = function (value) {
-        SettingsService.stored.closeRange = value;
+        Settings.stored.closeRange = value;
     };
 
     // Set the settings.zoom value to a particular value
     $scope.setZoom = function (value) {
-        SettingsService.stored.zoom = value;
+        Settings.stored.zoom = value;
     };
 
     // Open the settings modal
@@ -89,27 +89,27 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
     };
 
     $scope.saveNewPosition = function () {
-        SettingsService.stored.mapCenter = $scope.newPosMarker.new_position;
+        Settings.stored.mapCenter = $scope.newPosMarker.new_position;
         $rootScope.$broadcast('positionChange');
         $scope.closeModal('mapCenter');
     };
 
     // When the modal is shown, load the user's settings on the value attribute
     $scope.$on('modal.shown', function (event, modal) {
-        $scope.init_range = SettingsService.stored.closeRange;
+        $scope.init_range = Settings.stored.closeRange;
         var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
         mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxTokenAccess;
         if (modal.id === 'settings') {
             $scope.newPosMarker = {};
-            $scope.settings = SettingsService.stored;
+            $scope.settings = Settings.stored;
         } else {
             $scope.posMapDefaults = {
                 tileLayer: mapboxTileLayer
             };
             $scope.newPosMarker = {
                 new_position: {
-                    lat: SettingsService.stored.mapCenter.lat,
-                    lng: SettingsService.stored.mapCenter.lng,
+                    lat: Settings.stored.mapCenter.lat,
+                    lng: Settings.stored.mapCenter.lng,
                     icon: $scope.pos_icon,
                     draggable: true
                 }};
@@ -135,9 +135,9 @@ app.controller('SettingsModalCtrl', function ($timeout, $scope, $ionicModal, Set
     // Execute action on hide modal
     $scope.$on('modal.hidden', function (e, modal) {
         if (modal.id === 'settings') {
-            SettingsService.stored = $scope.settings;
-            SettingsService.saveSettings();
-            if (SettingsService.stored.closeRange !== $scope.init_range && $scope.config.activeView === 'close') {
+            Settings.stored = $scope.settings;
+            Settings.saveSettings();
+            if (Settings.stored.closeRange !== $scope.init_range && $scope.config.activeView === 'close') {
                 $rootScope.$broadcast('rangeChange');
             }
             delete $scope.newPosMarker;

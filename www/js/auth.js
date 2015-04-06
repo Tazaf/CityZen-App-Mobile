@@ -16,7 +16,7 @@ app.service('AuthService', function (store) {
     return service;
 });
 
-app.controller('LoginCtrl', function (messages, apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, SettingsService) {
+app.controller('LoginCtrl', function (apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, Settings) {
 
 // The $ionicView.beforeEnter event happens every time the screen is displayed.
     $scope.$on('$ionicView.beforeEnter', function () {
@@ -57,7 +57,7 @@ app.controller('LoginCtrl', function (messages, apiUrl, AuthService, $http, $ion
             });
 
             // Go to the defined first screen.
-            var next_state = SettingsService.stored.homePage;
+            var next_state = Settings.stored.homePage;
             $state.go(next_state);
 
         }).error(function (error) {

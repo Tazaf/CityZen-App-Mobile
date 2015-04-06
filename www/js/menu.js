@@ -1,6 +1,6 @@
 var app = angular.module('cityzen.menus', ['angular-storage', 'cityzen.settings', 'cityzen.maps', 'cityzen.issues', 'cityzen.data-manager', 'cityzen.auth']);
 
-app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueTypes, SettingsService, MapService, messages, Loading, IssuesService, DataManager, AuthService) {
+app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueTypes, Settings, MapService, messages, Loading, IssuesService, DataManager, AuthService) {
     $scope.logout = function () {
         AuthService.logout();
     };
@@ -68,9 +68,9 @@ app.controller('MenuCtrl', function ($q, $scope, android, user, pos_icon, issueT
     $scope.isAndroid = android;
     $scope.user = user;
     $scope.config = {
-        activeView: SettingsService.stored.homeView
+        activeView: Settings.stored.homeView
     };
-    SettingsService.active.typeFilters = issueTypes;
+    Settings.active.typeFilters = issueTypes;
     $scope.pos_icon = pos_icon;
 
     main();
@@ -82,15 +82,15 @@ app.controller('ViewIssuesCtrl', function ($rootScope, $scope) {
     };
 });
 
-app.controller('IssueTypeCtrl', function ($scope, $rootScope, SettingsService) {
-    $scope.issueTypes = SettingsService.active.typeFilters;
+app.controller('IssueTypeCtrl', function ($scope, $rootScope, Settings) {
+    $scope.issueTypes = Settings.active.typeFilters;
     $scope.issueTypeFilter = function () {
         $rootScope.$broadcast('filterChange');
     };
 });
 
-app.controller('IssueStateCtrl', function ($scope, $rootScope, SettingsService, store) {
-    $scope.stateFilters = SettingsService.active.stateFilters;
+app.controller('IssueStateCtrl', function ($scope, $rootScope, Settings, store) {
+    $scope.stateFilters = Settings.active.stateFilters;
     $scope.issueStateFilter = function () {
         $rootScope.$broadcast('filterChange');
     };
