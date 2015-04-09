@@ -253,7 +253,7 @@ Tout en bas de la page se trouve une zone permettant à l'utilisateur de rajoute
 <a name="issue-map"></a>
 ### Carte
 
-![Détails du problème](docs/issue-details.png)
+![Carte du problème](docs/issue-details-map.png)
 
 Ce écran peut être atteint depuis les détails d'un problème en appuyant sur le bouton "Détails - Carte" ![Bouton détails carte](docs(details-map-button.png).
 
