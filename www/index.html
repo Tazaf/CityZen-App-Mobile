@@ -24,7 +24,7 @@
         <script src="lib/leaflet/dist/leaflet-src.js"></script>
         <script src="lib/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
         <script src="lib/leaflet-marker-cluster/leaflet.markercluster.js" type="text/javascript"></script>
-        
+
         <!-- ngCordova js -->
         <script src="lib/ngCordova/dist/ng-cordova.min.js" type="text/javascript"></script>
 
@@ -52,16 +52,295 @@
     <ion-pane>
         <ion-nav-view>
         </ion-nav-view>
-
-        <!--<script id="templates/map.html" type="text/ng-template">
-        </script>-->
-
-        <!--<script id="templates/list.html" type="text/ng-template">
-        </script>-->
-
-        <!--<script id="templates/menu.html" type="text/ng-template">
-        </script> -->
     </ion-pane>
+
+    <!-- TEMPLATE FOR THE MENU -->
+    <script id="templates/menu.html" type="text/ng-template">
+        <ion-side-menus enable-menu-with-back-views="true">
+            <ion-side-menu-content>
+                <ion-nav-view name="menuContent"></ion-nav-view>
+                <!-- <div class="toast" ng-controller="SettingsModalCtrl">{{toast}}</div> -->
+                <div class="toast" ng-class="{showed : toast.model.show}">{{toast.model.msg}}</div>
+            </ion-side-menu-content>
+
+            <ion-side-menu side="left" id="main-menu" is-enabled="$root.enableLeft">
+                <header class="bar bar-header bar-royal transparent">
+                    <h1 class="title">{{user.firstname}} {{user.lastname}}</h1>
+                </header>
+                <ion-content class="has-header">
+                    <div class="list card transparent" ng-controller="ViewIssuesCtrl">
+                        <div class="item item-divider transparent">Afficher seulement</div>
+                        <label class="item item-radio" menu-close ng-click="changeView()">
+                            <input type="radio" name="group" ng-model="config.activeView" value="all">
+                            <div class="item-content">
+                                Tous les problèmes
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio" menu-close ng-click="changeView()">
+                            <input type="radio" name="group" ng-model="config.activeView" value="close">
+                            <div class="item-content">
+                                Problèmes proches
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio" menu-close ng-click="changeView()">
+                            <input type="radio" name="group" ng-model="config.activeView" value="mine">
+                            <div class="item-content">
+                                Mes Problèmes
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                    </div>
+                    <ul class="list card transparent" ng-controller="IssueTypeCtrl" ng-hide="!issueTypes">
+                        <div class="item item-divider transparent">Filtrer les types</div>
+                        <ion-toggle ng-repeat="issueType in issueTypes"
+                                    ng-model="issueType.checked" 
+                                    ng-checked="issueType.checked"
+                                    ng-click="issueTypeFilter()"
+                                    class="item-issue-type">
+                            {{issueType.name}}
+                        </ion-toggle>
+                    </ul>
+                    <ul class="list card transparent" ng-controller="IssueStateCtrl" ng-hide="error.stateFilters">
+                        <div class="item item-divider transparent">Filtrer les statuts</div>
+                        <ion-toggle ng-repeat="stateFilter in stateFilters"
+                                    ng-model="stateFilter.checked" 
+                                    ng-checked="stateFilter.checked"
+                                    ng-click="issueStateFilter()">
+                            {{stateFilter.text}}
+                        </ion-toggle>
+                    </ul>
+                    <div class="list card transparent">
+                        <div class="item item-divider transparent">Configuration</div>
+                        <a class="item item-icon-left" menu-close nav-clear ng-controller="SettingsModalCtrl" ng-click="openModal('settings')">
+                            <i class="icon ion-settings"></i>
+                            Paramètres
+                        </a>
+                        <a class="item item-icon-left" menu-close nav-clear ng-controller="LoginCtrl" ng-click="logout()">
+                            <i class="icon ion-log-out"></i>
+                            Logout
+                        </a>
+                    </div>
+                </ion-content>
+            </ion-side-menu>
+        </ion-side-menus>
+    </script>
+    
+    <!-- TEMPLATE FOR THE MAIN MAP -->
+    <script id="templates/map.html" type="text/ng-template">
+        <ion-view view-title="Carte" hide-back-button="true">
+            <ion-nav-bar class="bar-royal">
+            </ion-nav-bar>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon ion-navicon" menu-toggle="left"></button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <button class="button button-icon button-medium ion-clipboard" ui-sref="app.list" nav-transition="none"></button>
+            </ion-nav-buttons>
+            <ion-content scroll="false">
+                <leaflet ng-if="showMap === true" id="map" layers="layers" center="mapCenter" markers="mapMarkers" data-tap-disabled="true"></leaflet>
+                <i class="icon button-new ion-plus-circled" ng-class="{'button-new-up' : activeMarker}" ui-sref="app.new"></i>
+            </ion-content>
+            <div class="marker-info" ng-class="{'marker-info-visible' : activeMarker}" on-swipe-up="goToDetails(activeMarker.id)" ng-click="goToDetails(activeMarker.id)">
+                <span class="marker-info-details"><i class="icon ion-chevron-up"></i> Détails</span>
+                <ion-item class="item item-avatar">
+                    <i class="issue-{{activeMarker.state}}"></i>
+                    <h2>{{activeMarker.description}}</h2>
+                    <p class="issue-stats">{{activeMarker.comments.length}}<i class="icon ion-chatbubbles"></i>{{activeMarker.tags.length}}<i class="icon ion-pricetags"></i></p>
+                    <span>{{activeMarker.owner.name}}</span>
+                </ion-item>
+            </div>
+        </ion-view>
+    </script>
+    
+    <!-- TEMPLATE FOR THE MAIN LIST -->
+    <script id="templates/list.html" type="text/ng-template">
+        <ion-view view-title="Liste" hide-back-button="true">
+            <ion-nav-bar class="bar-royal">
+            </ion-nav-bar>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon ion-navicon" menu-toggle="left"></button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <button class="button button-icon button-medium ion-map" ui-sref="app.map"></button>
+            </ion-nav-buttons>
+            <ion-content>
+                <div class="list">
+                    <ion-item class="item item-avatar"  collection-repeat="issue in issues" ng-click="goToDetails(issue.id)">
+                        <i class="issue-{{issue.state}}"></i>
+                        <h2>{{issue.description}}</h2>
+                        <p class="issue-stats">{{issue.comments.length}}<i class="icon ion-chatbubbles"></i>{{issue.tags.length}}<i class="icon ion-pricetags"></i></p>
+                        <span>{{issue.owner.name}}</span>
+                    </ion-item>
+                </div>
+                <div class="issue-error" ng-if="error">
+                    <p>{{error.msg}}</p>
+                </div>
+            </ion-content>
+            <i class="icon button-help ion-help-circled" ng-if="issues.length > 0" ng-click="showHelp()"></i>
+            <i class="icon button-new ion-plus-circled" ui-sref="app.new"></i>
+        </ion-view>
+    </script>
+
+    <!-- TEMPLATE FOR THE ISSUE DETAILS -->
+    <script id="templates/details.html" type="text/ng-template">
+        <ion-view view-title="Détails">
+            <ion-nav-bar class="bar-royal">
+                <ion-nav-back-button></ion-nav-back-button>
+            </ion-nav-bar>
+            <ion-nav-buttons side="right">
+                <button ng-if="!error" class="button back-button button-icon ion-pricetags" ng-controller="TagsCtrl" ng-click="showAddTagPopup()"></button>
+                <button ng-if="!error" class="button back-button button-icon ion-location" ng-click="showIssueOnMap()"></button>
+            </ion-nav-buttons>
+            <ion-content class="issue-details has-footer" has-header="false" delegate-handle="commentsScroll">
+                <div  ng-if="!error">
+                    <img class="issue-img" ng-src="{{issue.imageUrl}}" alt="">
+                    <div class="row">
+                        <div class="col tags" ng-controller="TagsCtrl">
+                            <span ng-repeat="tag in issue.tags" ng-click="removeTag(tag)">{{tag}}<i class="icon ion-close"></i></span>
+                            <span class="no-tag" ng-if="issue.tags.length < 1">Aucun tag</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h1>Création</h1>
+                            <p>{{issue.createdOn| date:'dd MMM yyyy'}}</p>
+                        </div>
+                        <div class="col">
+                            <h1>Dernière modification</h1>
+                            <p>{{issue.updatedOn| date:'dd MMM yyyy'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h1>Statut</h1>
+                            <div class="row state {{issue.state}}">
+                                <div class="col">Assigné</div>
+                                <div class="col">Reconnu</div>
+                                <div class="col">En cours</div>
+                                <div class="col">Rejeté</div>
+                                <div class="col">Résolu</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col issue-type">
+                            <h1>Type du problème</h1>
+                            <p>{{issue.issueType.name}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h1>Description</h1>
+                            <p>{{issue.description}}</p>
+                        </div>
+                    </div>
+                    <div class="col comments">
+                        <h1>{{issue.comments.length}} Commentaire{{issue.comments.length > 1 ? 's' : ''}}</h1>
+                        <div class="card" id="{{comment.id}}" ng-repeat="comment in issue.comments">
+                            <div>{{comment.text}}</div>
+                            <div>
+                                <span>{{comment.author.name}}, le {{comment.postedOn| date: 'dd MMM yyyy'}}.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="issue-error" ng-if="error">
+                    <p>{{error.msg}}</p>
+                </div>
+            </ion-content>
+            <ion-footer-bar align-title="left" class="details-footer" ng-controller="CommentsCtrl" ng-if="!error">
+                <form class="item-input-inset" name="commentForm">
+                    <label class="item-input-wrapper">
+                        <input type="text" placeholder="Nouveau commentaire" maxlength="140" required ng-model="comment">
+                    </label>
+                    <button
+                        class="button back-button button-icon"
+                        ng-class="{'ion-paper-airplane': isAndroid,'ion-ios-paperplane-outline': !isAndroid}"
+                        ng-click="addComment()"
+                        ng-disabled="commentForm.$invalid">
+                    </button>
+                </form>
+            </ion-footer-bar>
+        </ion-view>
+    </script>
+
+    <!-- TEMPLATE FOR THE ISSUE DETAILS MAP -->
+    <script id="templates/details-map.html" type="text/ng-template">
+        <ion-view view-title="Détails - Carte">
+            <ion-nav-bar class="bar-royal">
+                <ion-nav-back-button></ion-nav-back-button>
+            </ion-nav-bar>
+            <ion-content scroll="false">
+                <leaflet id="map-details" defaults="mapDefaults" center="mapCenter" markers="mapMarkers" data-tap-disabled="true"></leaflet>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <!-- TEMPLATE FOR THE NEW ISSUE FORM -->
+    <script id="templates/new_issue.html" type="text/ng-template">
+        <ion-view view-title="Nouveau problème">
+            <ion-nav-bar class="bar-royal">
+                <ion-nav-back-button></ion-nav-back-button>
+            </ion-nav-bar>
+            <ion-nav-buttons side="right">
+                <button class="button back-button button-icon button-medium ion-checkmark-round" ng-click="register()"></button>
+            </ion-nav-buttons>
+            <ion-content class="flat-background-white new-issue">
+                <form name="new-issue-form">
+                    <div class="card">
+                        <div class="img-thumbnail">
+                            <button class="button button-small button-light ion-close" ng-hide="!userImg" ng-click="removePicture()"></button>
+                            <img ng-src="{{newIssue.imageUrl}}" alt="">
+                        </div>
+                        <div class="item">
+                            <div class="input-label">Photo</div>
+                            <div class="photo">
+                                <a class="button button-small button-light ion-camera" ng-click="getPicture('cameraOptions')" ng-disabled="userImg" autofocus></a>
+                                <a class="button button-small button-light ion-images" ng-click="getPicture('galleryOptions')" ng-disabled="userImg"></a>
+                            </div>
+                        </div>
+                        <div class="item item-textarea">
+                            <label class="input-label">Description</label>
+                            <textarea ng-model="newIssue.description" placeholder="Indiquez la nature du problème"></textarea>
+                        </div>
+                        <label class="item item-input item-select">
+                            <div class="input-label">Type</div>
+                            <select ng-model="newIssue.issueType" ng-options="type as type.name for type in issueTypes">
+                            </select>
+                        </label>
+                        <div class="item position">
+                            <div class="input-label">Emplacement</div>
+                            <i class="icon ion-checkmark" ng-hide="!newIssue.lat"></i>
+                            <a class="button button-small button-light" ng-click="showIssueLocationModal()">Choisir</a>
+                        </div>
+                    </div>
+                </form>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <!-- TEMPLATE FOR THE LOGIN FORM -->
+    <script id="templates/login.html" type="text/ng-template">
+        <ion-view view-title="Citizen Engagement" hide-back-button="true" hide-nav-bar="true" cache-view="false">
+            <ion-content class="padding login">
+                <form name="loginForm" id="login-form">
+                    <img id="logo" src="img/logo.png" alt="" />
+                    <div class="card">
+                        <label class="item item-input">
+                            <input type="text" placeholder="Prénom" ng-model="user.firstname" required="required" tabindex="1"/>
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Nom" ng-model="user.lastname" required="required" tabindex="2"/>
+                        </label>
+                    </div>
+                    <button class="button button-block button-light" ng-click="register()" ng-disabled="loginForm.$invalid" tabindex="3">Connexion</button>
+                    <p ng-if="error" class="error">{{ error}}</p>
+                </form>
+            </ion-content>
+        </ion-view>
+    </script>
 
 </body>
 </html>

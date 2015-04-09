@@ -3,6 +3,23 @@
     text-align: center;
 }
 
+.login {
+    background: url(../img/bg-login.png) repeat left top;
+}
+
+#logo {
+    display: block;
+    margin: 60px auto;
+    max-width: 70%;
+}
+
+#login-form {
+    position: absolute;
+    margin-top: 20%;
+    width: 70%;
+    left: 15%;
+}
+
 .transparent {
     background-color: rgba(255, 255, 255, 0.25) !important;
 }
@@ -51,6 +68,7 @@
     z-index: 1000;
     border-radius: 100px;
     cursor: pointer;
+    transition: all ease-in 0.2s;
 }
 .button-new {
     margin-right: 20px;
@@ -63,13 +81,81 @@
     opacity: 0.75;
 }
 
-.button-help::before,
-.button-new::before {
+.button-help:before,
+.button-new:before {
     background-color: white;
     border-radius: 50px;
     width: 35px;
     height: 35px;
     line-height: 35px;
+}
+.button-new-up {
+    bottom: 121px;
+    transition: all ease-in 0.2s;
+}
+
+/* MAP ISSUE STYLES */
+
+.marker-info {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    bottom: -200px;
+    z-index: 200;
+    transition: all ease-out 0.2s;
+}
+.marker-info-visible {
+    bottom: 0;
+    transition: all ease-in 0.2s;
+}
+.marker-info-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@-webkit-keyframes movingarrow {
+    0% {
+        opacity: 0;
+        transform: translatey(5px);
+    }
+    60% {
+        opacity: 1;
+        transform: translatey(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translatey(-5px);
+    }
+}
+@keyframes movingarrow {
+    0% {
+        opacity: 0;
+        transform: translatey(5px);
+    }
+    60% {
+        opacity: 1;
+        transform: translatey(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translatey(-5px);
+    }
+}
+.marker-info-details {
+    display: block;
+    width: 100%;
+    color: #886aea;
+    border-bottom: 1px solid #EEE;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.marker-info-details>i {
+    
+}
+.marker-info-details>i.ion-chevron-up {
+    display: inline-block;
+    -webkit-animation: movingarrow 2s infinite;
+    animation: movingarrow 2s infinite;
 }
 
 /* LIST ISSUE STYLES */
@@ -211,11 +297,6 @@ p.issue-stats {
     right: 16px;
 }
 .new-issue .photo .button {
-/*    font-size: 29px;
-    line-height: 36px;
-    padding: 0 15px;
-    height: 36px;
-    display: inline-block;*/
     min-width: 50px;
     min-height: 40px;
     font-size: 25px;
@@ -229,32 +310,40 @@ p.issue-stats {
     top: 8px;
     right: 16px;
 }
-
 .new-issue .position .button-small {
     position: absolute;
     top: 16px;
     right: 16px;
     padding: 3px 11px;
 }
+.new-issue .position i {
+    position: absolute;
+    top: 25px;
+    right: 90px;
+    color: #28a54c;
+}
 
 /* TOAST STYLES */
 
 .toast {
     position: fixed;
-    bottom: 50px;
-    width: 100%;
-    background-color: white;
-    border: thin solid black;
-    z-index: 9999;
-}
-.toast span {
-    margin: auto;
-    height: 30px;
-    width: 150px;
-    background-color: red;
-    display: block;
+    width: 70%;
+    min-height: 40px;
+    background-color: rgba(50, 50, 50, 0.7);
+    z-index: 100;
+    left: 15%;
+    border-radius: 50px;
+    color: white;
     text-align: center;
-    line-height: 30px;
+    padding: 10px;
+    transition: opacity ease-out 0.5s, bottom linear 3s;
+    opacity: 0;
+    bottom: -150px;
+}
+.toast.showed {
+    bottom: 70px;
+    opacity: 1;
+    transition: opacity ease-in 0.5s;
 }
 
 /* LEAFLET HACKS */

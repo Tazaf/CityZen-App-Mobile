@@ -10,6 +10,7 @@ angular.module('cityzen.messages', [])
             loading: "Chargement...",
             locating: "Localisation",
             load_map: "Chargement de la carte",
+            load_picture: "Chargement de la photo",
             load_data: "Chargement des données",
             create_markers: "Création des marqueurs",
             filter_fail: "Aucun résultat pour ces critères"

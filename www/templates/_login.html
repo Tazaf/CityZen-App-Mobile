@@ -1,0 +1,17 @@
+<ion-view view-title="Citizen Engagement" hide-back-button="true" hide-nav-bar="true" cache-view="false">
+    <ion-content class="padding login">
+        <form name="loginForm" id="login-form">
+            <img id="logo" src="img/logo.png" alt="" />
+            <div class="card">
+                <label class="item item-input">
+                    <input type="text" placeholder="Prénom" ng-model="user.firstname" required="required" tabindex="1"/>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Nom" ng-model="user.lastname" required="required" tabindex="2"/>
+                </label>
+            </div>
+            <button class="button button-block button-light" ng-click="register()" ng-disabled="loginForm.$invalid" tabindex="3">Connexion</button>
+            <p ng-if="error" class="error">{{ error}}</p>
+        </form>
+    </ion-content>
+</ion-view>

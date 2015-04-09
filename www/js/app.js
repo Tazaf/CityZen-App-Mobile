@@ -29,6 +29,10 @@ app.run(function ($ionicPlatform) {
     });
 });
 
+/**
+ * This run bloc is used to load the settings into the Settings service.
+ * Both the stored settings (the ones defined by the user) and the active settings (the settings used at runtime) are loaded.
+ */
 app.run(function (Settings) {
     Settings.stored = Settings.getSettings();
     Settings.active.stateFilters = JSON.parse(JSON.stringify(Settings.getStateFilters()));
@@ -52,29 +56,36 @@ app.run(function (AuthService, $rootScope, $state) {
     });
 });
 
+/**
+ * Thise is the router of the application, where the different states are declared and nested.
+ */
 app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
             .state('app', {
                 url: '/app',
                 abstract: true,
                 resolve: {
+                    // Indicates wether the platform is an android one or not. Used to select the adequate classes for certain icons in the UI.
                     android: function () {
                         return ionic.Platform.isAndroid();
                     },
+                    // Get the logged in user. Used to display his or her name in the main menu.
                     user: function (store) {
                         return store.get('user');
                     },
+                    // Defines the custom icon for the user's position on the maps.
                     pos_icon: function () {
                         return {
                             iconUrl: 'img/pos-marker.png',
                             shadowUrl: 'img/pos-marker-shadow.png',
-                            iconSize: [25, 41], // size of the icon
-                            iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
-                            shadowSize: [41, 41], // size of the shadow
-                            shadowAnchor: [12, 41], // the same for the shadow
-                            popupAnchor: [0, -36] // point from which the popup should open relative to the iconAnchor
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            shadowSize: [41, 41],
+                            shadowAnchor: [12, 41],
+                            popupAnchor: [0, -36]
                         };
                     },
+                    // Get the issueTypes from the server. Used to display them in the main menu and on the new issue screen.
                     issueTypes: function ($http, apiUrl) {
                         return $http({
                             method: 'GET',
@@ -118,6 +129,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             .state('app.details', {
                 url: '/issue/:issueId',
                 resolve: {
+                    // Get the issue which information are displayed on the detail screen.
                     issue: function ($stateParams, IssuesService) {
                         return IssuesService.getIssueData($stateParams.issueId);
                     }
@@ -158,18 +170,35 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     });
 });
 
+/**
+ * Sets some special configuration for the application.
+ * In this case, disable all the transition animations between the different views.
+ */
 app.config(function ($ionicConfigProvider) {
     $ionicConfigProvider.views.transition('none');
-    $ionicConfigProvider.views.forwardCache(true);
 });
 
+/**
+ * Defines a global services used to show and hide specific loading screen throughout the application.
+ */
 app.factory('Loading', function ($ionicLoading) {
     return {
+        
+        /**
+         * Shows a Loading screen displaying the text parameter's value
+         * @param {String} text The text of the Loading screen
+         * @returns {void}
+         */
         show: function (text) {
             $ionicLoading.show({
                 template: "<i class=\"fa fa-refresh fa-spin\"></i><h1>" + text + "</h1>"
             });
         },
+        
+        /**
+         * Hide the active Loading screen.
+         * @returns {void}
+         */
         hide: function () {
             $ionicLoading.hide();
         }

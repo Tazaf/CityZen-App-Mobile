@@ -1,12 +1,12 @@
 <ion-modal-view id="map-center-select">
     <header class="bar bar-header bar-royal">
-        <h1 class="title left-title">Ma Position</h1>
+        <h1 class="title left-title">{{modalTitle}}</h1>
         <div class="buttons" side="right">
             <button class="button button-small button-royal" ng-click="closeModal('mapCenter')">Annuler</button>
-            <button class="button button-small button-royal" ng-click="saveNewPosition()">Valider</button>
+            <button class="button button-small button-royal" ng-click="savePosition()">Valider</button>
         </div>
     </header>
     <ion-content class="has-header" scroll="false">
-        <leaflet id="map-center-full" defaults="posMapDefaults" markers="newPosMarker" data-tap-disabled="true"></leaflet>
+        <leaflet id="map-center-full" defaults="posMapDefaults" center="mapCenter" markers="newPosMarker" data-tap-disabled="true"></leaflet>
     </ion-content>
 </ion-modal-view>

@@ -1,7 +1,19 @@
+/**
+ * This moduls is responsible for the tag feature in the issue details screen.
+ */
 var app = angular.module('cityzen.tags', []);
 
+/**
+ * Defines the TagsService service that can remove, add or order the tags
+ */
 app.service('TagsService', function ($http, apiUrl, $filter) {
     return {
+        /**
+         * Removes the given tag for the given issue from the database.
+         * @param {String} tag The tag to be removed
+         * @param {String} issueId The issue's ID from which the tag should be removed
+         * @returns {Promise} The http promise of the action
+         */
         removeTag: function (tag, issueId) {
             return $http({
                 method: 'POST',
@@ -14,6 +26,12 @@ app.service('TagsService', function ($http, apiUrl, $filter) {
                 url: apiUrl + '/issues/' + issueId + '/actions'
             });
         },
+        /**
+         * Adds the given tag for the given issue in the database.
+         * @param {String} tag The tag to be added
+         * @param {String} issueId The issue's ID from which the tag should be added
+         * @returns {Promise} The http promise of the action
+         */
         addTag: function (tag, issueId) {
             return $http({
                 method: 'POST',
@@ -26,14 +44,27 @@ app.service('TagsService', function ($http, apiUrl, $filter) {
                 url: apiUrl + '/issues/' + issueId + '/actions'
             });
         },
+        /**
+         * Orders the given tags array in an alphabetical order
+         * @param {Array} tags The tags array to be ordered
+         * @returns {Array} The ordered tags array
+         */
         orderTags: function (tags) {
             return $filter('orderBy')(tags);
         }
     };
 });
 
-app.controller('TagsCtrl', function ($scope, TagsService, $ionicPopup, $filter) {
-    // Show the add tag popup
+/**
+ * The controller that manages the tags feature in the issue details view.
+ */
+app.controller('TagsCtrl', function ($scope, TagsService, $ionicPopup, $filter, $rootScope) {
+
+    /**
+     * Registers the showAddTagPopup in the scope.
+     * This function shows the popup that can be used to add a tag to the issue.
+     * @returns {undefined}
+     */
     $scope.showAddTagPopup = function () {
         $scope.tag = {};
         var myPopup = $ionicPopup.show({
@@ -55,21 +86,37 @@ app.controller('TagsCtrl', function ($scope, TagsService, $ionicPopup, $filter) 
             $scope.addTag(tag);
         });
     };
-    // Add a new tag
+    
+    /**
+     * Registers the addTag function in the scope.
+     * This function adds the given tag to the current issue.
+     * First, it removes all the whitespace in the given tag.
+     * Then, it calls the addTag() function from the TagsService and shows the new tag on the view if the tag has been added.
+     * @param {String} tag The tag value
+     * @returns {void}
+     */
     $scope.addTag = function (tag) {
         if (tag) {
+            tag = tag.replace(/ /g, '');
             TagsService
                     .addTag(tag, $scope.issue.id)
                     .success(function () {
                         $scope.issue.tags.push(tag);
-                        $scope.issue.tags = TagsService.orderTags($scope.issue.tags)
+                        $scope.issue.tags = TagsService.orderTags($scope.issue.tags);
                     })
                     .error(function () {
-                        // TODO : ajouter une alert d'erreur
+                        $rootScope.toast.show("Erreur lors de l'ajout du tag");
                     });
         }
     };
-    // Remove a tag
+    
+    /**
+     * Registers the removeTag function in the scope.
+     * This function removes the given tag from the current issue.
+     * It calls the removeTag() function from the TagsService and remove the tag from the view if the result is a success.
+     * @param {String} tag The tag value to be removed.
+     * @returns {void}
+     */
     $scope.removeTag = function (tag) {
         TagsService
                 .removeTag(tag, $scope.issue.id)
@@ -79,7 +126,7 @@ app.controller('TagsCtrl', function ($scope, TagsService, $ionicPopup, $filter) 
                     });
                 })
                 .error(function () {
-                    // TODO : ajouter une alerte d'erreur
+                    $rootScope.toast.show("Erreur lors de la suppression du tag");
                 });
     };
 });

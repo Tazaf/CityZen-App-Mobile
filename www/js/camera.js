@@ -1,28 +1,46 @@
+/**
+ * This is the module responsible for handling camera interactions.
+ */
 var app = angular.module('cityzen.camera', []);
-app.factory('Camera', function ($q, $http, qimgUrl, qimgToken) {
+
+/**
+ * Defines the Camera service that manages every action related to a new issue's picture.
+ */
+app.factory('Camera', function ($q, $http, qimgUrl, qimgToken, Loading, messages) {
     return {
+        
+        // This is the default URL used on the new issue form when no picture has been selected by the user.
         defaultImageUrl: "img/default_img.png",
-//        defaultImageUrl: "https://fbexternal-a.akamaihd.net/safe_image.php?d=AQDd1XVqJ-4fpMs_&w=470&h=246&url=http%3A%2F%2Fassets.noisey.com%2Fcontent-images%2Farticle%2Fdalek-video-interview%2FBc1kC1BhEx-8mjh4iDrtKmjNNrswrGyn5QRgVQF-MjM_vice_970x435.jpg&cfs=1&upscale=1&sx=62&sy=0&sw=831&sh=435",
-        options: {
-//            quality: 50,
-//            destinationType: navigator.camera.DestinationType.DATA_URL,
-//            allowEdit: true,
-//            targetWidth: 500,
-//            targetHeight: 500,
-//            correctOrientation: true
+        
+        // Options used when the user wants to take a picture of the issue with his phone's camera.
+        cameraOptions: {
+            quality: 50,
+            destinationType: navigator.camera.DestinationType.DATA_URL,
+            allowEdit: true,
+            targetWidth: 500,
+            targetHeight: 500,
+            correctOrientation: true,
+            sourceType: navigator.camera.PictureSourceType.CAMERA
         },
-        cameraOptions: function() {
-            var opt = this.options;
-            opt.sourceType = navigator.camera.PictureSourceType.CAMERA;
-            return opt;
+        
+        // Options used when the user wants to take a picture from his phone's galery.
+        galleryOptions: {
+            quality: 50,
+            destinationType: navigator.camera.DestinationType.DATA_URL,
+            allowEdit: true,
+            targetWidth: 500,
+            targetHeight: 500,
+            correctOrientation: true,
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
         },
-        galleryOptions: function() {
-            var opt = this.options;
-            opt.sourceType = navigator.camera.PictureSourceType.PHOTOLIBRARY;
-            return opt;
-        },
+        
+        /**
+         * Tries to take a picture with the adequates options.
+         * Returns a promise of this action that must be handle afterwards.
+         * @param {Object} options An object containing the options to use
+         * @returns {Promise} A promise of the action
+         */
         getPicture: function (options) {
-            console.log('getPictures');
             var dfd = $q.defer();
 
             navigator.camera.getPicture(function (result) {
@@ -33,8 +51,14 @@ app.factory('Camera', function ($q, $http, qimgUrl, qimgToken) {
 
             return dfd.promise;
         },
-        uploadPicture: function(imageData) {
-            console.log(imageData);
+        
+        /**
+         * Tries to upload the given image base64 data to the server.
+         * @param {String} imageData The image base64 data
+         * @returns {Promise} The http promise of the action
+         */
+        uploadPicture: function (imageData) {
+            Loading.show(messages.load_picture);
             return $http({
                 method: "POST",
                 url: qimgUrl + "/images",

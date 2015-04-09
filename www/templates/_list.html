@@ -12,7 +12,7 @@
             <ion-item class="item item-avatar"  collection-repeat="issue in issues" ng-click="goToDetails(issue.id)">
                 <i class="issue-{{issue.state}}"></i>
                 <h2>{{issue.description}}</h2>
-                <p class="issue-stats">{{issue.comments.length}} <i class="icon ion-chatbubbles"></i> {{issue.tags.length}}<i class="icon ion-pricetags"></i></p>
+                <p class="issue-stats">{{issue.comments.length}}<i class="icon ion-chatbubbles"></i>{{issue.tags.length}}<i class="icon ion-pricetags"></i></p>
                 <span>{{issue.owner.name}}</span>
             </ion-item>
         </div>

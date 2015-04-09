@@ -6,17 +6,17 @@
         <button class="button back-button button-icon button-medium ion-checkmark-round" ng-click="register()"></button>
     </ion-nav-buttons>
     <ion-content class="flat-background-white new-issue">
-        <form name="loginForm">
+        <form name="new-issue-form">
             <div class="card">
                 <div class="img-thumbnail">
                     <button class="button button-small button-light ion-close" ng-hide="!userImg" ng-click="removePicture()"></button>
-                    <img src="{{newIssue.imageUrl}}" alt="">
+                    <img ng-src="{{newIssue.imageUrl}}" alt="">
                 </div>
                 <div class="item">
                     <div class="input-label">Photo</div>
                     <div class="photo">
-                        <a class="button button-small button-light ion-camera" ng-click="getPicture('cameraOptions()')" ng-disabled="userImg"></a>
-                        <a class="button button-small button-light ion-images" ng-click="getPicture('galleryOptions()')" ng-disabled="userImg"></a>
+                        <a class="button button-small button-light ion-camera" ng-click="getPicture('cameraOptions')" ng-disabled="userImg" autofocus></a>
+                        <a class="button button-small button-light ion-images" ng-click="getPicture('galleryOptions')" ng-disabled="userImg"></a>
                     </div>
                 </div>
                 <div class="item item-textarea">
@@ -25,13 +25,13 @@
                 </div>
                 <label class="item item-input item-select">
                     <div class="input-label">Type</div>
-                    <select ng-model="newIssue.issueTypeId" required>
-                        <option ng-repeat="type in issueTypes" value="{{type.id}}">{{type.name}}</option>
+                    <select ng-model="newIssue.issueType" ng-options="type as type.name for type in issueTypes">
                     </select>
                 </label>
                 <div class="item position">
                     <div class="input-label">Emplacement</div>
-                    <a class="button button-small button-light" ng-click="locationMap()">Choisir</a>
+                    <i class="icon ion-checkmark" ng-hide="!newIssue.lat"></i>
+                    <a class="button button-small button-light" ng-click="showIssueLocationModal()">Choisir</a>
                 </div>
             </div>
         </form>

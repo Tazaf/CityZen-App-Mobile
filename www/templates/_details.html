@@ -8,7 +8,7 @@
     </ion-nav-buttons>
     <ion-content class="issue-details has-footer" has-header="false" delegate-handle="commentsScroll">
         <div  ng-if="!error">
-            <img class="issue-img" src="{{issue.imageUrl}}" alt="">
+            <img class="issue-img" ng-src="{{issue.imageUrl}}" alt="">
             <div class="row">
                 <div class="col tags" ng-controller="TagsCtrl">
                     <span ng-repeat="tag in issue.tags" ng-click="removeTag(tag)">{{tag}}<i class="icon ion-close"></i></span>
