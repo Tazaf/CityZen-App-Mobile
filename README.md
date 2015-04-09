@@ -24,33 +24,12 @@ Nous allons voir dans ce README quelles sont les fonctionnalités de cette appli
 7. [Ajouter un nouveau problèmes](#new-issue)
 8. [Paramètres](#settings)
 
-* [Prerequisites](#pre)
-* [Features](#features)
+<a name="login"></a>
+## Login
 
-1. [Design the user interface](#ui)
-2. [Set up the application](#setup)
-  * [Fork this repo and put a blank Ionic app in it](#setup-fork)
-  * [Install application dependencies](#setup-deps)
-  * [Serve the application locally](#setup-serve)
-  * [Rename the main AngularJS module](#setup-rename)
-3. [Set up the navigation structure](#structure)
-  * [Create the templates](#structure-create-templates)
-  * [Update the app to use the templates](#structure-use-templates)
-  * [Define the states (or routes)](#structure-states)
-4. [Set up security](#security)
-  * [Create the login screen](#security-login-screen)
-  * [Create the authentication service](#security-auth-service)
-  * [Set up a proxy (for local development only)](#security-proxy)
-  * [Log in with the API](#security-api-login)
-  * [Log out](#security-logout)
-  * [Storing the authentication credentials](#security-store)
-  * [Configuring an HTTP interceptor](#security-interceptor)
-5. [Multi-environment configuration](#multienv)
-  * [Write environment-specific configuration files](#multienv-config)
-  * [Do not put configuration files under version control](#multienv-ignore)
-  * [Feed the configuration to Angular](#multienv-angular)
+![Écran de login](doc/login.png)
 
-
+Lors du premier démarrage de l'application, l'utilisateur est convié à indiquer son prénom et son nom de famille afin d'être identifié dans l'application. Si c'est la première fois qu'il utilise l'application, un compte sera automatiquement créé avec les informations qu'il aura fourni. S'il a déjà utilisé l'application, son compte sera retrouvé.
 
 
 <a name="pre"></a>
