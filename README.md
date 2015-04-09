@@ -234,9 +234,7 @@ Depuis les écrans principaux, en cliquant soit sur un marqueur (pour l'écran C
 ![Détails du problème](docs/issue-details.png)
 
 Cet écran permet de consulter les informations concernant un problème intéressantes pour l'utilisateur. Tout en haut de la page se trouve l'image représentant le problème.
-Sont ensuite présents les différents tags que les utilisateurs ont ajoutés à ce problème. L'utilisateur actuel peut supprimer tout ou partie de ces tags en appuyant sur la petite croix à la droite du cadre.
-
-![Tag](docs/tag.png)
+Sont ensuite présents les différents tags que les utilisateurs ont ajoutés à ce problème. L'utilisateur actuel peut supprimer tout ou partie de ces tags en appuyant sur la petite croix à la droite du cadre. ![Tag](docs/tag.png)
 
 Il peut aussi ajouter un nouveau tag en appuyant sur le bouton "Nouveau Tag" ![Bouton nouveau tag](docs/new-tag-button.png).
 
@@ -246,7 +244,13 @@ Ceci aura pour effet de faire apparaître une popup lui permettant de saisir l'i
 
 À la suite des tags se trouvent des métadonnées sur le problème, sa description, une barre d'état indiquant quel est l'état actuel du problème, puis les commentaires ajoutés par les utilisateurs s'il y en a, classés par ordre chronologique, le plus vieux commentaire en premier.
 
-Tout en bas de la page se trouve une zone permettant à l'utilisateur de rajouter son propre commentaire. Notez que les commentaires sont limités à 140 caractères. Dès lors que l'utilisateur a commencé à taper son commentaire, le bouton d'envoi ![Bouton d'envoi](docs/send-button.png) devient actif.
+Tout en bas de la page se trouve une zone permettant à l'utilisateur de rajouter son propre commentaire.
+
+![Section de commentaire](docs/comment-section-inactive.png)
+
+Notez que les commentaires sont limités à 140 caractères. Dès lors que l'utilisateur a commencé à taper son commentaire, le bouton d'envoi ![Bouton d'envoi](docs/send-button.png) devient actif.
+
+![Section de commentaire - active](docs/comment-section-active.png)
 
 <a href="#top">Retour en haut de la page</a>
 
