@@ -30,7 +30,7 @@ Nous allons voir dans ce README quelles sont les fonctionnalités de cette appli
 <a name="login"></a>
 ## 1. Login
 
-![Écran de login](doc/login.png)
+![Écran de login](docs/login.png)
 
 Lors du premier démarrage de l'application, l'utilisateur est convié à indiquer son prénom et son nom de famille afin d'être identifié dans l'application. Si c'est la première fois qu'il utilise l'application, un compte sera automatiquement créé avec les informations qu'il aura fourni. S'il a déjà utilisé l'application, son compte sera retrouvé.
 
@@ -39,16 +39,16 @@ Lors du premier démarrage de l'application, l'utilisateur est convié à indiqu
 <a name="main-menu"></a>
 ## 2. Menu principal
 
-![Menu principal](doc/main-menu.png)
+![Menu principal](docs/main-menu.png)
 
-Le menu principal peut être affiché depuis les deux écrans principaux de l'application, grâce à une pression sur le bouton de menu ![Bouton de menu](doc/menu-button.png) en haut à gauche.
+Le menu principal peut être affiché depuis les deux écrans principaux de l'application, grâce à une pression sur le bouton de menu ![Bouton de menu](docs/menu-button.png) en haut à gauche.
 
 Il se compose de plusieurs parties aux effets différents.
 
 <a name="view"></a>
 ### Afficher seulement
 
-![Menu principal - Afficher seulement](doc/main-menu-views.png)
+![Menu principal - Afficher seulement](docs/main-menu-views.png)
 
 Cette liste indique quelles sont les trois manières d'afficher des problèmes dans l'application. Le choix de la vue à afficher lors de l'ouverture de l'application dépend des [préférences](#settings) de l'utilisateur.
 * Tous les problèmes : Cette vue affiche tous les problèmes déjà enregistrés dans l'application. C'est la vue par défaut lors du premier démarrage de l'application.
@@ -58,14 +58,14 @@ Cette liste indique quelles sont les trois manières d'afficher des problèmes d
 <a name="issue-types"></a>
 ### Filtrer les types
 
-![Menu principal - Filtrer les types](doc/main-menu-types.png)
+![Menu principal - Filtrer les types](docs/main-menu-types.png)
 
 Cette liste permet d'activer ou désactiver l'affichage des problèmes selon leur type. Le nombre de ces derniers dépend du nombre de types de problèmes présent dans l'application au moment de l'ouverture de l'application. La capture d'écran présente ici est donc susceptiblee d'être différentes de celle réellement affichée dans l'application. Dans l'exemple affiché, les problèmes de type "Graffiti" et "Dangerous Crossroads" sont affichés tandis que les problèmes de type "Broken Streetlight" sont cachés.
 
 <a name="issue-states"></a>
 ### Filtrer les statuts
 
-![Menu principal - Filtrer les statuts](doc/main-menu-states.png)
+![Menu principal - Filtrer les statuts](docs/main-menu-states.png)
 
 Cette liste permet d'activer ou de désactiver l'affichage des problèmes selon leur statut actuel. Il existe 6 statuts possible pour un problème :
 * Créé : Le problème vient d'être créé par un utilisateur
@@ -80,7 +80,7 @@ L'état de ces filtres au moment du démarrage de l'application dépend des [pr�
 <a name="settings-configuration"></a>
 ### Configuration
 
-![Menu principal - Configuration](doc/main-menu-config.png)
+![Menu principal - Configuration](docs/main-menu-config.png)
 
 Cet encadré contient deux boutons :
 * Préférences : Ce bouton permet d'afficher l'écran des préférences utilisateurs. La composition de cet écran est détaillé dans le chapitre suivant [3. Préférences](#settings).
@@ -89,7 +89,7 @@ Cet encadré contient deux boutons :
 <a name="settings"></a>
 ## 3. Préférences
 
-![Écran des préférences](doc/settings-screen.png)
+![Écran des préférences](docs/settings-screen.png)
 
 L'écran des préférences permet de modifier quelques comportements de l'application. La plupart de ces préférences prennent effet soit lors du prochain démarrage de l'application, soit, sous certaines conditions, immédiatement après la fermeture de l'écran des préférences. Passons en revue les différents paramètres.
 
