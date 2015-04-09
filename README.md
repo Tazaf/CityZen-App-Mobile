@@ -2,8 +2,27 @@
 
 <a name="top"></a>
 
-This repository contains instructions to build a skeleton application that will serve as a starting point to develop the Citizen Engagement mobile application.
-The completed skeleton app is available [here](https://github.com/SoftEng-HEIGVD/Teaching-HEIGVD-CM_APPMOB-2015-SkeletonApp).
+Ce repository contient le code source de l'application CityZen pour mobile.
+Il s'agit d'une application invitant les citoyens à notifier les problèmes qu'ils rencontreraient dans leurs villes afin que ceux-ci soient corrigés par les personnes compétentes.
+Nous allons voir dans ce README quelles sont les fonctionnalités de cette application.
+
+1. [Login](#login)
+2. [Écrans principaux](#main-screns)
+  * [Carte](#main-screen-map)
+  * [List](#main-screen-list)
+3. [Menu principal](#main-menu)
+  * ["Afficher seulement"](#view)
+  * ["Filter les types"](#issue-types)
+  * ["Filtrer les statuts](#issue-states)
+  * [Paramètres](#settings-ref)
+  * [Logout](#logout)
+4. [Affichage des problèmes - Carte](#map)
+5. [Affichage des problèmes - List](#map)
+6. [Détails d'un problème](#issue-details-main)
+  * [Détails](#issue-details)
+  * [Carte](#issue-carte)
+7. [Ajouter un nouveau problèmes](#new-issue)
+8. [Paramètres](#settings)
 
 * [Prerequisites](#pre)
 * [Features](#features)
