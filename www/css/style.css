@@ -7,6 +7,17 @@
     background: url(../img/bg-login.png) repeat left top;
 }
 
+.error {
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: rgba(50, 50, 50, 0.7);
+    min-height: 40px;
+    padding: 10px;
+    border-radius: 50px;
+    margin-top: 50px;
+}
+
 #logo {
     display: block;
     margin: 60px auto;

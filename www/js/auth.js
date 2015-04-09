@@ -84,7 +84,8 @@ app.controller('LoginCtrl', function ($window, $rootScope, apiUrl, AuthService, 
 
             // If an error occurs, hide the loading message and show an error message.
             Loading.hide();
-            $rootScope.toast.show("Erreur lors de la tentative de connexion");
+            console.log(apiUrl);
+            $scope.error = apiUrl;
         });
     };
 
