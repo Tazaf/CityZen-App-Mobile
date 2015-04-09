@@ -178,7 +178,7 @@ Une fois connecté, l'utilisateur arrive sur un des deux écrans principaux de l
 <a name="main-screens-map"></a>
 ### Carte
 
-![Écran principal - Carte](doc/main-screen-map.png)
+![Écran principal - Carte](docs/main-screen-map.png)
 
 L'écran principal Carte affiche une carte du monde sur laquelle sont affichés les problèmes sélectionnés. En fonction des [préférences](#settings), il peut s'agit de tous les problèmes, des problèmes les plus proches de l'utilisateur ou bien seulement des problèmes ajoutés par l'utilisateur.
 
@@ -204,7 +204,7 @@ Le bouton "Liste" ![Bouton liste](docs/list-button.png) permet de passer à l'é
 <a name="main-screens-list"></a>
 ### Liste
 
-![Écran principal - Liste](doc/main-screen-list.png)
+![Écran principal - Liste](docs/main-screen-list.png)
 
 L'écran principal Liste affiche une liste qui affiche une partie des informations des problèmes sélectionnés. Ces informations sont les mêmes que celles affichées dans les cadre des marqueurs de l'écran carte, à savoir :
 * Le statut (l'icône à gauche du cadre)
