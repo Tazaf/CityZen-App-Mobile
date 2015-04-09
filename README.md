@@ -234,7 +234,11 @@ Depuis les écrans principaux, en cliquant soit sur un marqueur (pour l'écran C
 ![Détails du problème](docs/issue-details.png)
 
 Cet écran permet de consulter les informations concernant un problème intéressantes pour l'utilisateur. Tout en haut de la page se trouve l'image représentant le problème.
-Sont ensuite présents les différents tags que les utilisateurs ont ajoutés à ce problème. L'utilisateur actuel peut supprimer tout ou partie de ces tags en appuyant sur la petite croix à la droite du cadre. Il peut aussi ajouter un nouveau tag en appuyant sur le bouton "Nouveau Tag" ![Bouton nouveau tag](docs/new-tag-button.png).
+Sont ensuite présents les différents tags que les utilisateurs ont ajoutés à ce problème. L'utilisateur actuel peut supprimer tout ou partie de ces tags en appuyant sur la petite croix à la droite du cadre.
+
+![Tag](docs/tag.png)
+
+Il peut aussi ajouter un nouveau tag en appuyant sur le bouton "Nouveau Tag" ![Bouton nouveau tag](docs/new-tag-button.png).
 
 Ceci aura pour effet de faire apparaître une popup lui permettant de saisir l'intitulé de ce nouveau tag. Notez que cet intitulé est limité à 20 caractères et que, lors de l'ajout du tag, tous les espaces vides compris dans cet intitulé seront supprimés.
 
