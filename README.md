@@ -255,7 +255,7 @@ Tout en bas de la page se trouve une zone permettant à l'utilisateur de rajoute
 
 ![Carte du problème](docs/issue-details-map.png)
 
-Ce écran peut être atteint depuis les détails d'un problème en appuyant sur le bouton "Détails - Carte" ![Bouton détails carte](docs(details-map-button.png).
+Ce écran peut être atteint depuis les détails d'un problème en appuyant sur le bouton "Détails - Carte" ![Bouton détails carte](docs/details-map-button.png).
 
 Sur cette carte est affichée un marqueur représentant le problème actuellement consulté. Il n'est possible que de nabiguer sur la carte et de zommer/dézoomer sur cette dernière. Un appui sur le bouton de retour permet de revenir aux détails.
 
@@ -277,3 +277,5 @@ Puis il faut choisir un type de problème parmi ceux disponibles dans la liste d
 Enfin, la paramètre "Emplacement" permet d'indiquer où se situe le problème. Un appui sur le bouton "Choisir" ![Bouton choisir](docs/choose-button.png), l'utilisateur fait apparaître une carte sur laquelle se trouve un marqueur représentant sa position actuelle. Il peut modifier l'emplacement de ce marqueur en le déplacant ou en appuyant à un endroit de la carte. Le bouton "Annuler" ![Bouton annuler](docs/cancel-button.png) permet de revenir à l'écran du formulaire en annulant une éventuelle manipulation du marqueur. Le bouton "Valider" ![Bouton valider](docs/validate-button.png) permet quant à lui de valider ce nouvel emplacement. Une fois l'emplacement sélectionné, une petite coche l'indique à côté du bouton "Choisir".
 
 Lorsque le formulaire est correctement rempli, et seulement à ce moment-là, l'utilisateur peut appuyer sur le bouton "Enregistrer" ![Bouton enregistrer](docs/save-button.png) pour sauvegarder ce nouveau problème dans l'application. Il est alors renvoyer sur l'écran depuis lequel il a appuyer sur le bouton "Nouveau" ![Bouton nouveau](docs/new-button.png) tandis que l'application recharge les données pour prendre en compte ce nouveau problème.
+
+<a href="#top">Retour en haut de la page</a>
