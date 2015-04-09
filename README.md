@@ -27,7 +27,7 @@ Nous allons voir dans ce README quelles sont les fonctionnalités de cette appli
 <a name="login"></a>
 ## 1. Login
 
-![Écran de login](doc/login.png)
+(doc/login.png)
 
 Lors du premier démarrage de l'application, l'utilisateur est convié à indiquer son prénom et son nom de famille afin d'être identifié dans l'application. Si c'est la première fois qu'il utilise l'application, un compte sera automatiquement créé avec les informations qu'il aura fourni. S'il a déjà utilisé l'application, son compte sera retrouvé.
 
