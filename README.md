@@ -7,25 +7,25 @@ Il s'agit d'une application invitant les citoyens à notifier les problèmes qu'
 Nous allons voir dans ce README quelles sont les fonctionnalités de cette application.
 
 1. [Login](#login)
-2. [Écrans principaux](#main-screns)
-  * [Carte](#main-screen-map)
-  * [List](#main-screen-list)
-3. [Menu principal](#main-menu)
+2. [Menu principal](#main-menu)
   * ["Afficher seulement"](#view)
   * ["Filter les types"](#issue-types)
   * ["Filtrer les statuts](#issue-states)
   * [Paramètres](#settings-ref)
   * [Logout](#logout)
-4. [Affichage des problèmes - Carte](#map)
-5. [Affichage des problèmes - List](#map)
-6. [Détails d'un problème](#issue-details-main)
+3. [Paramètres](#settings)
+4. [Écrans principaux](#main-screens)
+  * [Carte](#main-screen-map)
+  * [Liste](#main-screen-list)
+5. [Affichage des problèmes - Carte](#map)
+6. [Affichage des problèmes - Liste](#map)
+7. [Détails d'un problème](#issue-details-main)
   * [Détails](#issue-details)
   * [Carte](#issue-carte)
-7. [Ajouter un nouveau problèmes](#new-issue)
-8. [Paramètres](#settings)
+8. [Ajouter un nouveau problèmes](#new-issue)
 
 <a name="login"></a>
-## Login
+## 1. Login
 
 ![Écran de login](doc/login.png)
 
@@ -33,7 +33,67 @@ Lors du premier démarrage de l'application, l'utilisateur est convié à indiqu
 
 <a href="#top">Retour en haut de la page</a>
 
-<a name="main-screns"></a>
+<a name="main-menu"></a>
+## 2. Menu principal
+
+![Menu principal](doc/main-menu.png)
+
+Le menu principal peut être affiché depuis les deux écrans principaux de l'application, grâce à une pression sur le bouton de menu [Bouton de menu](doc/menu-button.png) en haut à gauche.
+
+Il se compose de plusieurs parties aux effets différents.
+
+<a name="view"></a>
+### "Afficher seulement"
+
+![Menu principal - Afficher seulement](doc/main-menu-views.png)
+
+Cette liste indique quelles sont les trois manières d'afficher des problèmes dans l'application. Le choix de la vue à afficher lors de l'ouverture de l'application dépend des [préférences](#settings) de l'utilisateur.
+* Tous les problèmes : Cette vue affiche tous les problèmes déjà enregistrés dans l'application. C'est la vue par défaut lors du premier démarrage de l'application.
+* Problèmes proches : Cette vue n'affiche que les problèmes situés dans un certain rayon autour de la position actuelle de l'utilisateur. Ce rayon peut être définit dans les [préférences](#settings).
+* Mes Problèmes : Cette vue n'affiche que les problèmes ajoutés par l'utilisateur actuel.
+
+<a name="issue-types"></a>
+### "Filtrer les types"
+
+![Menu principal - Filtrer les types](doc/main-menu-types.png)
+
+Cette liste permet d'activer ou désactiver l'affichage des problèmes selon leur type. Le nombre de ces derniers dépend du nombre de types de problèmes présent dans l'application au moment de l'ouverture de l'application. La capture d'écran présente ici est donc susceptiblee d'être différentes de celle réellement affichée dans l'application. Dans l'exemple affiché, les problèmes de type "Graffiti" et "Dangerous Crossroads" sont affichés tandis que les problèmes de type "Broken Streetlight" sont cachés.
+
+<a name="issue-states"></a>
+### "Filtrer les statuts"
+
+![Menu principal - Filtrer les statuts](doc/main-menu-states.png)
+
+Cette liste permet d'activer ou de désactiver l'affichage des problèmes selon leur statut actuel. Il existe 6 statuts possible pour un problème :
+* Créé : Le problème vient d'être créé par un utilisateur
+* Assigné : Le problème a été assigné à un modérateur
+* Reconnu : Le problème a été constaté par le modérateur auquel il a été assigné
+* En cours : Des actions sont en cours pour résoudre le problème
+* Rejeté : La résolution du problème a été rejetée par le modérateur
+* Résolu : Le problème a été résolu
+
+L'état de ces filtres au moment du démarrage de l'application dépend des [préférences](#settings) de l'utilisateur.
+
+<a name="settings-ref"></a>
+### "Préférences"
+
+![Menu principal - Préférences](doc/main-menu-views.png)
+
+Ce bouton permet d'afficher l'écran des préférences utilisateurs. La composition de cet écran est détaillé dans le chapitre suivant [3. Préférences](#settings).
+
+
+<a name="main-screens"></a>
+## 4. Écrans principaux
+
+Une fois connecté, l'utilisateur arrive sur un des deux écrans principaux de l'application, en fonction des préférences de l'application (cf. [3. Paramètres](#settings)). Quelque soit l'écran sur lequel il arrive, en cliquant sur le bouton de menu en haut à gauche, il peut faire apparaître le menu principal (cf. [2. Menu Principal](#main-menu)).
+
+<a name="main-screens-map"></a>
+### Carte
+
+![Écran principal - Carte](doc/main-scree-map.png)
+
+L'écran principal Carte affiche une carte du monde sur laquelle sont affichés les problèmes déjà enregistrés. En fonction des préférences, il peut s'agit de tous les problèmes, des problèmes les plus proches de l'utilisateur ou bien seulement des problèmes ajoutés par l'utilisateur.
+
 
 <a name="pre"></a>
 ## Prerequisites
