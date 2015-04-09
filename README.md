@@ -30,6 +30,7 @@ Nous allons voir dans ce README quelles sont les fonctionnalités de cette appli
 ![Écran de login](doc/login.png)
 
 Lors du premier démarrage de l'application, l'utilisateur est convié à indiquer son prénom et son nom de famille afin d'être identifié dans l'application. Si c'est la première fois qu'il utilise l'application, un compte sera automatiquement créé avec les informations qu'il aura fourni. S'il a déjà utilisé l'application, son compte sera retrouvé.
+
 <a href="#top">Retour en haut de la page</a>
 
 <a name="main-screns"></a>
