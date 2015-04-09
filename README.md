@@ -8,11 +8,10 @@ Nous allons voir dans ce README quelles sont les fonctionnalités de cette appli
 
 1. [Login](#login)
 2. [Menu principal](#main-menu)
- * ["Afficher seulement"](#view)
- * ["Filter les types"](#issue-types)
- * ["Filtrer les statuts](#issue-states)
- * [Paramètres](#settings-ref)
- * [Logout](#logout)
+ * [Afficher seulement](#view)
+ * [Filter les types](#issue-types)
+ * [Filtrer les statuts](#issue-states)
+ * [Configuration](#settings-configuration)
 3. [Paramètres](#settings)
  * [Écran d'accueil](#settings-homePage)
  * [Vue par défaut](#settings-homeView)
@@ -78,19 +77,14 @@ Cette liste permet d'activer ou de désactiver l'affichage des problèmes selon 
 
 L'état de ces filtres au moment du démarrage de l'application dépend des [préférences](#settings) de l'utilisateur.
 
-<a name="settings-ref"></a>
-### Préférences
+<a name="settings-configuration"></a>
+### Configuration
 
-![Menu principal - Préférences](doc/main-menu-settings.png)
+![Menu principal - Configuration](doc/main-menu-config.png)
 
-Ce bouton permet d'afficher l'écran des préférences utilisateurs. La composition de cet écran est détaillé dans le chapitre suivant [3. Préférences](#settings).
-
-<a name="logout"></a>
-### Logout
-
-![Menu principal - Logout](doc/main-menu-logout.png)
-
-Ce bouton permet de déconnecter l'utilisateur actuel de l'application. Notez que cette action garde en mémoire les préférence définies dans l'application. Il ne peut pas y avoir de préférences par utilisateur, donc.
+Cet encadré contient deux boutons :
+* Préférences : Ce bouton permet d'afficher l'écran des préférences utilisateurs. La composition de cet écran est détaillé dans le chapitre suivant [3. Préférences](#settings).
+* Logout : Ce bouton permet de déconnecter l'utilisateur actuel de l'application. Notez que cette action garde en mémoire les préférence définies dans l'application. Il ne peut pas y avoir de préférences par utilisateur, donc.
 
 <a name="settings"></a>
 ## 3. Préférences
