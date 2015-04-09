@@ -153,7 +153,7 @@ En appuyant sur les bornes maximales, l'utilisateur peut directement choisir ces
 
 ![Zoom par défaut](docs/settings-zoom.png)
 
-En modifiant ce paramètre, l'utilisateur modifie le niveau de zoom des cartes de l'application si ces dernières ne doivent afficher qu'un seul marqueur. C'est le cas pour la carte de Ma Position (cf. plus haut), l'affichage d'un problème unique sur la carte (cf. [5. Détails d'un problème > Carte](#issue-carte)) ou lorsqu'une vue n'a aucun problème à afficher.
+En modifiant ce paramètre, l'utilisateur modifie le niveau de zoom des cartes de l'application si ces dernières ne doivent afficher qu'un seul marqueur. C'est le cas pour la carte de Ma Position (cf. plus haut), l'affichage d'un problème unique sur la carte (cf. [5. Détails d'un problème > Carte](#issue-map)) ou lorsqu'une vue n'a aucun problème à afficher.
 
 Ce zoom peut être au minimum de 1x et au maximum de 19x. En appuyant sur les bornes des extrêmités, l'utilisateur peut directement choisir ces valeurs.
 
