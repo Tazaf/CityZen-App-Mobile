@@ -143,7 +143,7 @@ Ce paramètre est constitué d'une liste indiquant tout les statuts possible pou
 <a name="main-screens"></a>
 ## 4. Écrans principaux
 
-Une fois connecté, l'utilisateur arrive sur un des deux écrans principaux de l'application, en fonction des [préférences](#settings) de l'application. Quelque soit l'écran sur lequel il arrive, en cliquant sur le bouton de menu ![Bouton de menu](doc/menu-button.png) en haut à gauche, il peut faire apparaître le [menu principal](#main-menu).
+Une fois connecté, l'utilisateur arrive sur un des deux écrans principaux de l'application, en fonction des [préférences](#settings) de l'application. Quelque soit l'écran sur lequel il arrive, en cliquant sur le bouton de menu ![Bouton de menu](docs/menu-button.png) en haut à gauche, il peut faire apparaître le [menu principal](#main-menu).
 
 <a name="main-screens-map"></a>
 ### Carte
